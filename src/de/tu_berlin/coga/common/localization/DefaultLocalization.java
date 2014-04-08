@@ -29,7 +29,7 @@ public final class DefaultLocalization extends AbstractLocalization {
 	 * Initializes the default localization instance.
 	 */
 	private DefaultLocalization() {
-		super( "de.tu_berlin.math.coga.common.localization.default" );
+		super( "de.tu_berlin.coga.common.localization.default" );
 	}
 
 	/**
