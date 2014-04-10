@@ -14,13 +14,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/**
- * Class Helper
- * Erstellt 08.07.2008, 19:04:34
- */
 package de.tu_berlin.coga.common.util;
 
 import de.tu_berlin.coga.common.util.units.UnitScale;
+import java.util.Iterator;
 
 /**
  * Some helper methods that are needed every now and then.
@@ -68,4 +65,26 @@ public final class Helper {
 			return value / unit.getRange();
 		else return value;
 	}
+		
+  /**
+   * Adapts an {@link Iterator} to an {@link Iterable} for use in enhanced for
+   * loops. If {@link Iterable#iterator()} is invoked more than once, an
+   * {@link IllegalStateException} is thrown.
+   */
+  public static <T> Iterable<T> in(final Iterator<T> iterator) {
+    assert iterator != null;
+    class SingleUseIterable implements Iterable<T> {
+      private boolean used = false;
+
+      @Override
+      public Iterator<T> iterator() {
+        if (used) {
+          throw new IllegalStateException("SingleUseIterable already invoked");
+        }
+        used = true;
+        return iterator;
+      }
+    }
+    return new SingleUseIterable();
+  }		
 }
