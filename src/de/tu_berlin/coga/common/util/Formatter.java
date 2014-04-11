@@ -4,7 +4,7 @@
  */
 package de.tu_berlin.coga.common.util;
 
-import de.tu_berlin.coga.common.localization.DefaultLocalization;
+import de.tu_berlin.coga.common.localization.LocalizationManager;
 import de.tu_berlin.coga.common.util.units.UnitScale;
 import java.awt.Color;
 import java.text.NumberFormat;
@@ -26,7 +26,7 @@ public final class Formatter {
 	 * @return a string containing the decimal value
 	 */
 	public static String formatPercent( double value ) {
-		NumberFormat nfPercent = DefaultLocalization.getSingleton().getPercentConverter();
+		NumberFormat nfPercent = LocalizationManager.getSingleton().getPercentConverter();
 		nfPercent.setMaximumFractionDigits( 2 );
 		nfPercent.setMinimumFractionDigits( 2 );
 		return nfPercent.format( value );

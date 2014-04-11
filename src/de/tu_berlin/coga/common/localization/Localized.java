@@ -14,11 +14,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/**
- * Interface Localized
- * Erstellt 30.04.2008, 09:03:00
- */
-
 package de.tu_berlin.coga.common.localization;
 
 /**

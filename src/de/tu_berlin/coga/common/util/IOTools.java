@@ -21,7 +21,7 @@
 
 package de.tu_berlin.coga.common.util;
 
-import de.tu_berlin.coga.common.localization.DefaultLocalization;
+import de.tu_berlin.coga.common.localization.LocalizationManager;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -85,7 +85,7 @@ public final class IOTools {
 						String foundNumber = file.getName().substring( prefixLen, prefixLen + digits );
 						int number;
 						try {
-							number = DefaultLocalization.getSingleton().getIntegerConverter().parse( foundNumber ).intValue();
+							number = LocalizationManager.getSingleton().getIntegerConverter().parse( foundNumber ).intValue();
 						} catch( ParseException ex ) {
 							System.out.println( "Skipped file with same prefix: " + file.getName() );
 							number = -1;
