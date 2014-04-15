@@ -85,7 +85,7 @@ public final class IOTools {
 						String foundNumber = file.getName().substring( prefixLen, prefixLen + digits );
 						int number;
 						try {
-							number = LocalizationManager.getSingleton().getIntegerConverter().parse( foundNumber ).intValue();
+							number = LocalizationManager.getManager().getIntegerConverter().parse( foundNumber ).intValue();
 						} catch( ParseException ex ) {
 							System.out.println( "Skipped file with same prefix: " + file.getName() );
 							number = -1;

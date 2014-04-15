@@ -26,7 +26,7 @@ public final class Formatter {
 	 * @return a string containing the decimal value
 	 */
 	public static String formatPercent( double value ) {
-		NumberFormat nfPercent = LocalizationManager.getSingleton().getPercentConverter();
+		NumberFormat nfPercent = LocalizationManager.getManager().getPercentConverter();
 		nfPercent.setMaximumFractionDigits( 2 );
 		nfPercent.setMinimumFractionDigits( 2 );
 		return nfPercent.format( value );
