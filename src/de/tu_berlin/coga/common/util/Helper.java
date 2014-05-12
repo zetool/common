@@ -57,7 +57,7 @@ public final class Helper {
 		else
 			return unit;
 	}
-	
+
 		public static <E extends UnitScale<E>> double getNextBetterValue( E unit, double value ) {
 		if( value < 1 && unit.getSmaller() != null )
 			return value * unit.getSmaller().getRange();
@@ -65,11 +65,12 @@ public final class Helper {
 			return value / unit.getRange();
 		else return value;
 	}
-		
+
   /**
    * Adapts an {@link Iterator} to an {@link Iterable} for use in enhanced for
    * loops. If {@link Iterable#iterator()} is invoked more than once, an
    * {@link IllegalStateException} is thrown.
+   * @param <T> the iterator type
    */
   public static <T> Iterable<T> in(final Iterator<T> iterator) {
     assert iterator != null;
@@ -86,5 +87,5 @@ public final class Helper {
       }
     }
     return new SingleUseIterable();
-  }		
+  }
 }
