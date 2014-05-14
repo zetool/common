@@ -6,7 +6,6 @@ package de.tu_berlin.coga.common.util;
 
 import de.tu_berlin.coga.common.util.units.UnitScale;
 
-
 /**
  * A {@code Quantity} represents a physical quantity containing the actual value
  * of the quanitity and its unit. This class is immbla
@@ -22,11 +21,11 @@ public class Quantity<E extends UnitScale<E>> {
 		this.unit = unit;
 	}
 
-	double getValue() {
+	public double getValue() {
 		return value;
 	}
 
-	E getUnit() {
+	public E getUnit() {
 		return unit;
 	}
 

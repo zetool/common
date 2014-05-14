@@ -1,7 +1,4 @@
-/*
- * Formatter.java
- * Created 22.02.2010, 21:32:54
- */
+
 package de.tu_berlin.coga.common.util;
 
 import de.tu_berlin.coga.common.localization.LocalizationManager;
@@ -41,13 +38,14 @@ public final class Formatter {
 	 * @return the pair containing the transformed value and the fitting unit
 	 */
 	public static <E extends UnitScale<E>> Quantity<E> unit( double value, E unit ) {
-
-		while( !unit.isInRange( value ) ) {
-			final double newValue = unit.getBetterUnitValue( value );
-			unit = unit.getBetterUnit( value );
-			value = newValue;
+    E currentUnit = unit;
+    double restValue = value;
+		while( !currentUnit.isInRange( restValue ) ) {
+			final double newValue = currentUnit.getBetterUnitValue( restValue );
+			currentUnit = currentUnit.getBetterUnit( restValue );
+			restValue = newValue;
 		}
-		return new Quantity<>( value, unit );
+		return new Quantity<>( restValue, currentUnit );
 	}
 
 	/**
@@ -73,7 +71,7 @@ public final class Formatter {
 		final Quantity<E> res = unit( value, unit );
 		final NumberFormat n = NumberFormat.getInstance();
 		n.setMaximumFractionDigits( digits );
-		return n.format( res.getValue() ) + " " + res.getUnit().getName() ;
+		return n.format( res.getValue() ) + " " + res.getUnit().getName();
 	}
 
 	/**
@@ -83,17 +81,20 @@ public final class Formatter {
 	 * @return the number with leading zeros
 	 * @throws IllegalArgumentException if the number has to many digits
 	 */
-	public static String fillLeadingZeros( final int number, final int digits ) throws IllegalArgumentException {
-		String ret = Integer.toString( number );
-		if( ret.length() > digits )
-			throw new java.lang.IllegalArgumentException( "Number " + number + " is too long. Only " + digits + " digits are allowed." );
-		while( ret.length() < digits )
-			ret = "0" + ret;
-		return ret;
-	}
+  public static String fillLeadingZeros( final int number, final int digits ) throws IllegalArgumentException {
+    String ret = Integer.toString( number );
+    if( ret.length() > digits ) {
+      throw new java.lang.IllegalArgumentException( "Number " + number + " is too long. Only "
+              + digits + " digits are allowed." );
+    }
+    while( ret.length() < digits ) {
+      ret = "0" + ret;
+    }
+    return ret;
+  }
 
-	/**
-	 * Converts an RGB cover specified by the amounts of red, green and blue into
+  /**
+ 	 * Converts an RGB cover specified by the amounts of red, green and blue into
 	 * an hexadecimal representation leading with a hashtag ("#") as used in HTML.
 	 * The values for {@code r}, {@code g}, and {@code b} must be in the interval
 	 * from 0 to 255.
