@@ -12,7 +12,7 @@ import de.tu_berlin.coga.common.util.units.UnitScale;
  * @author Jan-Philipp Kappmeier
  * @param <E>
  */
-public class Quantity<E extends UnitScale<E>> {
+public class Quantity<E extends UnitScale<E>> implements Comparable<Quantity<E>> {
 	private final double value;
 	private final E unit;
 
@@ -29,4 +29,14 @@ public class Quantity<E extends UnitScale<E>> {
 		return unit;
 	}
 
+  @Override
+  public String toString() {
+    return Formatter.formatUnit( value, unit );
+  }
+
+  @Override
+  public int compareTo( Quantity<E> o ) {
+    // TODO: bring to same unit
+    return (int)(o.getValue() - getValue());
+  }
 }

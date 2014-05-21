@@ -31,7 +31,7 @@ public final class Formatter {
 
 	/**
 	 * Computes the correct value and fitting time unit for a given pair of value
-	 * and time unit. The result is stored as a {@link Tuple}.
+	 * and time unit. The result is stored as a {@link UnitScale}.
 	 * @param <E> the type of time unit that is returned
 	 * @param value the value of the number to be formatted
 	 * @param unit the unit of the number

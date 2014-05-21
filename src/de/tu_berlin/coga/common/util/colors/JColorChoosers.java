@@ -27,7 +27,7 @@ public class JColorChoosers {
 	 * @param title the title of the dialog window
 	 * @param initialColor the color which the chooser is initialized to
 	 * @return the chosen color if any is select, the original color else
-	 * @throws HeadlessException if {@link java.awt.GraphicsEnvironment.isHeadless()} returns {@code true}
+	 * @throws HeadlessException if {@link java.awt.GraphicsEnvironment#isHeadless()} returns {@code true}
 	 */
 	public static Color showRGBColorChooser( Component component, String title, Color initialColor ) throws HeadlessException {
 		JColorChooser colorChooser = new RGBColorChooser( initialColor );

@@ -14,11 +14,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/*
- * AlgorithmProgressEvent.java
- *
- */
 package de.tu_berlin.coga.common.algorithm;
+
+import de.tu_berlin.coga.common.util.Quantity;
+import de.tu_berlin.coga.common.util.units.TimeUnits;
 
 /**
  * An algorithm event that is fired by the algorithm when progress occurs.
@@ -36,8 +35,8 @@ public class AlgorithmProgressEvent extends AlgorithmEvent {
 	 * @throws IllegalArgumentException if the progress value is not between 0
 	 * and 1 (inclusively).
 	 */
-	public AlgorithmProgressEvent( Algorithm algorithm, double progress ) {
-		this( algorithm, System.currentTimeMillis(), progress );
+	public AlgorithmProgressEvent( Algorithm<?,?> algorithm, double progress ) {
+		this( algorithm, new Quantity<>( System.currentTimeMillis(), TimeUnits.MilliSeconds ), progress );
 	}
 
 	/**
@@ -49,7 +48,7 @@ public class AlgorithmProgressEvent extends AlgorithmEvent {
 	 * @throws IllegalArgumentException if the progress value is not between 0
 	 * and 1 (inclusively).
 	 */
-	public AlgorithmProgressEvent( Algorithm algorithm, long eventTime, double progress ) {
+	public AlgorithmProgressEvent( Algorithm<?,?> algorithm, Quantity<TimeUnits> eventTime, double progress ) {
 		super( algorithm, eventTime );
 		if( progress < 0.0 )
 			throw new IllegalArgumentException( "The progress value must not be < 0.0." );

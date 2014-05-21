@@ -21,6 +21,9 @@
 
 package de.tu_berlin.coga.common.algorithm;
 
+import de.tu_berlin.coga.common.util.Quantity;
+import de.tu_berlin.coga.common.util.units.TimeUnits;
+
 /**
  * An algorithm event that is fired by the algorithm when progress occurs. It
  * contains detailed information about the current task.
@@ -39,7 +42,7 @@ public class AlgorithmDetailedProgressEvent extends AlgorithmProgressEvent {
         this.message = message;
     }
 
-    public AlgorithmDetailedProgressEvent(Algorithm algorithm, long eventTime, double progress, String message) {
+    public AlgorithmDetailedProgressEvent(Algorithm algorithm, Quantity<TimeUnits> eventTime, double progress, String message) {
         super(algorithm, eventTime, progress);
     }
 

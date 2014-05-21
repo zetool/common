@@ -14,11 +14,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/*
- * AlgorithmTerminatedEvent.java
- *
- */
 package de.tu_berlin.coga.common.algorithm;
+
+import de.tu_berlin.coga.common.util.Quantity;
+import de.tu_berlin.coga.common.util.units.TimeUnits;
 
 /**
  * A special algorithm event that occurs when the algorithm terminates (either
@@ -27,14 +26,14 @@ package de.tu_berlin.coga.common.algorithm;
  * @author Martin Groß
  */
 public class AlgorithmTerminatedEvent extends AlgorithmEvent {
-	long runtime = -1;
+	Quantity<TimeUnits> runtime = null;
 
 	/**
 	 * Creates an {@code AlgorithmTerminatedEvent} for the specified algorithm.
 	 * @param algorithm the algorithm that has terminated.
 	 */
-	public AlgorithmTerminatedEvent( Algorithm algorithm ) {
-		super( algorithm, algorithm.getStartTime() + algorithm.getRuntime() );
+	public AlgorithmTerminatedEvent( Algorithm<?,?> algorithm ) {
+		super( algorithm, new Quantity<>( algorithm.getStartTime().getValue() + algorithm.getRuntime().getValue(), TimeUnits.MilliSeconds ) );
 		runtime = algorithm.getRuntime();
 	}
 
@@ -44,12 +43,12 @@ public class AlgorithmTerminatedEvent extends AlgorithmEvent {
 	 * @param algorithm the algorithm that has terminated.
 	 * @param runtime
 	 */
-	public AlgorithmTerminatedEvent( Algorithm algorithm, long runtime ) {
+	public AlgorithmTerminatedEvent( Algorithm algorithm, Quantity<TimeUnits> runtime ) {
 		this( algorithm );
 		this.runtime = runtime;
 	}
 
-	public long getRuntime() {
+	public Quantity<TimeUnits> getRuntime() {
 		return runtime;
 	}
 }

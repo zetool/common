@@ -4,6 +4,9 @@
  */
 package de.tu_berlin.coga.common.algorithm;
 
+import de.tu_berlin.coga.common.util.Quantity;
+import de.tu_berlin.coga.common.util.units.TimeUnits;
+
 
 /**
  * An algorithm event that is thrown by an algorithm if he wants to give notice
@@ -12,20 +15,17 @@ package de.tu_berlin.coga.common.algorithm;
  */
 public class AlgorithmStatusEvent extends AlgorithmEvent {
 
-    /**
-     * An algorithm specific message.
-     */
+    /** An algorithm specific message. */
     private String message;
 
     /**
      * Creates an {@code AlgorithmStatusEvent} for the specified
      * algorithm and the current progress value.
      * @param algorithm the algorithm for which progress occurred.
-     * @param progress the progress value.
 		 * @param text the status text message
      */
-    public AlgorithmStatusEvent(Algorithm algorithm, String text) {
-				this( algorithm, System.currentTimeMillis(), text );
+    public AlgorithmStatusEvent(Algorithm<?,?> algorithm, String text) {
+				this( algorithm, new Quantity<>( System.currentTimeMillis(), TimeUnits.MilliSeconds ), text );
     }
 
     /**
@@ -35,7 +35,7 @@ public class AlgorithmStatusEvent extends AlgorithmEvent {
 		 * @param eventTime the time (in milliseconds) when the event occured
      * @param text the status message
      */
-    public AlgorithmStatusEvent(Algorithm algorithm, long eventTime, String text) {
+    public AlgorithmStatusEvent(Algorithm<?,?> algorithm, Quantity<TimeUnits> eventTime, String text) {
         super(algorithm, eventTime);
         this.message = text;
     }

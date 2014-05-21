@@ -19,6 +19,7 @@ package de.tu_berlin.coga.common.algorithm;
 import de.tu_berlin.coga.common.algorithm.parameter.ParameterSet;
 import de.tu_berlin.coga.common.debug.Debug;
 import de.tu_berlin.coga.common.util.Formatter;
+import de.tu_berlin.coga.common.util.Quantity;
 import de.tu_berlin.coga.common.util.units.TimeUnits;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -316,9 +317,10 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
    * @return the runtime of the algorithm in milliseconds.
    * @throws IllegalStateException if the algorithm has not terminated yet.
    */
-  public final long getRuntime() throws IllegalStateException {
+  public final Quantity<TimeUnits> getRuntime() throws IllegalStateException {
     if( state == State.SOLVED || state == State.SOLVING_FAILED ) {
-      return runtime;
+      Quantity<TimeUnits> t = new Quantity<>( runtime, TimeUnits.MilliSeconds );
+      return t;
     }
     throw new IllegalStateException( "The algorithm has not terminated yet."
             + " Please call run() first and wait for its termination." );
@@ -357,9 +359,9 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
    * @return the start time of the algorithm.
    * @throws IllegalStateException if the execution of the algorithm has not yet begun.
    */
-  public final long getStartTime() throws IllegalStateException {
+  public final Quantity<TimeUnits> getStartTime() throws IllegalStateException {
     if( state != State.WAITING ) {
-      return startTime;
+      return new Quantity<>( startTime, TimeUnits.MilliSeconds );
     }
     throw new IllegalStateException( "The execution of the algorithm has "
             + "not started yet. Please call run() first." );
