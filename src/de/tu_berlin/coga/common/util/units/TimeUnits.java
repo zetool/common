@@ -1,11 +1,3 @@
-/**
- * TimeUnits.java
- * Created: 18.10.2012, 13:42:54
- */
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package de.tu_berlin.coga.common.util.units;
 
