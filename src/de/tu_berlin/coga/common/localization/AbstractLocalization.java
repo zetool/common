@@ -16,7 +16,6 @@
 
 package de.tu_berlin.coga.common.localization;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -41,7 +40,7 @@ public abstract class AbstractLocalization implements Localization {
 	/** Indicates if only the key is returned, if an unknown key was used. Otherwise some larger text is returned. */
 	private  boolean returnKeyOnly = true;
 
-	private ArrayList<Locale> supportedLocales = new ArrayList<>();
+	private final ArrayList<Locale> supportedLocales = new ArrayList<>();
 
 	/**
 	 * Creates a new instance of the singleton and initializes with the default locale of the system.
