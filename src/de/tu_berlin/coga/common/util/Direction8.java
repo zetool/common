@@ -26,7 +26,7 @@ package de.tu_berlin.coga.common.util;
  * direction while the {@code y}-coordinate increases in the <b>downwards</b>
  * direction. Hence, if only positive coordinates are allowed, the point (0,0)
  * lies in the up-most, Left-most corner.
- * @author Daniel Plümpe, Jan-Philipp Kappmeier
+ * @author Daniel R. Schmidt, Jan-Philipp Kappmeier
  */
 public enum Direction8 {
 	/** The Left direction. */
