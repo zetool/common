@@ -38,7 +38,7 @@ public abstract class AbstractLocalization implements Localization {
 	/** A prefix that is added to the keys for localized strings. */
 	private String prefix = "";
 	/** Indicates if only the key is returned, if an unknown key was used. Otherwise some larger text is returned. */
-	private  boolean returnKeyOnly = true;
+	private final boolean returnKeyOnly = true;
 
 	private final ArrayList<Locale> supportedLocales = new ArrayList<>();
 
