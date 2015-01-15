@@ -21,7 +21,7 @@
 package de.tu_berlin.coga.common.algorithm;
 
 import org.zetool.common.util.Quantity;
-import de.tu_berlin.coga.common.util.units.TimeUnits;
+import org.zetool.common.util.units.TimeUnits;
 
 /**
  * The abstract base class for algorithm events. It records the algorithm the

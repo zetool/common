@@ -3,7 +3,7 @@
  * Created: 18.10.2012, 12:12:37
  */
 
-package de.tu_berlin.coga.common.util.units;
+package org.zetool.common.util.units;
 
 import org.zetool.common.util.Helper;
 

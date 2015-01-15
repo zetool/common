@@ -1,5 +1,5 @@
 
-package de.tu_berlin.coga.common.util.units;
+package org.zetool.common.util.units;
 
 import org.zetool.common.util.Helper;
 

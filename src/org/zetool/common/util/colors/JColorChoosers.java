@@ -2,7 +2,7 @@
  * JColorC.java
  * Created: 12.02.2014, 13:12:08
  */
-package de.tu_berlin.coga.common.util.colors;
+package org.zetool.common.util.colors;
 
 import java.awt.Color;
 import java.awt.Component;

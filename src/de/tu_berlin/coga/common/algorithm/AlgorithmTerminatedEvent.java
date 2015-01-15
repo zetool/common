@@ -17,7 +17,7 @@
 package de.tu_berlin.coga.common.algorithm;
 
 import org.zetool.common.util.Quantity;
-import de.tu_berlin.coga.common.util.units.TimeUnits;
+import org.zetool.common.util.units.TimeUnits;
 
 /**
  * A special algorithm event that occurs when the algorithm terminates (either

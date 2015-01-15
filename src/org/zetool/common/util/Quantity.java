@@ -1,7 +1,7 @@
 
 package org.zetool.common.util;
 
-import de.tu_berlin.coga.common.util.units.UnitScale;
+import org.zetool.common.util.units.UnitScale;
 
 /**
  * A {@code Quantity} represents a physical quantity containing the actual value

@@ -6,7 +6,7 @@ package de.tu_berlin.coga.common.util;
 
 import org.zetool.common.util.Formatter;
 import org.zetool.common.util.Quantity;
-import de.tu_berlin.coga.common.util.units.TimeUnits;
+import org.zetool.common.util.units.TimeUnits;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 

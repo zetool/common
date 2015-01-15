@@ -22,7 +22,7 @@
 package de.tu_berlin.coga.common.algorithm;
 
 import org.zetool.common.util.Quantity;
-import de.tu_berlin.coga.common.util.units.TimeUnits;
+import org.zetool.common.util.units.TimeUnits;
 
 /**
  * An algorithm event that is fired by the algorithm when progress occurs. It

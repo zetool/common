@@ -3,7 +3,7 @@
  * Created: 18.10.2012, 12:39:43
  */
 
-package de.tu_berlin.coga.common.util.units;
+package org.zetool.common.util.units;
 
 /**
  * The {@code UnitScale} interface is upposed to provide conversion opportunities

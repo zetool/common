@@ -20,7 +20,7 @@ import de.tu_berlin.coga.common.algorithm.parameter.ParameterSet;
 import org.zetool.common.debug.Debug;
 import org.zetool.common.util.Formatter;
 import org.zetool.common.util.Quantity;
-import de.tu_berlin.coga.common.util.units.TimeUnits;
+import org.zetool.common.util.units.TimeUnits;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;

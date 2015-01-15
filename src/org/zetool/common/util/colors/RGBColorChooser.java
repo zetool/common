@@ -2,7 +2,7 @@
  * RGBColorChooser.java
  * Created: 12.02.2014, 13:10:21
  */
-package de.tu_berlin.coga.common.util.colors;
+package org.zetool.common.util.colors;
 
 import java.awt.Color;
 import javax.swing.JColorChooser;
