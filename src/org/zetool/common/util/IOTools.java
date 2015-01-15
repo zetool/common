@@ -21,7 +21,7 @@
 
 package org.zetool.common.util;
 
-import de.tu_berlin.coga.common.localization.LocalizationManager;
+import org.zetool.common.localization.LocalizationManager;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

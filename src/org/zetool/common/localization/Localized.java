@@ -14,7 +14,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package de.tu_berlin.coga.common.localization;
+package org.zetool.common.localization;
 
 /**
  * Classes that support localization can implement this interface. The
