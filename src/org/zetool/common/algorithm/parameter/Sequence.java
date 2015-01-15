@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.tu_berlin.coga.common.algorithm.parameter;
+package org.zetool.common.algorithm.parameter;
 
 /**
  * An extension of the <code>Iterable</code> interface that supports 

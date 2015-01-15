@@ -18,7 +18,7 @@
  * AlgorithmStartedEvent.java
  *
  */
-package de.tu_berlin.coga.common.algorithm;
+package org.zetool.common.algorithm;
 
 /**
  * A special algorithm event that occurs when the execution of an algorithm

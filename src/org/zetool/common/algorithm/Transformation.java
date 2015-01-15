@@ -3,7 +3,7 @@
  *
  */
 
-package de.tu_berlin.coga.common.algorithm;
+package org.zetool.common.algorithm;
 
 public class Transformation<OriginalProblem,TransformedProblem,TransformedSolution,OriginalSolution> extends Algorithm<OriginalProblem, OriginalSolution> implements AlgorithmListener {
 

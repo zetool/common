@@ -2,9 +2,9 @@
  * ParameterSet.java
  * 
  */
-package de.tu_berlin.coga.common.algorithm.parameter;
+package org.zetool.common.algorithm.parameter;
 
-import de.tu_berlin.coga.common.algorithm.parameter.Parameter.ValidationResult;
+import org.zetool.common.algorithm.parameter.Parameter.ValidationResult;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 

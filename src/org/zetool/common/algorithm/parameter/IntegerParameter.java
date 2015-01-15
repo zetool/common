@@ -2,7 +2,7 @@
  * IntegerParameter.java
  *
  */
-package de.tu_berlin.coga.common.algorithm.parameter;
+package org.zetool.common.algorithm.parameter;
 
 /**
  * A class representing algorithmic parameters that take integer values and is

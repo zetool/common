@@ -2,7 +2,7 @@
  * Parameter.java
  * 
  */
-package de.tu_berlin.coga.common.algorithm.parameter;
+package org.zetool.common.algorithm.parameter;
 
 import java.util.Collection;
 import java.util.Iterator;

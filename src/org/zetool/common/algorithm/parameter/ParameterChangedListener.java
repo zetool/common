@@ -2,7 +2,7 @@
  * ParameterChangedListener.java
  * 
  */
-package de.tu_berlin.coga.common.algorithm.parameter;
+package org.zetool.common.algorithm.parameter;
 
 /**
  * An interface for classes that want to receive parameter changed events.

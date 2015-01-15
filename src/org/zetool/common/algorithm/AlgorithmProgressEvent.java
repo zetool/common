@@ -14,7 +14,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package de.tu_berlin.coga.common.algorithm;
+package org.zetool.common.algorithm;
 
 import org.zetool.common.util.Quantity;
 import org.zetool.common.util.units.TimeUnits;

@@ -2,7 +2,7 @@
  * AlgorithmStatusEvent.java
  * Created: 19.03.2010, 10:55:01
  */
-package de.tu_berlin.coga.common.algorithm;
+package org.zetool.common.algorithm;
 
 import org.zetool.common.util.Quantity;
 import org.zetool.common.util.units.TimeUnits;

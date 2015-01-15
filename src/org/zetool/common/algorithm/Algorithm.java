@@ -14,9 +14,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA	02110-1301, USA.
  */
 
-package de.tu_berlin.coga.common.algorithm;
+package org.zetool.common.algorithm;
 
-import de.tu_berlin.coga.common.algorithm.parameter.ParameterSet;
+import org.zetool.common.algorithm.parameter.ParameterSet;
 import org.zetool.common.debug.Debug;
 import org.zetool.common.util.Formatter;
 import org.zetool.common.util.Quantity;
