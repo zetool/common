@@ -1,7 +1,7 @@
 /**
  * Log.java Created 03.03.2010, 15:28:52
  */
-package de.tu_berlin.coga.common.debug;
+package org.zetool.common.debug;
 
 import java.io.IOException;
 import java.io.OutputStream;

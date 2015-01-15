@@ -15,6 +15,8 @@
  */
 package de.tu_berlin.coga.common.datastructure;
 
+import org.zetool.common.datastructure.Tuple;
+
 /**
  * A string that is connected to an integer.
  * @author Timon Kelter

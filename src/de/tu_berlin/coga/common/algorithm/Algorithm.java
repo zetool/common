@@ -17,7 +17,7 @@
 package de.tu_berlin.coga.common.algorithm;
 
 import de.tu_berlin.coga.common.algorithm.parameter.ParameterSet;
-import de.tu_berlin.coga.common.debug.Debug;
+import org.zetool.common.debug.Debug;
 import de.tu_berlin.coga.common.util.Formatter;
 import de.tu_berlin.coga.common.util.Quantity;
 import de.tu_berlin.coga.common.util.units.TimeUnits;

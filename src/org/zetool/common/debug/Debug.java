@@ -1,7 +1,7 @@
 /**
  * Debug.java Created: 22.07.2010 17:30:35
  */
-package de.tu_berlin.coga.common.debug;
+package org.zetool.common.debug;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;

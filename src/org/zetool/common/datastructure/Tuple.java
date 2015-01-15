@@ -1,5 +1,5 @@
 
-package de.tu_berlin.coga.common.datastructure;
+package org.zetool.common.datastructure;
 
 import java.util.Objects;
 

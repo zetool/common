@@ -1,7 +1,7 @@
 /**
  * SimpleFileHandler.java Created: 07.09.2012, 17:50:04
  */
-package de.tu_berlin.coga.common.debug;
+package org.zetool.common.debug;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
