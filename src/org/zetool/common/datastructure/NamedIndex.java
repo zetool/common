@@ -13,7 +13,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package de.tu_berlin.coga.common.datastructure;
+package org.zetool.common.datastructure;
 
 import org.zetool.common.datastructure.Tuple;
 
