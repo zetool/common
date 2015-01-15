@@ -5,7 +5,7 @@
 
 package de.tu_berlin.coga.common.util.units;
 
-import de.tu_berlin.coga.common.util.Helper;
+import org.zetool.common.util.Helper;
 
 /**
  *

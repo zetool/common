@@ -1,5 +1,5 @@
 
-package de.tu_berlin.coga.common.util;
+package org.zetool.common.util;
 
 import de.tu_berlin.coga.common.localization.LocalizationManager;
 import de.tu_berlin.coga.common.util.units.UnitScale;

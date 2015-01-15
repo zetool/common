@@ -2,7 +2,7 @@
  * SelectedElements.java
  * Created: Nov 12, 2012, 5:28:39 PM
  */
-package de.tu_berlin.coga.common.util;
+package org.zetool.common.util;
 
 import java.util.Collections;
 import java.util.LinkedList;

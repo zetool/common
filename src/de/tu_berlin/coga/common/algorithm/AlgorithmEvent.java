@@ -20,7 +20,7 @@
  */
 package de.tu_berlin.coga.common.algorithm;
 
-import de.tu_berlin.coga.common.util.Quantity;
+import org.zetool.common.util.Quantity;
 import de.tu_berlin.coga.common.util.units.TimeUnits;
 
 /**

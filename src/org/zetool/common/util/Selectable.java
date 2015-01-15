@@ -2,7 +2,7 @@
  * Selectable.java
  * Created: 23.11.2012, 12:55:57
  */
-package de.tu_berlin.coga.common.util;
+package org.zetool.common.util;
 
 
 /**

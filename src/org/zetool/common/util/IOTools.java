@@ -19,7 +19,7 @@
  * Erstellt 20.09.2008, 17:51:39
  */
 
-package de.tu_berlin.coga.common.util;
+package org.zetool.common.util;
 
 import de.tu_berlin.coga.common.localization.LocalizationManager;
 import java.io.File;

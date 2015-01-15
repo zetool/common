@@ -18,8 +18,8 @@ package de.tu_berlin.coga.common.algorithm;
 
 import de.tu_berlin.coga.common.algorithm.parameter.ParameterSet;
 import org.zetool.common.debug.Debug;
-import de.tu_berlin.coga.common.util.Formatter;
-import de.tu_berlin.coga.common.util.Quantity;
+import org.zetool.common.util.Formatter;
+import org.zetool.common.util.Quantity;
 import de.tu_berlin.coga.common.util.units.TimeUnits;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
