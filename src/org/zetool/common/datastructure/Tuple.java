@@ -12,8 +12,8 @@ import java.util.Objects;
  */
 public class Tuple<U,V> {
 
-	private U u;
-	private V v;
+	private final U u;
+	private final V v;
 
 	/**
 	 *
