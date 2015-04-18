@@ -23,7 +23,7 @@ package org.zetool.common.util;
  * Represents relative position in one dimension, the naming is about levels (of
  * height). Each level knows the opposite direction.
  * @author Jan-Philipp Kappmeier
- * @see Direction
+ * @see Direction8
  */
 public enum Level {
   /** Higher level. */

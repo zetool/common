@@ -64,7 +64,7 @@ public class IntegerSequence implements Sequence<Integer> {
     }
 
     /**
-     * {@InheritDoc}
+     * {@inheritDoc}
      */
     @Override
     public Iterator<Integer> iterator() {
@@ -106,7 +106,7 @@ public class IntegerSequence implements Sequence<Integer> {
     }
 
     /**
-     * {@InheritDoc}
+     * {@inheritDoc}
      */
     @Override
     public int size() {

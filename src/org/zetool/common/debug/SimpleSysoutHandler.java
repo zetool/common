@@ -94,7 +94,10 @@ public class SimpleSysoutHandler extends StreamHandler {
 		setLevel( minlevel );
 	}
 
-	/** Constructor forwarding */
+	/** Constructor forwarding.
+   * @param out the output stream
+   * @param formatter the formatter used for output
+   */
 	public SimpleSysoutHandler( PrintStream out, Formatter formatter ) {
 		super( out, formatter );
 	}

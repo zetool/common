@@ -47,8 +47,6 @@ public class DoubleParameter extends Parameter<Double> {
      * @param name the name of this parameter.
      * @param description the description of this parameter.
      * @param value the default value for this parameter.
-     * @param regularExpression the regularExpression all values have to match.
-     *  If this is <code>null</code>, no checks are being performed.
      */
     public DoubleParameter(ParameterSet parent, String name, String description, Double value, double lowerBound, double upperBound) {
         super(parent, name, description, value);
@@ -66,7 +64,7 @@ public class DoubleParameter extends Parameter<Double> {
 
     /**
      * Sets the upper bound of the range check.
-     * @param upperBound the upper bound of the range check.
+     * @param lowerBound the upper bound of the range check.
      */
     public void setLowerBound(double lowerBound) {
         this.lowerBound = lowerBound;
@@ -89,7 +87,7 @@ public class DoubleParameter extends Parameter<Double> {
     }
 
     /**
-     * Checks whether the <code>lower bound <= value <= upper bound</code>
+     * Checks whether the <code>lower bound &lt;= value &lt;= upper bound</code>
      * holds.
      * @param value the value which is being validated.
      * @return the result of the validation.

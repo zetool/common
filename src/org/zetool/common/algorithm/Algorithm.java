@@ -31,7 +31,7 @@ import java.util.logging.Logger;
 
 /**
  * The basic framework class for algorithms. It allows to define input and output of an algorithm by using generics and
- * provides the framework to run an algorithm in its own thread by implementing {@code Runnable}. Furthermore, it keeps
+ * provides the framework to run an algorithm in its own thread by implementing {@link Runnable}. Furthermore, it keeps
  * track of the current state of the algorithm and provides an generic exception handling that can be extended by
  * overwriting {@code handleException}. It also keeps track of the algorithms runtime and offers simple logging features
  * that should be preferred to System.out logging. Finally it offers the possibility to dispatch information about the
@@ -79,7 +79,7 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
   private State state;
   /** Stores, if the algorithm execution is paused. */
   private boolean paused;
-  /** The logger object of this algorithm. It is initialized with the global logger, but every {@code Algorithm} may
+  /** The logger object of this algorithm. It is initialized with the global logger, but every {@link Algorithm} may
    * have its own logger. */
   protected Logger log = Debug.globalLogger;
 
@@ -328,7 +328,7 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
 
   /**
    * Returns the runtime of the algorithm as a string formatted with regard to human readability. The formatting is done
-   * according to {@code MillisecondTimeFormatter}.
+   * according to {@link Formatter#formatUnit(double, org.zetool.common.util.units.UnitScale, int)}.
    * @return the runtime of the algorithm formatted as a string.
    * @throws IllegalStateException if the algorithm has not terminated yet.
    */
@@ -385,8 +385,8 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
 
   /**
    * Sets the level from that messages are logged by the {@link Logger} of this algorithm. By default, messages starting
-   * from {@link Level.CONFIG} are given out using {@link System.out} and warnings and errors are sent to
-   * {@link System.err}.
+   * from {@link java.util.logging.Level#CONFIG} are given out using {@link System#out} and warnings and errors are sent to
+   * {@link System#err}.
    * @param level the log level that is used by the algorithm
    */
   public final void setLogLevel( Level level ) {
@@ -394,8 +394,8 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
   }
 
   /**
-   * Returns the logger currently used by the {@code Algorithm}.
-   * @return the logger currently used by the {@code Algorithm}
+   * Returns the logger currently used by the {@link Algorithm}.
+   * @return the logger currently used by the {@link Algorithm}
    */
   public Logger getLogger() {
     return log;
@@ -409,7 +409,7 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
   }
 
   /**
-   * Sets a specific logger for the {@code Algorithm}.
+   * Sets a specific logger for the {@link Algorithm}.
    * @param logger the logger
    */
   public void setLogger( Logger logger ) {
@@ -475,7 +475,7 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
 
   /**
    * Writes the specified message to System.out, if the log level of the current log level of the logger is below
-   * {@link Level.INFO}. Does nothing otherwise.
+   * {@link java.util.logging.Level#INFO}. Does nothing otherwise.
    * @param message the message that it to be logged.
    */
   protected final void log( String message ) {
@@ -549,12 +549,12 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
 
   /**
    * The default exception handling method. It logs that the algorithm failed to solve the instance using the
-   * {@link Level.SEVERE} level and re-throws the runtime exception that caused the premature termination of the
+   * {@link java.util.logging.Level#SEVERE} level and re-throws the runtime exception that caused the premature termination of the
    * algorithm. Subclasses can override this method to change this behavior.
    * @param exception the exception that caused the termination of the algorithm.
    */
   protected void handleException( RuntimeException exception ) {
-    log.log( Level.SEVERE, "Exception in Algorithm " + this.name, exception );
+    log.log( java.util.logging.Level.SEVERE, "Exception in Algorithm " + this.name, exception );
     throw exception;
   }
 

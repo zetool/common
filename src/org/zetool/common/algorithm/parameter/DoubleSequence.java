@@ -64,7 +64,7 @@ public class DoubleSequence implements Sequence<Double> {
     }
 
     /**
-     * {@InheritDoc}
+     * {@inheritDoc}
      */
     @Override
     public Iterator<Double> iterator() {
@@ -106,7 +106,7 @@ public class DoubleSequence implements Sequence<Double> {
     }
 
     /**
-     * {@InheritDoc}
+     * {@inheritDoc}
      */
     @Override
     public int size() {
