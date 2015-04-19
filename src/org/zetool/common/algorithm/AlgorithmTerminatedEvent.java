@@ -1,4 +1,4 @@
-/* zet evacuation tool copyright (c) 2007-14 zet evacuation team
+/* zet evacuation tool copyright (c) 2007-15 zet evacuation team
  *
  * This program is free software; you can redistribute it and/or
  * as published by the Free Software Foundation; either version 2
@@ -41,9 +41,9 @@ public class AlgorithmTerminatedEvent extends AlgorithmEvent {
 	 * Creates an {@code AlgorithmTerminatedEvent} for the specified
 	 * algorithm and saves the runtime of the algorithm.
 	 * @param algorithm the algorithm that has terminated.
-	 * @param runtime
+	 * @param runtime the running time of the algorithm
 	 */
-	public AlgorithmTerminatedEvent( Algorithm algorithm, Quantity<TimeUnits> runtime ) {
+	public AlgorithmTerminatedEvent( Algorithm<?,?> algorithm, Quantity<TimeUnits> runtime ) {
 		this( algorithm );
 		this.runtime = runtime;
 	}
