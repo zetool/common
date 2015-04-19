@@ -1,4 +1,4 @@
-/* zet evacuation tool copyright (c) 2007-14 zet evacuation team
+/* zet evacuation tool copyright (c) 2007-15 zet evacuation team
  *
  * This program is free software; you can redistribute it and/or
  * as published by the Free Software Foundation; either version 2
@@ -71,16 +71,19 @@ public final class Helper {
    * loops. If {@link Iterable#iterator()} is invoked more than once, an
    * {@link IllegalStateException} is thrown.
    * @param <T> the iterator type
+   * @param iterator the iterator
+   * @throws IllegalStateException if {@link Iterable#iterator() } is invoked more than once.
+   * @return an iterable of an iterator
    */
-  public static <T> Iterable<T> in(final Iterator<T> iterator) {
+  public static <T> Iterable<T> in(final Iterator<T> iterator) throws IllegalStateException {
     assert iterator != null;
     class SingleUseIterable implements Iterable<T> {
       private boolean used = false;
 
       @Override
       public Iterator<T> iterator() {
-        if (used) {
-          throw new IllegalStateException("SingleUseIterable already invoked");
+        if( used ) {
+          throw new IllegalStateException( "SingleUseIterable already invoked" );
         }
         used = true;
         return iterator;
