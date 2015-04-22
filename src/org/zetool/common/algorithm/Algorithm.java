@@ -1,4 +1,4 @@
-/* zet evacuation tool copyright (c) 2007-14 zet evacuation team
+/* zet evacuation tool copyright (c) 2007-15 zet evacuation team
  *
  * This program is free software; you can redistribute it and/or
  * as published by the Free Software Foundation; either version 2
@@ -13,7 +13,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA	02110-1301, USA.
  */
-
 package org.zetool.common.algorithm;
 
 import org.zetool.common.algorithm.parameter.ParameterSet;
@@ -25,7 +24,6 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,11 +36,11 @@ import java.util.logging.Logger;
  * algorithm'Seconds state and progress to listeners, that can register and unregister themselves for the algorithms
  * events.
  *
- * @param <Problem> the type of the input the algorithm receives.
- * @param <Solution> the type of output the algorithm produces.
+ * @param <P> the type of the input the algorithm receives.
+ * @param <S> the type of output the algorithm produces.
  * @author Martin Groß
  */
-public abstract class Algorithm<Problem, Solution> implements Runnable, Callable<Solution> {
+public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
 
   /* An enumeration type that specifies the current state of the algorithm. */
   public enum State {
@@ -51,42 +49,72 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
     SOLVING_FAILED,
     SOLVED;
   }
-  /** The change in progress that has at least be done to fire an {@link AlgorithmProgressEvent} */
+  /**
+   * The change in progress that has at least be done to fire an {@link AlgorithmProgressEvent}
+   */
   private double accuracy = 0;
-  /** The set of listeners that receives events from this algorithm. */
+  /**
+   * The set of listeners that receives events from this algorithm.
+   */
   private Set<AlgorithmListener> algorithmListeners;
-  /** The description of the algorithm. */
+  /**
+   * The description of the algorithm.
+   */
   private String description = "";
-  /** Whether messages are logged by the log-methods. */
+  /**
+   * Whether messages are logged by the LOG-methods.
+   */
   private boolean logging;
-  /** Whether events are also logged to the console. */
+  /**
+   * Whether events are also logged to the console.
+   */
   private boolean loggingEvents;
-  /** The name of the algorithm. */
+  /**
+   * The name of the algorithm.
+   */
   private String name;
-  /** The parameters of this algorithm. */
+  /**
+   * The parameters of this algorithm.
+   */
   private ParameterSet parameterSet;
-  /** The instance of the problem. */
-  private Problem problem;
-  /** The current progress of the algorithm. The progress begins with 0.0 and ends with 1.0. */
+  /**
+   * The instance of the problem.
+   */
+  private P problem;
+  /**
+   * The current progress of the algorithm. The progress begins with 0.0 and ends with 1.0.
+   */
   private double progress = -1;
-  /** The runtime of the algorithm in milliseconds. */
+  /**
+   * The runtime of the algorithm in milliseconds.
+   */
   private long runtime;
-  /** The solution to the problem instance, once available. */
-  private Solution solution;
-  /** The point of time at which the execution of the algorithm started. */
+  /**
+   * The solution to the problem instance, once available.
+   */
+  private S solution;
+  /**
+   * The point of time at which the execution of the algorithm started.
+   */
   private long startTime;
-  /** The state of execution of the algorithm. */
+  /**
+   * The state of execution of the algorithm.
+   */
   private State state;
-  /** Stores, if the algorithm execution is paused. */
+  /**
+   * Stores, if the algorithm execution is paused.
+   */
   private boolean paused;
-  /** The logger object of this algorithm. It is initialized with the global logger, but every {@link Algorithm} may
-   * have its own logger. */
-  protected Logger log = Debug.globalLogger;
+  /**
+   * The logger object of this algorithm. It is initialized with the global logger, but every {@link Algorithm} may have
+   * its own logger.
+   */
+  protected Logger LOG = Debug.globalLogger;
 
-	/**
-	 * Creates a new algorithm.
-	 */
-	public Algorithm() {
+  /**
+   * Creates a new algorithm.
+   */
+  public Algorithm() {
     description = "";
     name = this.getClass().getSimpleName();
     parameterSet = new ParameterSet();
@@ -100,12 +128,13 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
 
   public Algorithm( String name, Logger log ) {
     this( name );
-    this.log = log;
+    this.LOG = log;
   }
 
   /**
    * Adds the specified listener to the set of listeners receiving events from this algorithm. If the specified listener
    * is already part of this list, nothing happens.
+   *
    * @param listener the listener to be added to the notification list.
    * @throws IllegalStateException if the algorithm has already terminated.
    */
@@ -124,9 +153,10 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
 
   /**
    * Adds all algorithm listeners of the specified algorithm to this algorithm.
+   *
    * @param algorithm the algorithm whose listeners are added.
    */
-  public final void addAlgorithmListener( Algorithm<Problem, Solution> algorithm ) {
+  public final void addAlgorithmListener( Algorithm<P, S> algorithm ) {
     Set<AlgorithmListener> s = algorithm.algorithmListeners;
     for( AlgorithmListener listener : s ) {
       addAlgorithmListener( listener );
@@ -135,6 +165,7 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
 
   /**
    * Removes the specified listener from the set of listeners receiving events from this algorithm.
+   *
    * @param listener the listener to be removed from the notification list.
    */
   public final void removeAlgorithmListener( AlgorithmListener listener ) {
@@ -145,6 +176,7 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
 
   /**
    * Dispatches the specified event to all registered listeners.
+   *
    * @param event the event to be dispatched to the listeners.
    */
   protected final void fireEvent( AlgorithmEvent event ) {
@@ -157,6 +189,7 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
 
   /**
    * Dispatches an algorithm progress event with the specified message and current progress value to all listeners.
+   *
    * @param message the message to be dispatched.
    */
   protected final void fireEvent( String message ) {
@@ -166,6 +199,7 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
   /**
    * Dispatches an algorithm progress event with the specified message and current progress value to all listeners. The
    * method is a shortcut for fireEvent(String.format(formatStr, params)).
+   *
    * @param formatStr the format string part of the message to be dispatched.
    * @param params the parameters used by the format string.
    */
@@ -175,6 +209,7 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
 
   /**
    * Updates the progress value to broadcasts the new value to all listeners.
+   *
    * @param progress the new progress value.
    * @throws IllegalArgumentException if the progress value is less than the previous one.
    */
@@ -182,7 +217,7 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
     if( progress < this.progress ) {
       throw new IllegalArgumentException( "The progress values must be monotonically increasing." );
     }
-    if( this.progress == progress || (progress - this.progress < accuracy) ) {
+    if( (progress - this.progress < accuracy) ) { // ignore small progresses
       return;
     }
     this.progress = progress;
@@ -191,6 +226,7 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
 
   /**
    * Updates the progress value to broadcasts the new value together with a message to all listeners.
+   *
    * @param progress the current progress value.
    * @param message a message describing the current task and progress of the algorithm.
    * @throws IllegalArgumentException if the progress value is less than the previous one.
@@ -207,6 +243,7 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
   /**
    * Returns a description of the algorithm that can be displayed to a human. This should describe what the algorithm
    * expects and what it produces, as well as providing information on interesting properties like runtime, etc.
+   *
    * @return the description of the algorithm.
    */
   public String getDescription() {
@@ -215,6 +252,7 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
 
   /**
    * Sets the description of the algorithm.
+   *
    * @param description the description of the algorithm.
    */
   public void setDescription( String description ) {
@@ -223,6 +261,7 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
 
   /**
    * Returns the name of the algorithm currently running. This name is intended for a human user.
+   *
    * @return the name of the algorithm.
    */
   public String getName() {
@@ -231,6 +270,7 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
 
   /**
    * Sets the name of the algorithm. The name should be aimed to be read by a human.
+   *
    * @param name the name of the algorithm.
    */
   public void setName( String name ) {
@@ -239,6 +279,7 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
 
   /**
    * Returns the parameter set of the algorithm, which stores all parameters that are exposed to the UI.
+   *
    * @return the parameter set of the algorithm.
    */
   public ParameterSet getParameterSet() {
@@ -247,6 +288,7 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
 
   /**
    * Sets the parameter set for this algorithm, which stores parameters in a way accessible to modification by the UI.
+   *
    * @param parameterSet the new parameter set object.
    */
   public void setParameterSet( ParameterSet parameterSet ) {
@@ -255,18 +297,20 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
 
   /**
    * Returns the instance of the problem that is to be solved.
+   *
    * @return the instance of the problem that is to be solved.
    */
-  public final Problem getProblem() {
+  public final P getProblem() {
     return problem;
   }
 
   /**
    * Specifies the instance of the problem this algorithm is going to solve.
+   *
    * @param problem the instance of the problem that is to be solved.
    * @throws IllegalStateException if the algorithm is running
    */
-  public final void setProblem( Problem problem ) throws IllegalStateException {
+  public final void setProblem( P problem ) throws IllegalStateException {
     if( state == State.SOLVING ) {
       throw new IllegalStateException( "The algorithm is currently "
               + "running! Changing the underlying instance could lead to "
@@ -284,6 +328,7 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
   /**
    * Returns the current accuracy in progress events. The accuracy equals the change in progress that has to be done
    * until an event is actually fired.
+   *
    * @return	the progress accuracy
    */
   public double getAccuracy() {
@@ -293,6 +338,7 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
   /**
    * Sets a new progress accuracy. The accuracy describes the value by that the progress has to be changed until an
    * {@link AlgorithmProgressEvent} is fired.
+   *
    * @param accuracy the new accuracy value. must be in the interval [0,1]
    * @throws IllegalArgumentException if arrucarcy is not within the allowed range
    */
@@ -306,6 +352,7 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
 
   /**
    * Determines the accuracy in such a way that at most most {@code possibleChanges} many events are fired.
+   *
    * @param possibleChanges the maximal number of progress events
    */
   public void setAccuracy( int possibleChanges ) {
@@ -314,13 +361,13 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
 
   /**
    * Returns the time between the start of the algorithm and its termination in milliseconds.
+   *
    * @return the runtime of the algorithm in milliseconds.
    * @throws IllegalStateException if the algorithm has not terminated yet.
    */
   public final Quantity<TimeUnits> getRuntime() throws IllegalStateException {
     if( state == State.SOLVED || state == State.SOLVING_FAILED ) {
-      Quantity<TimeUnits> t = new Quantity<>( runtime, TimeUnits.MilliSeconds );
-      return t;
+      return new Quantity<>( runtime, TimeUnits.MilliSeconds );
     }
     throw new IllegalStateException( "The algorithm has not terminated yet."
             + " Please call run() first and wait for its termination." );
@@ -329,6 +376,7 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
   /**
    * Returns the runtime of the algorithm as a string formatted with regard to human readability. The formatting is done
    * according to {@link Formatter#formatUnit(double, org.zetool.common.util.units.UnitScale, int)}.
+   *
    * @return the runtime of the algorithm formatted as a string.
    * @throws IllegalStateException if the algorithm has not terminated yet.
    */
@@ -342,10 +390,11 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
 
   /**
    * Returns the solution computed by the algorithm.
+   *
    * @return the solution to the algorithm.
    * @throws IllegalStateException if the problem has not been solved yet.
    */
-  public final Solution getSolution() throws IllegalStateException {
+  public final S getSolution() throws IllegalStateException {
     if( isProblemSolved() ) {
       return solution;
     }
@@ -356,6 +405,7 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
   /**
    * Returns the start time of the algorithm. The start time is measured in the number of milliseconds elapsed since
    * midnight, January 1, 1970 UTC.
+   *
    * @return the start time of the algorithm.
    * @throws IllegalStateException if the execution of the algorithm has not yet begun.
    */
@@ -369,6 +419,7 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
 
   /**
    * Returns the current state of the algorithm.
+   *
    * @return the current state of the algorithm.
    */
   public final State getState() {
@@ -376,78 +427,83 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
   }
 
   /**
-   * Returns whether log messages of this algorithm are written to System.out or not.
-   * @return {@code true}, if log messages are written to System.out, {@code false} if otherwise.
+   * Returns whether LOG messages of this algorithm are written to System.out or not.
+   *
+   * @return {@code true}, if LOG messages are written to System.out, {@code false} if otherwise.
    */
   public final Level getLogLevel() {
-    return log.getLevel();
+    return LOG.getLevel();
   }
 
   /**
    * Sets the level from that messages are logged by the {@link Logger} of this algorithm. By default, messages starting
-   * from {@link java.util.logging.Level#CONFIG} are given out using {@link System#out} and warnings and errors are sent to
-   * {@link System#err}.
-   * @param level the log level that is used by the algorithm
+   * from {@link java.util.logging.Level#CONFIG} are given out using {@link System#out} and warnings and errors are sent
+   * to {@link System#err}.
+   *
+   * @param level the LOG level that is used by the algorithm
    */
   public final void setLogLevel( Level level ) {
-    log.setLevel( level );
+    LOG.setLevel( level );
   }
 
   /**
    * Returns the logger currently used by the {@link Algorithm}.
+   *
    * @return the logger currently used by the {@link Algorithm}
    */
   public Logger getLogger() {
-    return log;
+    return LOG;
   }
 
   /**
    * Sets the logger to a default logger using the class name as name.
    */
   public void setLogger() {
-    this.log = Logger.getLogger( this.getClass().getName() );
+    this.LOG = Logger.getLogger( this.getClass().getName() );
   }
 
   /**
    * Sets a specific logger for the {@link Algorithm}.
+   *
    * @param logger the logger
    */
   public void setLogger( Logger logger ) {
-    this.log = logger;
+    this.LOG = logger;
   }
 
   /**
-   * Returns whether events are also treated as log messages or not.
-   * @return {@code true}, if events are also treated as log messages, {@code false} if otherwise.
+   * Returns whether events are also treated as LOG messages or not.
+   *
+   * @return {@code true}, if events are also treated as LOG messages, {@code false} if otherwise.
    */
   public final boolean isLoggingEvents() {
     return loggingEvents;
   }
 
   /**
-   * Sets whether events are also treated as log messages.
-   * @param loggingEvents whether events are also treated as log messages.
+   * Sets whether events are also treated as LOG messages.
+   *
+   * @param loggingEvents whether events are also treated as LOG messages.
    */
   public final void setLoggingEvents( boolean loggingEvents ) {
-    if( this.loggingEvents != loggingEvents ) {
-      this.loggingEvents = loggingEvents;
-      if( loggingEvents ) {
-        addAlgorithmListener( new EventLogger() );
-      } else { // remove all existing logger
-        List<AlgorithmListener> logger = new LinkedList<>();
-        for( AlgorithmListener listener : algorithmListeners ) {
-          if( listener instanceof Algorithm.EventLogger ) {
-            logger.add( listener );
-          }
+    this.loggingEvents = loggingEvents;
+    if( loggingEvents ) {
+      addAlgorithmListener( new EventLogger() );
+    } else { // remove all existing logger
+      List<AlgorithmListener> logger = new LinkedList<>();
+      for( AlgorithmListener listener : algorithmListeners ) {
+        if( listener instanceof Algorithm.EventLogger ) {
+          logger.add( listener );
         }
-        algorithmListeners.removeAll( logger );
       }
+      algorithmListeners.removeAll( logger );
     }
   }
 
   /**
    * Returns whether a problem instance has been specified for the algorithm. This is the prerequisite for beginning the
    * execution of the algorithm.
+   *
    * @return {@code true} if a problem instance has been specified, {@code false} otherwise.
    */
   public final boolean isProblemInitialized() {
@@ -458,6 +514,7 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
    * Returns whether this algorithm has successfully run and solved the instance of the problem given to it. If this is
    * {@code true}, then the solution to the instance of the problem can be obtained by {@code
    * getSolution}.
+   *
    * @return {@code true} if the algorithm'Seconds instance of the problem has been solved successfully and
    * {@code false} otherwise.
    */
@@ -467,6 +524,7 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
 
   /**
    * Returns whether the algorithm is currently begin executed.
+   *
    * @return {@code true} if this algorithm is currently running and {@code false} otherwise.
    */
   public final boolean isRunning() {
@@ -474,21 +532,42 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
   }
 
   /**
-   * Writes the specified message to System.out, if the log level of the current log level of the logger is below
+   * Writes the specified message to System.out, if the LOG level of the current LOG level of the logger is below
    * {@link java.util.logging.Level#INFO}. Does nothing otherwise.
+   *
    * @param message the message that it to be logged.
    */
   protected final void log( String message ) {
-    log.info( message );
+    LOG.info( message );
   }
 
   /**
    * Formats the specified message and parameters using String.format() and logs it.
+   *
    * @param message the format string of the message.
    * @param params the parameters for formatting the message.
    */
   protected final void log( String message, Object... params ) {
     log( String.format( message, params ) );
+  }
+
+  @Override
+  public final void run() throws IllegalStateException {
+    runAlgorithm();
+  }
+
+  /**
+   * A framework method for executing the algorithm and returns the result.
+   * <p>
+   * Calling the method solves the problem and returns the solution. The solution is stored and can be accessed again
+   * using {@link #getSolution() }.</p>
+   *
+   * @return the solution to the algorithm.
+   */
+  @Override
+  public final S call() {
+    runAlgorithm();
+    return getSolution();
   }
 
   /**
@@ -497,10 +576,10 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
    * algorithm in addition to handling exceptions and recording the solution to the problem instance.</p>
    * <p>
    * Calling the method solves the problem, afterwords it can be accessed using {@link #getSolution() }.</p>
+   *
    * @throws IllegalStateException if the instance of the problem has not been specified yet.
    */
-  @Override
-  public final void run() throws IllegalStateException {
+  public final void runAlgorithm() {
     if( !isProblemInitialized() ) {
       throw new IllegalStateException( "The instance of the problem has been specified yet. Please call setProblem() first." );
     } else {
@@ -513,13 +592,13 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
         state = State.SOLVED;
       } catch( AssertionError e ) {
         state = State.SOLVING_FAILED;
-        log.log( Level.SEVERE, "An assertion error has occured: ", e );
+        LOG.log( Level.SEVERE, "An assertion error has occured: ", e );
       } catch( RuntimeException ex ) {
         state = State.SOLVING_FAILED;
         handleException( ex );
-      } catch( Error ex ) {
+      } catch( OutOfMemoryError ex ) {
         state = State.SOLVING_FAILED;
-        log.log( Level.SEVERE, "An unsolvable error has occured: ", ex );
+        LOG.log( Level.SEVERE, "No more memory. Execution stopped: ", ex );
         Debug.printException( ex );
       } finally {
         runtime = System.currentTimeMillis() - startTime;
@@ -535,35 +614,24 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
   }
 
   /**
-   * A framework method for executing the algorithm and returns the result.
-   * <p>
-   * Calling the method solves the problem and returns the solution. The solution is stored and can be accessed again
-   * using {@link #getSolution() }.</p>
-   * @return the solution to the algorithm.
-   */
-  @Override
-  public final Solution call() {
-    run();
-    return getSolution();
-  }
-
-  /**
    * The default exception handling method. It logs that the algorithm failed to solve the instance using the
-   * {@link java.util.logging.Level#SEVERE} level and re-throws the runtime exception that caused the premature termination of the
-   * algorithm. Subclasses can override this method to change this behavior.
+   * {@link java.util.logging.Level#SEVERE} level and re-throws the runtime exception that caused the premature
+   * termination of the algorithm. Subclasses can override this method to change this behavior.
+   *
    * @param exception the exception that caused the termination of the algorithm.
    */
   protected void handleException( RuntimeException exception ) {
-    log.log( java.util.logging.Level.SEVERE, "Exception in Algorithm " + this.name, exception );
+    LOG.log( java.util.logging.Level.SEVERE, "Exception in Algorithm " + this.name, exception );
     throw exception;
   }
 
   /**
    * The abstract method that needs to be implemented by sub-classes in order to implement the actual algorithm.
+   *
    * @param problem an instance of the problem.
    * @return a solution to the specified problem.
    */
-  protected abstract Solution runAlgorithm( Problem problem );
+  protected abstract S runAlgorithm( P problem );
 
   /**
    * A private listener class for receiving events and logging them.
@@ -572,6 +640,7 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
 
     /**
      * This method is called when an event occurred in an algorithm that is being listened to.
+     *
      * @param event the event which occurred.
      */
     @Override
@@ -583,11 +652,11 @@ public abstract class Algorithm<Problem, Solution> implements Runnable, Callable
       } else if( event instanceof AlgorithmDetailedProgressEvent ) {
         message = String.format( "%1$s: %2$s running... %3$s%",
                 event.getFormattedEventTime(), Algorithm.this.getClass().getSimpleName(),
-                ((AlgorithmProgressEvent)event).getProgressAsInteger() );
+                ((AlgorithmProgressEvent) event).getProgressAsInteger() );
       } else if( event instanceof AlgorithmProgressEvent ) {
         message = String.format( "%1$s: %2$s running... %3$s%",
                 event.getFormattedEventTime(), Algorithm.this.getClass().getSimpleName(),
-                ((AlgorithmProgressEvent)event).getProgressAsInteger() );
+                ((AlgorithmProgressEvent) event).getProgressAsInteger() );
       } else if( event instanceof AlgorithmTerminatedEvent ) {
         message = String.format( "%1$s: %2$s beendet nach %3$s.",
                 event.getFormattedEventTime(), Algorithm.this.getClass().getSimpleName(), getRuntimeAsString() );
