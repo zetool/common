@@ -1,8 +1,3 @@
-/**
- * UnitScale.java
- * Created: 18.10.2012, 12:39:43
- */
-
 package org.zetool.common.util.units;
 
 /**

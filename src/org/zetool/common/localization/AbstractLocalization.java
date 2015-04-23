@@ -40,19 +40,16 @@ public abstract class AbstractLocalization implements Localization {
 	/** Indicates if only the key is returned, if an unknown key was used. Otherwise some larger text is returned. */
 	private final boolean returnKeyOnly = true;
 
-	private final ArrayList<Locale> supportedLocales = new ArrayList<>();
+	private final List<Locale> supportedLocales = new ArrayList<>();
 
 	/**
 	 * Creates a new instance of the singleton and initializes with the default locale of the system.
 	 * @param bundleName the name of the ressource bundle for the localization
 	 * @throws MissingResourceException if no resource bundle for the default system locale is found
 	 */
-	AbstractLocalization( String bundleName, Locale currentLocale ) throws MissingResourceException {
+	AbstractLocalization( String bundleName, Locale currentLocale ) {
 		this.bundleName = bundleName;
-		//if( locs.isEmpty() ) {	// we have the first constructor call. Create static objects.
-		//}
 		bundle = ResourceBundle.getBundle( bundleName, currentLocale );
-		//add();
 	}
 
 
@@ -61,6 +58,7 @@ public abstract class AbstractLocalization implements Localization {
 		supportedLocales.add( locale );
 	}
 
+  @Override
 	public List<Locale> getSupportedLocales() {
 		return Collections.unmodifiableList( supportedLocales );
 	}
@@ -106,11 +104,12 @@ public abstract class AbstractLocalization implements Localization {
 	 * Clears any prefix.
 	 * @see #setPrefix(java.lang.String)
 	 */
+  @Override
 	public final void clearPrefix() {
 		setPrefix( "" );
 	}
 
-	void setLocale( Locale locale ) throws MissingResourceException {
+	void setLocale( Locale locale ) {
 		bundle = ResourceBundle.getBundle( bundleName, locale );
 	}
 

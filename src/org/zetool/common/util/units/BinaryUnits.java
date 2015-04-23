@@ -1,8 +1,3 @@
-/**
- * BinaryUnits.java
- * Created: 18.10.2012, 12:12:37
- */
-
 package org.zetool.common.util.units;
 
 import org.zetool.common.util.Helper;
@@ -11,84 +6,91 @@ import org.zetool.common.util.Helper;
  *
  * @author Jan-Philipp Kappmeier
  */
-		
 public enum BinaryUnits implements UnitScale<BinaryUnits> {
-	Bit( "Bits", "Bits", 8, null ),
-	Byte( "Bytes", "Bytes", Bit ),
-	KiB( "KiB", "Kibibyte", Byte ),
-	MiB( "MiB", "Mebibyte", KiB ),
-	GiB( "GiB", "Gibibyte", MiB ),
-	TiB( "TiB", "Tebibyte", GiB ),
-	PiB( "PiB", "Pebibyte", TiB ),
-	EiB( "EiB", "Exbibyte", PiB ),
-	ZiB( "ZiB", "Zebibyte", EiB ),
-	YiB( "YiB", "Yobibyte", ZiB );
-	private String rep;
-	private String longRep;
-	private BinaryUnits previous;
-	private BinaryUnits next;
-	private double toNext;
+  Bit( "Bits", "Bits", 8, null ),
+  Byte( "Bytes", "Bytes", Bit ),
+  KiB( "KiB", "Kibibyte", Byte ),
+  MiB( "MiB", "Mebibyte", KiB ),
+  GiB( "GiB", "Gibibyte", MiB ),
+  TiB( "TiB", "Tebibyte", GiB ),
+  PiB( "PiB", "Pebibyte", TiB ),
+  EiB( "EiB", "Exbibyte", PiB ),
+  ZiB( "ZiB", "Zebibyte", EiB ),
+  YiB( "YiB", "Yobibyte", ZiB );
+  private String rep;
+  private String longRep;
+  private BinaryUnits previous;
+  private BinaryUnits next;
+  private double toNext;
 
-	static {
-		Bit.next = Byte;
-		Byte.next = KiB;
-		KiB.next = MiB;
-		MiB.next = GiB;
-		GiB.next = TiB;
-		TiB.next = PiB;
-		PiB.next = EiB;
-		EiB.next = ZiB;
-		ZiB.next = YiB;
-		YiB.next = null;
-	}
+  static {
+    Bit.next = Byte;
+    Byte.next = KiB;
+    KiB.next = MiB;
+    MiB.next = GiB;
+    GiB.next = TiB;
+    TiB.next = PiB;
+    PiB.next = EiB;
+    EiB.next = ZiB;
+    ZiB.next = YiB;
+    YiB.next = null;
+  }
 
-private BinaryUnits( String rep, String longRep, double toNext, BinaryUnits previous ) {
-		this.rep = rep;
-		this.longRep = longRep;
-		this.toNext = toNext;
-	}
+  /**
+   * Initializes the binary unit with the correct values.
+	 * @param rep the short representation string
+	 * @param longRep the long representation string
+	 * @param toNext how much of the unit is the next larger scale
+	 * @param previous the predecessor unit. Note that successor units are initialized in a static-initializer block
+   */
+  private BinaryUnits( String rep, String longRep, double toNext, BinaryUnits previous ) {
+    this.rep = rep;
+    this.longRep = longRep;
+    this.toNext = toNext;
+    this.previous = previous;
+  }
 
-	private BinaryUnits( String rep, String longRep, BinaryUnits previous ) {
-		this( rep, longRep, 1024, previous );
-	}
+  private BinaryUnits( String rep, String longRep, BinaryUnits previous ) {
+    this( rep, longRep, 1024, previous );
+  }
 
-	@Override
-	public double getRange() {
-		return toNext;
-	}
+  @Override
+  public double getRange() {
+    return toNext;
+  }
 
-	@Override
-	public boolean isInRange( double value ) {
-		return getBetterUnit( value ) == this;
-	}
+  @Override
+  public boolean isInRange( double value ) {
+    return getBetterUnit( value ) == this;
+  }
 
-	@Override
-	public BinaryUnits getBetterUnit( double value ) {
-		return Helper.getNextBetter( this, value );
-	}
+  @Override
+  public BinaryUnits getBetterUnit( double value ) {
+    return Helper.getNextBetter( this, value );
+  }
 
-	@Override
-	public double getBetterUnitValue( double value ) {
-		return Helper.getNextBetterValue( this, value );
-	}
+  @Override
+  public double getBetterUnitValue( double value ) {
+    return Helper.getNextBetterValue( this, value );
+  }
 
-	@Override
-	public BinaryUnits getSmaller() {
-		return previous;
-	}
+  @Override
+  public BinaryUnits getSmaller() {
+    return previous;
+  }
 
-	@Override
-	public BinaryUnits getLarger() {
-		return next;
-	}
+  @Override
+  public BinaryUnits getLarger() {
+    return next;
+  }
 
-	@Override
-	public String getName() {
-		return rep;
-	}
+  @Override
+  public String getName() {
+    return rep;
+  }
 
-	@Override
-	public String getLongName() {
-		return longRep;
-	}
+  @Override
+  public String getLongName() {
+    return longRep;
+  }
 }

@@ -36,6 +36,7 @@ public final class Helper {
     try {
       Thread.sleep( wait );
     } catch( InterruptedException ignore ) {
+      // ignore
     }
   }
 
@@ -63,10 +64,12 @@ public final class Helper {
   }
 
   /**
-   * <p>Converts a value in a given unit to a value in a different unit, if it improves readability. Conversion is
+   * <p>
+   * Converts a value in a given unit to a value in a different unit, if it improves readability. Conversion is
    * performed if the value is smaller than 1 in the current unit (and the unit allows for another smaller unit) or if
    * the value is too high and the unit allows for a larger unit. For SI units these ranges are typically from 1 to
    * 1000, binary units range to 1024.</p>
+   *
    * @param <E> the unit type
    * @param unit the unit
    * @param value the value
