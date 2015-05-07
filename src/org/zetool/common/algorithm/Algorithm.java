@@ -18,7 +18,7 @@ package org.zetool.common.algorithm;
 import org.zetool.common.algorithm.parameter.ParameterSet;
 import org.zetool.common.debug.Debug;
 import org.zetool.common.util.Formatter;
-import org.zetool.common.util.Quantity;
+import org.zetool.common.util.units.Quantity;
 import org.zetool.common.util.units.TimeUnits;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;

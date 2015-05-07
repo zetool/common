@@ -1,67 +1,68 @@
+/* zet evacuation tool copyright (c) 2007-15 zet evacuation team
+ *
+ * This program is free software; you can redistribute it and/or
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 package org.zetool.common.util.units;
 
 import org.zetool.common.util.Helper;
 
 /**
- *
+ * IEC units for binary multiples of of bits and bytes. Units are as described in
+ * http://physics.nist.gov/cuu/Units/binary.html with the addition of 'bits' as smalles unit.
  * @author Jan-Philipp Kappmeier
  */
-public enum BinaryUnits implements UnitScale<BinaryUnits> {
-  Bit( "Bits", "Bits", 8, null ),
-  Byte( "Bytes", "Bytes", Bit ),
-  KiB( "KiB", "Kibibyte", Byte ),
-  MiB( "MiB", "Mebibyte", KiB ),
-  GiB( "GiB", "Gibibyte", MiB ),
-  TiB( "TiB", "Tebibyte", GiB ),
-  PiB( "PiB", "Pebibyte", TiB ),
-  EiB( "EiB", "Exbibyte", PiB ),
-  ZiB( "ZiB", "Zebibyte", EiB ),
-  YiB( "YiB", "Yobibyte", ZiB );
-  private String rep;
-  private String longRep;
-  private BinaryUnits previous;
-  private BinaryUnits next;
-  private double toNext;
-
+public class BinaryUnits extends AbstractUnit<BinaryUnits> {
+  public static final BinaryUnits Bit = new BinaryUnits( "Bits", "Bits", 8, null );
+  public static final BinaryUnits Byte = new BinaryUnits( "Bytes", "Bytes", Bit );
+  public static final BinaryUnits KiB = new BinaryUnits( "KiB", "Kibibyte", Byte );
+  public static final BinaryUnits MiB = new BinaryUnits( "MiB", "Mebibyte", KiB );
+  public static final BinaryUnits GiB = new BinaryUnits( "GiB", "Gibibyte", MiB );
+  public static final BinaryUnits TiB = new BinaryUnits( "TiB", "Tebibyte", GiB );
+  public static final BinaryUnits PiB = new BinaryUnits( "PiB", "Pebibyte", TiB );
+  public static final BinaryUnits EiB = new BinaryUnits( "EiB", "Exbibyte", PiB );
+  public static final BinaryUnits ZiB = new BinaryUnits( "ZiB", "Zebibyte", EiB );
+  public static final BinaryUnits YiB = new BinaryUnits( "YiB", "Yobibyte", ZiB );
+  
   static {
-    Bit.next = Byte;
-    Byte.next = KiB;
-    KiB.next = MiB;
-    MiB.next = GiB;
-    GiB.next = TiB;
-    TiB.next = PiB;
-    PiB.next = EiB;
-    EiB.next = ZiB;
-    ZiB.next = YiB;
-    YiB.next = null;
+    Bit.setSmaller( Bit );
+    Bit.setLarger( Byte );
+    Byte.setLarger( KiB );
+    KiB.setLarger( MiB );
+    MiB.setLarger( GiB );
+    GiB.setLarger( TiB );
+    TiB.setLarger( PiB );
+    PiB.setLarger( EiB );
+    EiB.setLarger( ZiB );
+    ZiB.setLarger( YiB );
+    YiB.setLarger( YiB );
   }
 
   /**
    * Initializes the binary unit with the correct values.
-	 * @param rep the short representation string
-	 * @param longRep the long representation string
-	 * @param toNext how much of the unit is the next larger scale
-	 * @param previous the predecessor unit. Note that successor units are initialized in a static-initializer block
+   *
+   * @param rep      the short representation string
+   * @param longRep  the long representation string
+   * @param toNext   how much of the unit is the next larger scale
+   * @param previous the predecessor unit. Note that successor units are initialized in a static-initializer block
    */
   private BinaryUnits( String rep, String longRep, double toNext, BinaryUnits previous ) {
-    this.rep = rep;
-    this.longRep = longRep;
-    this.toNext = toNext;
-    this.previous = previous;
+    super(rep, longRep, toNext, previous );
   }
 
   private BinaryUnits( String rep, String longRep, BinaryUnits previous ) {
     this( rep, longRep, 1024, previous );
-  }
-
-  @Override
-  public double getRange() {
-    return toNext;
-  }
-
-  @Override
-  public boolean isInRange( double value ) {
-    return getBetterUnit( value ) == this;
   }
 
   @Override
@@ -72,25 +73,5 @@ public enum BinaryUnits implements UnitScale<BinaryUnits> {
   @Override
   public double getBetterUnitValue( double value ) {
     return Helper.getNextBetterValue( this, value );
-  }
-
-  @Override
-  public BinaryUnits getSmaller() {
-    return previous;
-  }
-
-  @Override
-  public BinaryUnits getLarger() {
-    return next;
-  }
-
-  @Override
-  public String getName() {
-    return rep;
-  }
-
-  @Override
-  public String getLongName() {
-    return longRep;
   }
 }

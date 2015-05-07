@@ -1,6 +1,6 @@
-package org.zetool.common.util;
+package org.zetool.common.util.units;
 
-import org.zetool.common.util.units.UnitScale;
+import org.zetool.common.util.Formatter;
 
 /**
  * A {@code Quantity} represents a physical quantity containing the actual value of the quanitity and its unit. This
@@ -10,6 +10,7 @@ import org.zetool.common.util.units.UnitScale;
  * @param <E> the unit scale of the quantity, e.g. time or length.
  */
 public class Quantity<E extends UnitScale<E>> implements Comparable<Quantity<E>> {
+
   private final double value;
   private final long integralValue;
   private final boolean isIntegral;
@@ -113,4 +114,5 @@ public class Quantity<E extends UnitScale<E>> implements Comparable<Quantity<E>>
       throw new UnsupportedOperationException( "Adding different time units is not yet supported!" );
     }
   }
+
 }

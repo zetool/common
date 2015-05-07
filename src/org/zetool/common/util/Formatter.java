@@ -1,9 +1,11 @@
 package org.zetool.common.util;
 
+import org.zetool.common.util.units.Quantity;
 import org.zetool.common.localization.LocalizationManager;
 import org.zetool.common.util.units.UnitScale;
 import java.awt.Color;
 import java.text.NumberFormat;
+import org.zetool.common.util.units.Conversion;
 
 /**
  * The class {@code Formatter} is a utility class that provides methods for formatting texts.
@@ -30,25 +32,6 @@ public final class Formatter {
     return nfPercent.format( value );
   }
 
-  /**
-   * Computes the correct value and fitting time unit for a given pair of value and time unit. The result is stored as a
-   * {@link UnitScale}.
-   *
-   * @param <E> the type of time unit that is returned
-   * @param value the value of the number to be formatted
-   * @param unit the unit of the number
-   * @return the pair containing the transformed value and the fitting unit
-   */
-  public static <E extends UnitScale<E>> Quantity<E> unit( double value, E unit ) {
-    E currentUnit = unit;
-    double restValue = value;
-    while( !currentUnit.isInRange( restValue ) ) {
-      final double newValue = currentUnit.getBetterUnitValue( restValue );
-      currentUnit = currentUnit.getBetterUnit( restValue );
-      restValue = newValue;
-    }
-    return new Quantity<>( restValue, currentUnit );
-  }
 
   /**
    * Formats a given number of some unit to the most fitting unit.
@@ -72,7 +55,7 @@ public final class Formatter {
    * @return the string in the calculated unit with one decimal place and the shortcut for the unit
    */
   public static <E extends UnitScale<E>> String formatUnit( double value, E unit, int digits ) {
-    final Quantity<E> res = unit( value, unit );
+    final Quantity<E> res = Conversion.unit( value, unit );
     final NumberFormat n = NumberFormat.getInstance();
     n.setMaximumFractionDigits( digits );
     return n.format( res.getValue() ) + " " + res.getUnit().getName();
