@@ -28,7 +28,7 @@ public class Quantity<E extends UnitScale<E>> implements Comparable<Quantity<E>>
    */
   public Quantity( double value, E unit ) {
     this.value = value;
-    isIntegral = value == Math.rint( value );
+    isIntegral = Double.doubleToRawLongBits( value - Math.rint( value ) ) == 0;
     integralValue = (long) Math.rint( value );
     this.unit = Objects.requireNonNull( unit );
   }

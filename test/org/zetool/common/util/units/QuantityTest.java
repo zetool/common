@@ -222,7 +222,15 @@ public class QuantityTest {
   }
   
   @Test( expected = UnsupportedOperationException.class )
-  public void test() {
+  public void testAddNotSupported() {
+    final FakeUnit differentUnit = context.mock(FakeUnit.class, "another");
+    final Quantity<FakeUnit> quantity1 = new Quantity<>( 2.5, unit );
+    final Quantity<FakeUnit> quantity2 = new Quantity<>( 3.3, differentUnit );
+    quantity1.add( quantity2 );
+  }
+  
+  @Test( expected = UnsupportedOperationException.class )
+  public void testSubNotSupported() {
     final FakeUnit differentUnit = context.mock(FakeUnit.class, "another");
     final Quantity<FakeUnit> quantity1 = new Quantity<>( 2.5, unit );
     final Quantity<FakeUnit> quantity2 = new Quantity<>( 3.3, differentUnit );
