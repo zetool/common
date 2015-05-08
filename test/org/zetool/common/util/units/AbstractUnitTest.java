@@ -27,8 +27,8 @@ public class AbstractUnitTest {
       }
 
     };
-    assertThat( myUnit.getName(), is( equalTo( "ur" ) ) );
-    assertThat( myUnit.getLongName(), is( equalTo( "unit rep" ) ) );
+    assertThat( myUnit.getSymbol(), is( equalTo( "ur" ) ) );
+    assertThat( myUnit.getName(), is( equalTo( "unit rep" ) ) );
     assertThat( myUnit.getRange(), is( closeTo( 10, 0.1 ) ) );
   }
 }

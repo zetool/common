@@ -41,12 +41,12 @@ public class BinarySIUnits extends AbstractUnit<BinarySIUnits> {
     PB.setLarger( PB );
   }
   
-  private  BinarySIUnits( String rep, String longRep ) {
-    this( rep, longRep, null );
+  private  BinarySIUnits( String symbol, String name ) {
+    this( symbol, name, null );
   }
 
-  private  BinarySIUnits( String rep, String longRep, BinarySIUnits previous ) {
-    super( rep, longRep, 1000, previous);
+  private  BinarySIUnits( String symbol, String name, BinarySIUnits smaller ) {
+    super( symbol, name, 1000, smaller);
   }
 
   @Override

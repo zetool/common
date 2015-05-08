@@ -58,7 +58,7 @@ public final class Formatter {
     final Quantity<E> res = Conversion.unit( value, unit );
     final NumberFormat n = NumberFormat.getInstance();
     n.setMaximumFractionDigits( digits );
-    return n.format( res.getValue() ) + " " + res.getUnit().getName();
+    return n.format( res.getValue() ) + " " + res.getUnit().getSymbol();
   }
 
   /**

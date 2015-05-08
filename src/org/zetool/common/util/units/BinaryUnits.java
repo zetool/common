@@ -52,17 +52,17 @@ public class BinaryUnits extends AbstractUnit<BinaryUnits> {
   /**
    * Initializes the binary unit with the correct values.
    *
-   * @param rep      the short representation string
-   * @param longRep  the long representation string
-   * @param toNext   how much of the unit is the next larger scale
-   * @param previous the predecessor unit. Note that successor units are initialized in a static-initializer block
+   * @param symbol the short representation string
+   * @param name the long representation string
+   * @param range how much of the unit is the next larger scale
+   * @param smaller the predecessor unit. Note that successor units are initialized in a static-initializer block
    */
-  private BinaryUnits( String rep, String longRep, double toNext, BinaryUnits previous ) {
-    super(rep, longRep, toNext, previous );
+  private BinaryUnits( String symbol, String name, double range, BinaryUnits smaller ) {
+    super(symbol, name, range, smaller );
   }
 
-  private BinaryUnits( String rep, String longRep, BinaryUnits previous ) {
-    this( rep, longRep, 1024, previous );
+  private BinaryUnits( String symbol, String name, BinaryUnits smaller ) {
+    this( symbol, name, 1024, smaller );
   }
 
   @Override

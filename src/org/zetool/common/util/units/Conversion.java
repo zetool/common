@@ -8,7 +8,7 @@ package org.zetool.common.util.units;
 public final class Conversion {
 
   /** Private constructor for utility class. */
-  private Conversion() {}
+  private Conversion() { }
 
   /**
    * Computes the correct value and fitting time unit for a given pair of value and time unit. The result is stored as a

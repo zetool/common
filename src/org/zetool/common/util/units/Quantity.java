@@ -1,19 +1,23 @@
 package org.zetool.common.util.units;
 
+import java.util.Objects;
 import org.zetool.common.util.Formatter;
 
 /**
  * A {@code Quantity} represents a physical quantity containing the actual value of the quanitity and its unit. This
- * class is immbla
+ * class is immutable.
  *
  * @author Jan-Philipp Kappmeier
  * @param <E> the unit scale of the quantity, e.g. time or length.
  */
 public class Quantity<E extends UnitScale<E>> implements Comparable<Quantity<E>> {
-
+  /** The value of the unit. */
   private final double value;
+  /** The integral value of the unit. */
   private final long integralValue;
+  /** Stores whether the stored value can be assumed to be integral. */
   private final boolean isIntegral;
+  /** The unit of the physical quantity. */
   private final E unit;
 
   /**
@@ -24,9 +28,9 @@ public class Quantity<E extends UnitScale<E>> implements Comparable<Quantity<E>>
    */
   public Quantity( double value, E unit ) {
     this.value = value;
-    isIntegral = false;
-    this.unit = unit;
-    integralValue = (long) value;
+    isIntegral = value == Math.rint( value );
+    integralValue = (long) Math.rint( value );
+    this.unit = Objects.requireNonNull( unit );
   }
 
   /**
@@ -38,7 +42,7 @@ public class Quantity<E extends UnitScale<E>> implements Comparable<Quantity<E>>
   public Quantity( long value, E unit ) {
     this.value = value;
     this.integralValue = value;
-    this.unit = unit;
+    this.unit = Objects.requireNonNull( unit );
     isIntegral = true;
   }
 
@@ -48,6 +52,13 @@ public class Quantity<E extends UnitScale<E>> implements Comparable<Quantity<E>>
 
   public E getUnit() {
     return unit;
+  }
+  
+  public long getIntegralValue() {
+    if( !isIntegral ) {
+      throw new IllegalStateException( "Not integral: " + value );
+    }
+    return integralValue;
   }
 
   public boolean isIntegral() {
@@ -74,7 +85,19 @@ public class Quantity<E extends UnitScale<E>> implements Comparable<Quantity<E>>
       return false;
     }
     final Quantity<?> other = (Quantity<?>) obj;
-    return Double.doubleToLongBits( this.value ) == Double.doubleToLongBits( other.value );
+    if( isIntegral && other.isIntegral) {
+      return this.integralValue == other.integralValue;
+    } else {
+      return Double.doubleToLongBits( this.value ) == Double.doubleToLongBits( other.value );
+    }
+  }
+
+  @Override
+  public int hashCode() {
+    int hash = 7;
+    hash = 37 * hash + (int) (Double.doubleToLongBits( this.value ) ^ (Double.doubleToLongBits( this.value ) >>> 32));
+    hash = 37 * hash + Objects.hashCode( this.unit );
+    return hash;
   }
 
   /**
@@ -89,7 +112,7 @@ public class Quantity<E extends UnitScale<E>> implements Comparable<Quantity<E>>
       if( this.isIntegral && other.isIntegral ) {
         return new Quantity<>( this.integralValue + other.integralValue, this.unit );
       } else {
-        return new Quantity<>( this.value + other.integralValue, this.unit );
+        return new Quantity<>( this.value + other.value, this.unit );
       }
     } else {
       throw new UnsupportedOperationException( "Adding different time units is not yet supported!" );
@@ -108,10 +131,10 @@ public class Quantity<E extends UnitScale<E>> implements Comparable<Quantity<E>>
       if( this.isIntegral && other.isIntegral ) {
         return new Quantity<>( this.integralValue - other.integralValue, this.unit );
       } else {
-        return new Quantity<>( this.value - other.integralValue, this.unit );
+        return new Quantity<>( this.value - other.value, this.unit );
       }
     } else {
-      throw new UnsupportedOperationException( "Adding different time units is not yet supported!" );
+      throw new UnsupportedOperationException( "Adding different units is not yet supported!" );
     }
   }
 

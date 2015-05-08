@@ -25,30 +25,6 @@ package org.zetool.common.util.units;
  * @author Jan-Philipp Kappmeier
  */
 public interface UnitScale<T> {
-  
-  /**
-   * Checks, if the value is good for the current unit, or if it can be scaled to fit better.
-   *
-   * @param value the value that is checked
-   * @return {@code true} if there is no need to scale the value to fit a better unit, {@code false} otherwise
-   */
-  public boolean isInRange( double value );
-
-  /**
-   * Returns the next better value to represent the measure.
-   *
-   * @param value the current value (in the unit specified by the instance of the enumeration)
-   * @return the transformed measure
-   */
-  public T getBetterUnit( double value );
-
-  /**
-   * Returns the next better unit to represent the measure.
-   *
-   * @param value the current value (in the unit specified by the instance of the enumeration)
-   * @return the transformed unit
-   */
-  public double getBetterUnitValue( double value );
 
   /**
    * Returns the next smaller unit in a unit scale. For example, the next smaller unit to milliseconds in an SI time
@@ -73,14 +49,14 @@ public interface UnitScale<T> {
    * 
    * @return the symbol for the time unit
    */
-  public String getName();
+  public String getSymbol();
 
   /**
    * Returns a longer representation for the time unit. For example {@literal seconds}.
    *
    * @return a longer represetnation for the time unit
    */
-  public String getLongName();
+  public String getName();
 
   /**
    * Returns the maximum value which this time unit can represent until it is better to switch to the next larger unit.
@@ -90,4 +66,28 @@ public interface UnitScale<T> {
    * @return the maximum value which this time unit can represent best
    */
   public double getRange();
+  
+  /**
+   * Checks, if the value is good for the current unit, or if it can be scaled to fit better.
+   *
+   * @param value the value that is checked
+   * @return {@code true} if there is no need to scale the value to fit a better unit, {@code false} otherwise
+   */
+  public boolean isInRange( double value );
+
+  /**
+   * Returns the next better value to represent the measure.
+   *
+   * @param value the current value (in the unit specified by the instance of the enumeration)
+   * @return the transformed measure
+   */
+  public T getBetterUnit( double value );
+
+  /**
+   * Returns the next better unit to represent the measure.
+   *
+   * @param value the current value (in the unit specified by the instance of the enumeration)
+   * @return the transformed unit
+   */
+  public double getBetterUnitValue( double value );
 }
