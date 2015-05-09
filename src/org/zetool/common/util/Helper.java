@@ -53,37 +53,6 @@ public final class Helper {
     return value >= lower && value <= upper;
   }
 
-  public static <E extends UnitScale<E>> E getNextBetter( E unit, double value ) {
-    if( value < 1 && unit.getSmaller() != null ) {
-      return unit.getSmaller();
-    } else if( value >= unit.getRange() ) {
-      return unit.getLarger();
-    } else {
-      return unit;
-    }
-  }
-
-  /**
-   * <p>
-   * Converts a value in a given unit to a value in a different unit, if it improves readability. Conversion is
-   * performed if the value is smaller than 1 in the current unit (and the unit allows for another smaller unit) or if
-   * the value is too high and the unit allows for a larger unit. For SI units these ranges are typically from 1 to
-   * 1000, binary units range to 1024.</p>
-   *
-   * @param <E> the unit type
-   * @param unit the unit
-   * @param value the value
-   * @return the value in a probably different unit, if possible between 1 and the range of the unit.
-   */
-  public static <E extends UnitScale<E>> double getNextBetterValue( final E unit, final double value ) {
-    if( value < 1 && unit.getSmaller() != null ) {
-      return value * unit.getSmaller().getRange();
-    } else if( value >= unit.getRange() ) {
-      return value / unit.getRange();
-    } else {
-      return value;
-    }
-  }
 
   /**
    * Adapts an {@link Iterator} to an {@link Iterable} for use in enhanced for loops. If {@link Iterable#iterator()} is

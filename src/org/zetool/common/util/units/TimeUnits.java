@@ -85,11 +85,11 @@ public class TimeUnits extends AbstractUnit<TimeUnits> {
 
   @Override
   public TimeUnits getBetterUnit( double value ) {
-    return Helper.getNextBetter( this, value );
+    return UnitScale.getNextBetter( this, value );
   }
 
   @Override
   public double getBetterUnitValue( double value ) {
-    return Helper.getNextBetterValue( this, value );
+    return UnitScale.getNextBetterValue( this, value );
   }
 }
