@@ -17,7 +17,8 @@ public final class Formatter {
   /**
    * No instantiating of {@code Formatter} possible.
    */
-  private Formatter() {}
+  private Formatter() {
+  }
 
   /**
    * Formats a double value (between 0 and 1) into a percent value, always showing 2 fraction digits.
@@ -92,6 +93,9 @@ public final class Formatter {
    * @return the hexadecimal HTML representation of the color
    */
   public static String rgbToHex( final int r, final int g, final int b ) {
+    if( r < 0 || g < 0 || b < 0 || r > 255 || g > 255 || b > 255 ) {
+      throw new IllegalArgumentException( String.format( "Color values have to be in [0,255]: r=%d, g=%d, b=%d", r, g, b ) );
+    } 
     return String.format( "#%02x%02x%02x", r, g, b );
   }
 
