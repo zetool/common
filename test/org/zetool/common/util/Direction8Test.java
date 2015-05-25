@@ -67,4 +67,16 @@ public class Direction8Test {
     assertThat( DownLeft.distance(), is( closeTo( 1.41421356237, 1e-10 ) ) );
     assertThat( DownRight.distance(), is( closeTo( 1.41421356237, 1e-10 ) ) );
   }
+  
+  @Test
+  public void testOpposite() {
+    assertThat( Left.invert(), is( equalTo( Right )));
+    assertThat( TopLeft.invert(), is( equalTo( DownRight )));
+    assertThat( Top.invert(), is( equalTo( Down )));
+    assertThat( TopRight.invert(), is( equalTo( DownLeft )));
+    assertThat( Right.invert(), is( equalTo( Left )));
+    assertThat( DownRight.invert(), is( equalTo( TopLeft )));
+    assertThat( Down.invert(), is( equalTo( Top )));
+    assertThat( DownLeft.invert(), is( equalTo( TopRight )));
+  }
 }

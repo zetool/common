@@ -26,23 +26,22 @@ package org.zetool.common.util;
  * @author Jan-Philipp Kappmeier
  */
 public enum Direction8 {
-  /** The Left direction. */
-  Left( -1, 0, 6 ),
-  /** The Right direction. */
-  Right( 1, 0, 2 ),
   /** The upper direction. */
   Top( 0, -1, 0 ),
-  /** The lower direction. */
-  Down( 0, 1, 4 ),
-  /** The upper Left direction. */
-  TopLeft( -1, -1, 7 ),
+  /** The upper Right direction. */
+  TopRight( 1, -1, 1 ),
+  /** The Right direction. */
+  Right( 1, 0, 2 ),
   /** The lower Right direction. */
   DownRight( 1, 1, 3 ),
+  /** The lower direction. */
+  Down( 0, 1, 4 ),
   /** The lower Left direction. */
   DownLeft( -1, 1, 5 ),
-  /** The upper Right direction. */
-  TopRight( 1, -1, 1 );
-  static Direction8[] a = {Top, TopRight, Right, DownRight, Down, DownLeft, Left, TopLeft};
+  /** The Left direction. */
+  Left( -1, 0, 6 ),
+  /** The upper Left direction. */
+  TopLeft( -1, -1, 7 );
 
   /** The offset value in {@code x}-direction. */
   private final int xOffset;
@@ -89,7 +88,7 @@ public enum Direction8 {
    * @return the opposite direction
    */
   public final Direction8 invert() {
-    return a[(id + 4) % 8];
+    return values()[(id + 4) % 8];
   }
 
   /**
@@ -109,11 +108,11 @@ public enum Direction8 {
   }
 
   public Direction8 getClockwise() {
-    return a[(id + 1) % 8];
+    return values()[(id + 1) % 8];
   }
 
   public Direction8 getCounterClockwise() {
-    return a[(id - 1 + 8) % 8];
+    return values()[(id - 1 + 8) % 8];
   }
 
   public double distance() {
