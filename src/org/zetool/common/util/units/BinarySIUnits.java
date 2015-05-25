@@ -20,7 +20,7 @@ package org.zetool.common.util.units;
  * Representation of binary SI units, e.g. multiples of 1000 = 10^3 of bytes.
  * @author Jan-Philipp Kappmeier
  */
-public class BinarySIUnits extends AbstractUnit<BinarySIUnits> {
+public class BinarySIUnits extends AbstractUnitScale<BinarySIUnits> {
   
   public static final BinarySIUnits B = new BinarySIUnits("kB", "Bytes");
   public static final BinarySIUnits kB = new BinarySIUnits("kB", "kilobytes", B);

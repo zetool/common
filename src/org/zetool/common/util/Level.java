@@ -17,51 +17,57 @@
 package org.zetool.common.util;
 
 /**
- * Represents relative position in one dimension, the naming is about levels (of
- * height). Each level knows the opposite direction.
+ * Represents relative position in one dimension, the naming is about levels (of height). Each level knows the opposite
+ * direction.
+ *
  * @author Jan-Philipp Kappmeier
  * @see Direction8
  */
 public enum Level {
   /** Higher level. */
-	Higher(),
-	/** The same level. */
-	Equal(),
-	/** Higher level. */
-	Lower( Higher );
+  Higher(),
+  /** The same level. */
+  Equal(),
+  /** Higher level. */
+  Lower( Higher );
 
-	/** The opposite level of this level. */
-	private Level inverseLevel;
+  /**
+   * The opposite level of this level.
+   */
+  private Level inverseLevel;
 
-	/**
-	 * Creates a new instance and sets the inverse level to the same.
-	 */
-	private Level() {
-		this.inverseLevel = this;
-	}
+  /**
+   * Creates a new instance and sets the inverse level to the same.
+   */
+  private Level() {
+    this.inverseLevel = this;
+  }
 
-	/**
-	 * Creates a new instance and sets the inverse level.
-	 * @param inverseLevel the inverse level
-	 */
-	private Level( Level inverseLevel ) {
-		this.inverseLevel = inverseLevel;
-		inverseLevel.setInverse( this );
-	}
+  /**
+   * Creates a new instance and sets the inverse level.
+   *
+   * @param inverseLevel the inverse level
+   */
+  private Level( Level inverseLevel ) {
+    this.inverseLevel = inverseLevel;
+    inverseLevel.setInverse( this );
+  }
 
-	/**
-	 * Sets the inverse level.
-	 * @param inverseLevel the inverse level
-	 */
-	private void setInverse( Level inverseLevel ) {
-		this.inverseLevel = inverseLevel;
-	}
+  /**
+   * Sets the inverse level.
+   *
+   * @param inverseLevel the inverse level
+   */
+  private void setInverse( Level inverseLevel ) {
+    this.inverseLevel = inverseLevel;
+  }
 
-	/**
-	 * Returns the inverse level.
-	 * @return the inverse level
-	 */
-	public final Level getInverse() {
-		return inverseLevel;
-	}
+  /**
+   * Returns the inverse level.
+   *
+   * @return the inverse level
+   */
+  public final Level getInverse() {
+    return inverseLevel;
+  }
 }

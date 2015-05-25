@@ -527,6 +527,7 @@ public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
    *
    * @return {@code true} if this algorithm is currently running and {@code false} otherwise.
    */
+  @Override
   public final boolean isRunning() {
     return state == State.SOLVING;
   }

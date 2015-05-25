@@ -15,11 +15,11 @@ public class AbstractTuple<U, V> implements Tuple<U,V> {
 
     /**
      *
-     * @param u
-     * @param v
+     * @param u the first data element
+     * @param v the second data element
      * @throws NullPointerException if one of the arguments is {@code null}
      */
-    public AbstractTuple( U u, V v ) throws NullPointerException {
+    public AbstractTuple( U u, V v ) {
         this.u = Objects.requireNonNull( u, "u must not be null" );
         this.v = v; //Objects.requireNonNull( v , "v must not be null" );
     }

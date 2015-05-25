@@ -100,31 +100,12 @@ public enum Direction8 {
    * @return the enumeration item corresponding to the given x- and y-offsets.
    */
   public static Direction8 getDirection( final int x, final int y ) {
-    if( x == -1 && y == 0 ) {
-      return Left;
+    for( Direction8 dir : Direction8.values() ) {
+      if( dir.xOffset == x && dir.yOffset == y ) {
+        return dir;
+      }
     }
-    if( x == 1 && y == 0 ) {
-      return Right;
-    }
-    if( x == 0 && y == -1 ) {
-      return Top;
-    }
-    if( x == 0 && y == 1 ) {
-      return Down;
-    }
-    if( x == -1 && y == -1 ) {
-      return TopLeft;
-    }
-    if( x == 1 && y == -1 ) {
-      return TopRight;
-    }
-    if( x == -1 && y == 1 ) {
-      return DownLeft;
-    }
-    if( x == 1 && y == 1 ) {
-      return DownRight;
-    }
-    throw new AssertionError( "Not a valid direction" );
+    throw new AssertionError( "No valid direction indicated by: " + x + "," + y );
   }
 
   public Direction8 getClockwise() {

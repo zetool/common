@@ -21,7 +21,7 @@ import org.zetool.common.util.Helper;
  * An enumeration containing time units following the SI system for times less than a seconds. For larger times, the
  * non-SI units minutes, hours etc. are used.
  */
-public class TimeUnits extends AbstractUnit<TimeUnits> {
+public class TimeUnits extends AbstractUnitScale<TimeUnits> {
   /** One picosecond equals 10^-12 seconds. */
   public static final TimeUnits PicoSeconds = new TimeUnits( "ps", "picosecond", null );
   /** One picosecond equals 10^-9 seconds. */

@@ -13,6 +13,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
 package org.zetool.common.util;
 
 import org.zetool.common.localization.LocalizationManager;
@@ -52,8 +53,7 @@ public final class IOTools {
    * @throws java.lang.IllegalStateException if there are too many files beginning with prefix for
    * the specified number of digits or if an error converting the digits occured.
    */
-  public static String getNextFreeNumberedFilepath( String path, String filePrefix, int digits )
-          throws java.lang.IllegalArgumentException, java.lang.IllegalStateException {
+  public static String getNextFreeNumberedFilepath( String path, String filePrefix, int digits ) {
     return path + getNextFreeNumberedFilename( path, filePrefix, digits );
   }
 
@@ -70,39 +70,38 @@ public final class IOTools {
    * @throws java.lang.IllegalStateException if there are too many files beginning with prefix for
    * the specified number of digits or if an error converting the digits occured.
    */
-  public static String getNextFreeNumberedFilename( String path, String filePrefix, int digits )
-          throws java.lang.IllegalArgumentException, java.lang.IllegalStateException {
+  public static String getNextFreeNumberedFilename( String path, String filePrefix, int digits ) {
     if( digits <= 0 ) {
-      throw new IllegalArgumentException( "Digits must not be negative." );
+      throw new IllegalArgumentException( "Negative amount of digits: " + digits );
     }
-    final int prefixLen = filePrefix.length();
     File[] files = new File( path ).listFiles();
-    int lastIndex = 1;
+    int fileNumber = 1;
     if( files != null ) {
       for( File file : files ) {
-        if( !file.isDirectory() && file.getName().length() >= prefixLen + digits ) {
-          String foundPrefix = file.getName().substring( 0, prefixLen );
-          if( foundPrefix.equals( filePrefix ) ) {
-            String foundNumber = file.getName().substring( prefixLen, prefixLen + digits );
-            int number;
-            try {
-              number = LocalizationManager.getManager().getIntegerConverter().parse( foundNumber ).intValue();
-            } catch( ParseException ex ) {
-              System.out.println( "Skipped file with same prefix: " + file.getName() );
-              number = -1;
-            }
-            if( number >= lastIndex ) {
-              lastIndex = number + 1;
-            }
-          }
-        }
+        fileNumber = Math.min( fileNumber, fileNumber(file, digits, filePrefix ) + 1 );
       }
     }
     try {
-      return filePrefix + Formatter.fillLeadingZeros( lastIndex, digits );
+      return filePrefix + Formatter.fillLeadingZeros( fileNumber, digits );
     } catch( IllegalArgumentException ex ) {
-      throw new java.lang.IllegalStateException( "Too many files with number length " + digits );
+      throw new java.lang.IllegalStateException( "Too many files with number length " + digits, ex );
     }
+  }
+  
+  private static int fileNumber( File file, int digits, String filePrefix ) {
+    final int prefixLen = filePrefix.length();
+    if( !file.isDirectory() && file.getName().length() >= prefixLen + digits ) {
+      final String foundPrefix = file.getName().substring( 0, prefixLen );
+      if( foundPrefix.equals( filePrefix ) ) {
+        String foundNumberText = file.getName().substring( prefixLen, prefixLen + digits );
+        try {
+          return LocalizationManager.getManager().getIntegerConverter().parse( foundNumberText ).intValue();
+        } catch( ParseException ex ) {
+          return -1;
+        }
+      }
+    }
+    return -1;
   }
 
   /**
@@ -113,7 +112,7 @@ public final class IOTools {
    * @return a {@link List} containing all parts of the command
    */
   public static List<String> parseCommandString( String command ) {
-    LinkedList<String> ret = new LinkedList<>();
+    List<String> ret = new LinkedList<>();
     int i = -1;
     String s = "";
     boolean quotes = false;
