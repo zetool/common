@@ -16,35 +16,27 @@
 
 package org.zetool.common.util.units;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.closeTo;
-import static org.junit.Assert.assertThat;
 import org.junit.Test;
+import static org.zetool.common.util.units.BinarySIUnitsTest.assertAll;
+import static org.zetool.common.util.units.BinarySIUnitsTest.assertList;
 
 /**
- *
+ * 
  * @author Jan-Philipp Kappmeier
  */
-public class AbstractUnitTest {
-
+public class BinaryUnitsTest {
+  /** A list by all multiples in the unit scale. */
+  private static final BinaryUnits[] units = new BinaryUnits[] {BinaryUnits.Bit, BinaryUnits.Byte, BinaryUnits.KiB,
+    BinaryUnits.MiB, BinaryUnits.GiB, BinaryUnits.TiB, BinaryUnits.PiB, BinaryUnits.EiB, BinaryUnits.ZiB,
+    BinaryUnits.YiB};
+    
   @Test
-  public void testUnitCreation() {
-    AbstractUnit myUnit = new AbstractUnit( "ur", "unit rep", 10, null ) {
-
-      @Override
-      public Object getBetterUnit( double value ) {
-        throw new UnsupportedOperationException( "Not supported yet." );
-      }
-
-      @Override
-      public double getBetterUnitValue( double value ) {
-        throw new UnsupportedOperationException( "Not supported yet." );
-      }
-
-    };
-    assertThat( myUnit.getSymbol(), is( equalTo( "ur" ) ) );
-    assertThat( myUnit.getName(), is( equalTo( "unit rep" ) ) );
-    assertThat( myUnit.getRange(), is( closeTo( 10, 0.1 ) ) );
+  public void testList() {
+    assertList( units );
+  }
+  
+  @Test
+  public void testAll() {
+    assertAll( units );
   }
 }

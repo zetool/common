@@ -14,9 +14,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/**
- * Level.java
- */
 package org.zetool.common.util;
 
 /**
@@ -64,7 +61,7 @@ public enum Level {
 	 * Returns the inverse level.
 	 * @return the inverse level
 	 */
-	public Level getInverse() {
+	public final Level getInverse() {
 		return inverseLevel;
 	}
 }

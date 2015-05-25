@@ -10,7 +10,7 @@ import org.junit.Test;
  *
  * @author Jan-Philipp Kappmeier
  */
-public class TestBinarySIUnits {
+public class BinarySIUnitsTest {
   /** A list by all multiples in the unit scale. */
   private static final BinarySIUnits[] units = new BinarySIUnits[] {BinarySIUnits.B, BinarySIUnits.kB, BinarySIUnits.MB,
       BinarySIUnits.GB, BinarySIUnits.TB, BinarySIUnits.PB};
@@ -25,6 +25,12 @@ public class TestBinarySIUnits {
     assertAll( units );
   }
   
+  /**
+   * Asserts that a given array of units describes a list of consecutiveley larger units.
+   * 
+   * @param <U> the unit type
+   * @param units the list of units to test
+   */
   public static <U extends UnitScale<U>> void assertList( U[] units )  {
     assertThat( units[1].getSmaller(), is( equalTo( units[0] ) ) );
     for( int i = 1; i < units.length; ++i ) {
@@ -35,6 +41,14 @@ public class TestBinarySIUnits {
   }
 
     
+  /**
+   * Asserts that a given array of units represents a consecutive block, such that starting
+   * with either end of units, you end up at the other if using {@link UnitScale#getSmaller() }
+   * and {@link UnitScale#getLarger() }.
+   * 
+   * @param <U> the unit type
+   * @param units the units to test
+   */
   public static <U extends UnitScale<U>> void assertAll( U[] units )  {
     U start = units[0];
     U end = units[units.length-1];

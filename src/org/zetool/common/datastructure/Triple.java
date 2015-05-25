@@ -1,37 +1,31 @@
-/**
- * Tripel.java
- * Created: 18.06.2010 09:55:08
- */
 package org.zetool.common.datastructure;
-
 
 /**
  *
  * @author Jan-Philipp Kappmeier
  */
-public class Triple<U,V,W> {
-	protected U u;
-	protected V v;
-	protected W w;
+public class Triple<U, V, W> {
 
-	public Triple( U u, V v, W w ) {
-		this.u = u;
-		this.v = v;
-		this.w = w;
-	}
+    protected U u;
+    protected V v;
+    protected W w;
 
-	public U u() {
-		return u;
-	}
+    public Triple( U u, V v, W w ) {
+        this.u = u;
+        this.v = v;
+        this.w = w;
+    }
 
-	public V v() {
-		return v;
-	}
+    public U u() {
+        return u;
+    }
 
-	public W w() {
-		return w;
-	}
+    public V v() {
+        return v;
+    }
 
-
+    public W w() {
+        return w;
+    }
 
 }

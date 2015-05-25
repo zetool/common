@@ -13,29 +13,22 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.zetool.common.datastructure;
+package org.zetool.common.util;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import org.junit.Test;
 
 /**
- * A string that is connected to an integer.
  *
- * @author Timon Kelter
+ * @author Jan-Philipp Kappmeier
  */
-public class NamedIndex extends AbstractTuple<String, Integer> {
+public class LevelTest {
 
-    public NamedIndex( String name, int index ) {
-        super( name, index );
-    }
-
-    public String getName() {
-        return getU();
-    }
-
-    public int getIndex() {
-        return getV();
-    }
-
-    @Override
-    public String toString() {
-        return getU();
-    }
+  @Test
+  public void testOrder() {
+    assertThat( Level.Higher.getInverse() == Level.Lower, is( true ) );
+    assertThat( Level.Equal.getInverse() == Level.Equal, is( true ) );
+    assertThat( Level.Lower.getInverse() == Level.Higher, is( true ) );
+  }
 }

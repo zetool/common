@@ -16,8 +16,6 @@
 
 package org.zetool.common.util.units;
 
-import org.zetool.common.util.Helper;
-
 /**
  * Representation of binary SI units, e.g. multiples of 1000 = 10^3 of bytes.
  * @author Jan-Philipp Kappmeier

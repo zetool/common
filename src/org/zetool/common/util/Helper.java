@@ -13,9 +13,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
 package org.zetool.common.util;
 
-import org.zetool.common.util.units.UnitScale;
 import java.util.Iterator;
 
 /**
@@ -24,6 +24,9 @@ import java.util.Iterator;
  * @author jan-Philipp Kappmeier
  */
 public final class Helper {
+  /**
+   * Private utility class constructor.
+   */
   private Helper() {
   }
 
@@ -41,7 +44,7 @@ public final class Helper {
   }
 
   /**
-   * Checks weather a value is between two other values, or not. {@code true} is returned if the value is directly on
+   * Checks weather a value is between two other values, or not. {@literal true} is returned if the value is directly on
    * the lower or upper bound.
    *
    * @param value the value
@@ -56,7 +59,8 @@ public final class Helper {
 
   /**
    * Adapts an {@link Iterator} to an {@link Iterable} for use in enhanced for loops. If {@link Iterable#iterator()} is
-   * invoked more than once, an {@link IllegalStateException} is thrown.
+   * invoked more than once, an {@link IllegalStateException} is thrown. The submitted {@link Iterator} is completely
+   * iterated afterwards and its {@link Iterator#hasNext() } will return {@literal false}.
    *
    * @param <T> the iterator type
    * @param iterator the iterator
