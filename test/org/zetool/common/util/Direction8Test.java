@@ -31,6 +31,11 @@ public class Direction8Test {
     assertThat( Direction8.getDirection( -1, 1 ), is( equalTo( DownLeft ) ) );
     assertThat( Direction8.getDirection( 1, 1 ), is( equalTo( DownRight ) ) );
   }
+  
+  @Test( expected = AssertionError.class )
+  public void testInvalidDirection() {
+    Direction8.getDirection( -2, 0 );
+  }
 
   @Test
   public void testClockwiseRotation() {
