@@ -53,7 +53,6 @@ public class IOToolsTest {
     assertThat( commands.get( 2 ), is( equalTo( "more" ) ) );
     assertThat( commands.get( 3 ), is( equalTo( "last" ) ) );
   }
-  
 
   @Test
   public void testParseCommandStringSpaces() {

@@ -78,7 +78,7 @@ public final class IOTools {
     int fileNumber = 1;
     if( files != null ) {
       for( File file : files ) {
-        fileNumber = Math.min( fileNumber, fileNumber(file, digits, filePrefix ) + 1 );
+        fileNumber = Math.max( fileNumber, fileNumber(file, digits, filePrefix ) + 1 );
       }
     }
     try {
