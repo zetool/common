@@ -159,30 +159,15 @@ public final class IOTools {
       }
       dest.delete();
     }
+
     byte[] buffer = new byte[bufSize];
-    InputStream in = null;
-    OutputStream out = null;
-    try {
-      in = new FileInputStream( src );
-      out = new FileOutputStream( dest );
+    try( InputStream in = new FileInputStream( src ); OutputStream out = new FileOutputStream( dest ) ) {
       while( true ) {
-        int read = in.read( buffer );
+        final int read = in.read( buffer );
         if( read == -1 ) { //-1 means EOF
           break;
         }
         out.write( buffer, 0, read );
-      }
-    } finally {
-      // Ensure, that the streams are closed.
-      if( in != null ) { //Falls tatsächlich in.close() und out.close()
-      //Exceptions werfen, diejenige von 'out' geworfen wird.      
-        try {
-          in.close();
-        } finally {
-          if( out != null ) {
-            out.close();
-          }
-        }
       }
     }
   }
