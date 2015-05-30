@@ -44,79 +44,52 @@ public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
 
   /* An enumeration type that specifies the current state of the algorithm. */
   public enum State {
+    /** If no problem has been set yet. */
+    UNINITIALIZED,
+    /** If a problem is defined, but solving is not started. */
     WAITING,
+    /** If the algorithm is executing. Problem cannot be changed anymore. */
     SOLVING,
+    /** If an error during the execution occured. */
     SOLVING_FAILED,
+    /** If the algorithm executed. Only state where {@link #getSolution() } is allowed to be called. */
     SOLVED;
   }
-  /**
-   * The change in progress that has at least be done to fire an {@link AlgorithmProgressEvent}
-   */
+  /** The change in progress that has at least be done to fire an {@link AlgorithmProgressEvent}. */
   private double accuracy = 0;
-  /**
-   * The set of listeners that receives events from this algorithm.
-   */
+  /** The set of listeners that receives events from this algorithm. */
   private Set<AlgorithmListener> algorithmListeners;
-  /**
-   * The description of the algorithm.
-   */
+  /** The description of the algorithm. */
   private String description = "";
-  /**
-   * Whether messages are logged by the LOG-methods.
-   */
-  private boolean logging;
-  /**
-   * Whether events are also logged to the console.
-   */
+  /** Whether events are also logged to the console. */
   private boolean loggingEvents;
-  /**
-   * The name of the algorithm.
-   */
+  /** The name of the algorithm. */
   private String name;
-  /**
-   * The parameters of this algorithm.
-   */
+  /** The parameters of this algorithm. */
   private ParameterSet parameterSet;
-  /**
-   * The instance of the problem.
-   */
+  /** The instance of the problem. */
   private P problem;
-  /**
-   * The current progress of the algorithm. The progress begins with 0.0 and ends with 1.0.
-   */
+  /** The current progress of the algorithm. The progress begins with 0.0 and ends with 1.0. */
   private double progress = -1;
-  /**
-   * The runtime of the algorithm in milliseconds.
-   */
+  /** The runtime of the algorithm in milliseconds. */
   private long runtime;
-  /**
-   * The solution to the problem instance, once available.
-   */
+  /** The solution to the problem instance, once available. */
   private S solution;
-  /**
-   * The point of time at which the execution of the algorithm started.
-   */
+  /** The point of time at which the execution of the algorithm started. */
   private long startTime;
-  /**
-   * The state of execution of the algorithm.
-   */
-  private State state;
-  /**
-   * Stores, if the algorithm execution is paused.
-   */
+  /** The state of execution of the algorithm. */
+  private State state = State.UNINITIALIZED;
+  /** Stores, if the algorithm execution is paused. */
   private boolean paused;
-  /**
-   * The logger object of this algorithm. It is initialized with the global logger, but every {@link Algorithm} may have
-   * its own logger.
-   */
+  /** The logger object of this algorithm. */
   protected Logger LOG = Debug.globalLogger;
 
   /**
-   * Creates a new algorithm.
+   * Creates a new algorithm with the name of the actual class, empty description and parameter set.
    */
   public Algorithm() {
     description = "";
-    name = this.getClass().getSimpleName();
+    name = "".equals( getClass().getSimpleName() ) ? getClass().getSuperclass().getSimpleName() : getClass().getSimpleName();
     parameterSet = new ParameterSet();
   }
 
@@ -126,7 +99,7 @@ public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
     parameterSet = new ParameterSet();
   }
 
-  public Algorithm( String name, Logger log ) {
+  private Algorithm( String name, Logger log ) {
     this( name );
     this.LOG = log;
   }
@@ -138,7 +111,7 @@ public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
    * @param listener the listener to be added to the notification list.
    * @throws IllegalStateException if the algorithm has already terminated.
    */
-  public final void addAlgorithmListener( AlgorithmListener listener ) throws IllegalStateException {
+  public final void addAlgorithmListener( AlgorithmListener listener ) {
     if( isProblemSolved() ) {
       throw new IllegalStateException( "The problem has already been "
               + "solved. There will be no more events that could be "
@@ -201,7 +174,7 @@ public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
    * method is a shortcut for fireEvent(String.format(formatStr, params)).
    *
    * @param formatStr the format string part of the message to be dispatched.
-   * @param params the parameters used by the format string.
+   * @param params    the parameters used by the format string.
    */
   protected final void fireEvent( String formatStr, Object... params ) {
     fireEvent( String.format( formatStr, params ) );
@@ -213,11 +186,11 @@ public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
    * @param progress the new progress value.
    * @throws IllegalArgumentException if the progress value is less than the previous one.
    */
-  protected final void fireProgressEvent( double progress ) throws IllegalArgumentException {
+  protected final void fireProgressEvent( double progress ) {
     if( progress < this.progress ) {
       throw new IllegalArgumentException( "The progress values must be monotonically increasing." );
     }
-    if( (progress - this.progress < accuracy) ) { // ignore small progresses
+    if( progress - this.progress < accuracy ) { // ignore small progresses
       return;
     }
     this.progress = progress;
@@ -228,10 +201,10 @@ public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
    * Updates the progress value to broadcasts the new value together with a message to all listeners.
    *
    * @param progress the current progress value.
-   * @param message a message describing the current task and progress of the algorithm.
+   * @param message  a message describing the current task and progress of the algorithm.
    * @throws IllegalArgumentException if the progress value is less than the previous one.
    */
-  protected final void fireProgressEvent( double progress, String message ) throws IllegalArgumentException {
+  protected final void fireProgressEvent( double progress, String message ) {
     if( progress < this.progress ) {
       throw new IllegalArgumentException( "The progress values must be "
               + "monotonically increasing." );
@@ -300,6 +273,7 @@ public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
    *
    * @return the instance of the problem that is to be solved.
    */
+  @Override
   public final P getProblem() {
     return problem;
   }
@@ -310,7 +284,8 @@ public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
    * @param problem the instance of the problem that is to be solved.
    * @throws IllegalStateException if the algorithm is running
    */
-  public final void setProblem( P problem ) throws IllegalStateException {
+  @Override
+  public final void setProblem( P problem ) {
     if( state == State.SOLVING ) {
       throw new IllegalStateException( "The algorithm is currently "
               + "running! Changing the underlying instance could lead to "
@@ -342,7 +317,7 @@ public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
    * @param accuracy the new accuracy value. must be in the interval [0,1]
    * @throws IllegalArgumentException if arrucarcy is not within the allowed range
    */
-  public void setAccuracy( double accuracy ) throws IllegalArgumentException {
+  public void setAccuracy( double accuracy ) {
     if( accuracy < 0 || accuracy > 1 ) {
       throw new IllegalArgumentException( "Invalid value for accuracy: "
               + accuracy );
@@ -365,7 +340,7 @@ public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
    * @return the runtime of the algorithm in milliseconds.
    * @throws IllegalStateException if the algorithm has not terminated yet.
    */
-  public final Quantity<TimeUnits> getRuntime() throws IllegalStateException {
+  public final Quantity<TimeUnits> getRuntime() {
     if( state == State.SOLVED || state == State.SOLVING_FAILED ) {
       return new Quantity<>( runtime, TimeUnits.MilliSeconds );
     }
@@ -380,7 +355,7 @@ public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
    * @return the runtime of the algorithm formatted as a string.
    * @throws IllegalStateException if the algorithm has not terminated yet.
    */
-  public final String getRuntimeAsString() throws IllegalStateException {
+  public final String getRuntimeAsString() {
     if( state == State.SOLVED || state == State.SOLVING_FAILED ) {
       return Formatter.formatUnit( runtime, TimeUnits.MilliSeconds, 2 );
     }
@@ -394,7 +369,8 @@ public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
    * @return the solution to the algorithm.
    * @throws IllegalStateException if the problem has not been solved yet.
    */
-  public final S getSolution() throws IllegalStateException {
+  @Override
+  public final S getSolution() {
     if( isProblemSolved() ) {
       return solution;
     }
@@ -409,7 +385,7 @@ public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
    * @return the start time of the algorithm.
    * @throws IllegalStateException if the execution of the algorithm has not yet begun.
    */
-  public final Quantity<TimeUnits> getStartTime() throws IllegalStateException {
+  public final Quantity<TimeUnits> getStartTime() {
     if( state != State.WAITING ) {
       return new Quantity<>( startTime, TimeUnits.MilliSeconds );
     }
@@ -507,7 +483,7 @@ public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
    * @return {@code true} if a problem instance has been specified, {@code false} otherwise.
    */
   public final boolean isProblemInitialized() {
-    return problem != null;
+    return state != State.UNINITIALIZED;
   }
 
   /**
@@ -516,7 +492,7 @@ public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
    * getSolution}.
    *
    * @return {@code true} if the algorithm'Seconds instance of the problem has been solved successfully and
-   * {@code false} otherwise.
+   *         {@code false} otherwise.
    */
   public final boolean isProblemSolved() {
     return state == State.SOLVED;
@@ -546,14 +522,14 @@ public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
    * Formats the specified message and parameters using String.format() and logs it.
    *
    * @param message the format string of the message.
-   * @param params the parameters for formatting the message.
+   * @param params  the parameters for formatting the message.
    */
   protected final void log( String message, Object... params ) {
     log( String.format( message, params ) );
   }
 
   @Override
-  public final void run() throws IllegalStateException {
+  public final void run() {
     runAlgorithm();
   }
 
@@ -633,6 +609,7 @@ public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
    * @return a solution to the specified problem.
    */
   protected abstract S runAlgorithm( P problem );
+
 
   /**
    * A private listener class for receiving events and logging them.

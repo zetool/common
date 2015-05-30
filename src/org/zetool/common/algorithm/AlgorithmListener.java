@@ -26,6 +26,7 @@ import java.util.EventListener;
  * The interface for classes that want to recieve events from algorithms.
  * @author Martin Groß
  */
+@FunctionalInterface
 public interface AlgorithmListener extends EventListener {
 
     /**
