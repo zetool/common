@@ -50,13 +50,13 @@ public class HelperTest {
     numbers.add( 3 );
     
     int sum = 0;
-    for( Integer i : in(numbers.iterator()) ) {
+    for( Integer i : in( numbers.iterator() ) ) {
       sum += i;
     }
 
-    assertThat( sum, is(equalTo(6)));
+    assertThat( sum, is( equalTo( 6 ) ) );
   }
-  
+
   @Test
   public void testInIteratorAtEnd() {
     ArrayList<Integer> numbers = new ArrayList<>();
@@ -65,13 +65,13 @@ public class HelperTest {
     Iterator<Integer> iterator = numbers.iterator();
     
     int count = 0;
-    for( Integer i : in(iterator) ) {
+    for( Integer i : in(iterator ) ) {
       count++;
     }
-    assertThat( count, is(equalTo(1) ) );
-    assertThat( iterator.hasNext(), is(false));
-    for( Integer i : in(iterator) ) {
-      throw new AssertionError("Should be empty!");
+    assertThat( count, is( equalTo( 1 ) ) );
+    assertThat( iterator.hasNext(), is( false ) );
+    for( Integer i : in( iterator ) ) {
+      throw new AssertionError( "Should be empty!" );
     }
   }
   
@@ -79,14 +79,14 @@ public class HelperTest {
   public void testInUsableOnce() {
     ArrayList<Integer> numbers = new ArrayList<>();
     numbers.add( 1 );
-    
+
     Iterator<Integer> iterator = numbers.iterator();
-    Iterable<Integer> iterable = in(iterator);
-    
+    Iterable<Integer> iterable = in( iterator );
+
     for( Integer i : iterable ) {
     }
-    exception.expect(IllegalStateException.class);
-    for( Integer i : iterable ) {      
+    exception.expect( IllegalStateException.class );
+    for( Integer i : iterable ) {
     }
   }
 }

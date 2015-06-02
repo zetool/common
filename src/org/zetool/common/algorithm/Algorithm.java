@@ -13,6 +13,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA	02110-1301, USA.
  */
+
 package org.zetool.common.algorithm;
 
 import org.zetool.common.algorithm.parameter.ParameterSet;
@@ -89,7 +90,7 @@ public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
    */
   public Algorithm() {
     description = "";
-    name = "".equals( getClass().getSimpleName() ) ? getClass().getSuperclass().getSimpleName() : getClass().getSimpleName();
+    name = getClass().getSimpleName().isEmpty() ? getClass().getSuperclass().getSimpleName() : getClass().getSimpleName();
     parameterSet = new ParameterSet();
   }
 
@@ -99,23 +100,17 @@ public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
     parameterSet = new ParameterSet();
   }
 
-  private Algorithm( String name, Logger log ) {
-    this( name );
-    this.LOG = log;
-  }
-
   /**
    * Adds the specified listener to the set of listeners receiving events from this algorithm. If the specified listener
-   * is already part of this list, nothing happens.
+   * is already part of this list, nothing happens. When the problem is already solved, no more events will be fired and
+   * an {@link IllegalStateException} is thrown.
    *
    * @param listener the listener to be added to the notification list.
-   * @throws IllegalStateException if the algorithm has already terminated.
    */
   public final void addAlgorithmListener( AlgorithmListener listener ) {
     if( isProblemSolved() ) {
-      throw new IllegalStateException( "The problem has already been "
-              + "solved. There will be no more events that could be "
-              + "listened to anymore." );
+      throw new IllegalStateException( "The problem has already been solved. There"
+              + " will be no more events that could be listened to anymore." );
     } else {
       if( algorithmListeners == null ) {
         algorithmListeners = new LinkedHashSet<>();
@@ -609,7 +604,6 @@ public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
    * @return a solution to the specified problem.
    */
   protected abstract S runAlgorithm( P problem );
-
 
   /**
    * A private listener class for receiving events and logging them.
