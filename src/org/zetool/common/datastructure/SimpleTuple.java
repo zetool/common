@@ -18,8 +18,8 @@ public class SimpleTuple<U, V> implements Tuple<U,V> {
 
     /**
      *
-     * @param u
-     * @param v
+     * @param u the first data element
+     * @param v the second data element
      * @throws NullPointerException if one of the arguments is {@code null}
      */
     public SimpleTuple( U u, V v ) throws NullPointerException {

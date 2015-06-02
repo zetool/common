@@ -24,7 +24,7 @@ import org.zetool.common.util.Helper;
  *
  * @author Jan-Philipp Kappmeier
  */
-public class BinaryUnits extends AbstractUnit<BinaryUnits> {
+public class BinaryUnits extends AbstractUnitScale<BinaryUnits> {
   public static final BinaryUnits Bit = new BinaryUnits( "Bits", "Bits", 8, null );
   public static final BinaryUnits Byte = new BinaryUnits( "Bytes", "Bytes", Bit );
   public static final BinaryUnits KiB = new BinaryUnits( "KiB", "Kibibyte", Byte );

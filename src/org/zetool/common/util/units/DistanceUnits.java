@@ -8,7 +8,7 @@ import org.zetool.common.util.Helper;
  *
  * @author Jan-Philipp Kappmeier
  */
-public class DistanceUnits extends AbstractUnit<DistanceUnits> {
+public class DistanceUnits extends AbstractUnitScale<DistanceUnits> {
   /** One nanometer equals 10^-9 meter. */
   public static final DistanceUnits NanoMeter = new DistanceUnits( "nm", "nanometer", 10, null );
   /** One micrometer equals 10^-6 meter. */

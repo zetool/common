@@ -30,7 +30,7 @@ public class AbstractUnitTest {
 
   @Test
   public void testUnitCreation() {
-    AbstractUnit myUnit = new AbstractUnit( "ur", "unit rep", 10, null ) {
+    AbstractUnitScale myUnit = new AbstractUnitScale( "ur", "unit rep", 10, null ) {
 
       @Override
       public Object getBetterUnit( double value ) {

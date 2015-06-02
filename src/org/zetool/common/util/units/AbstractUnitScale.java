@@ -4,9 +4,9 @@ package org.zetool.common.util.units;
 /**
  *
  * @author Jan-Philipp Kappmeier
- * @param <U>
+ * @param <U> the unit type handled by the unit scale
  */
-public abstract class AbstractUnit<U> implements UnitScale<U> {
+public abstract class AbstractUnitScale<U> implements UnitScale<U> {
   /** The short symbol of the unit. */
   private final String symbol;
   /** The name of the unit. */
@@ -26,7 +26,7 @@ public abstract class AbstractUnit<U> implements UnitScale<U> {
    * @param range how much of the unit is the next larger scale
    * @param previous the preceeding unit. Note that successor units are initialized in a static-initializer block
    */
-  protected AbstractUnit( String symbol, String name, double range, U previous ) {
+  protected AbstractUnitScale( String symbol, String name, double range, U previous ) {
     this.symbol = symbol;
     this.name = name;
     this.range = range;
