@@ -20,7 +20,7 @@ package org.zetool.common.datastructure;
  *
  * @author Timon Kelter
  */
-public class NamedIndex extends AbstractTuple<String, Integer> {
+public class NamedIndex extends SimpleTuple<String, Integer> {
 
     public NamedIndex( String name, int index ) {
         super( name, index );

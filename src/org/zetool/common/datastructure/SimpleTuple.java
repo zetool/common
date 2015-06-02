@@ -4,10 +4,13 @@ package org.zetool.common.datastructure;
 import java.util.Objects;
 
 /**
- * A default {@link Tuple} implementation.
+ * A simple immutable {@link Tuple} implementation. Inherit for specialized use and custom
+ * accessors.
  * @author Jan-Philipp Kappmeier
+ * @param <U> the first data type
+ * @param <V> the second data type
  */
-public class AbstractTuple<U, V> implements Tuple<U,V> {
+public class SimpleTuple<U, V> implements Tuple<U,V> {
     /** The first data. */
     private final U u;
     /** The second data. */
@@ -19,7 +22,7 @@ public class AbstractTuple<U, V> implements Tuple<U,V> {
      * @param v
      * @throws NullPointerException if one of the arguments is {@code null}
      */
-    public AbstractTuple( U u, V v ) throws NullPointerException {
+    public SimpleTuple( U u, V v ) throws NullPointerException {
         this.u = Objects.requireNonNull( u, "u must not be null" );
         this.v = v; //Objects.requireNonNull( v , "v must not be null" );
     }
