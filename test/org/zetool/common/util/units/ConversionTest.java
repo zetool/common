@@ -1,10 +1,13 @@
 
 package org.zetool.common.util.units;
 
+import org.junit.Ignore;
+
 /**
  *
  * @author Jan-Philipp Kappmeier
  */
+@Ignore
 public class ConversionTest {
   /**
    * A test unit consisting of 4 units: Base, TwoBase, FourBase, TenBase.

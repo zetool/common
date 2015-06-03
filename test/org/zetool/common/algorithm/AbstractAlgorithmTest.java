@@ -209,6 +209,58 @@ public class AbstractAlgorithmTest {
     assertThat( i2.get(), is(equalTo(0)));
   }
 
+  @Test
+  public void testProgress() {
+    Algorithm<Object, ?> a = new Algorithm<Object, Object>() {
+      @Override
+      protected Object runAlgorithm( Object problem ) {
+        fireProgressEvent( .25 );
+        fireProgressEvent( .5 );
+        fireProgressEvent( .75 );
+        fireProgressEvent( 1 );
+        return null;
+      }
+    };
+    final List<AlgorithmEvent> events = new LinkedList<>();
+    a.addAlgorithmListener( (AlgorithmEvent event) -> {
+      if( event instanceof AlgorithmProgressEvent ) {
+        events.add( event );
+      }
+    } );
+    a.setAccuracy( .5 );
+    a.setProblem( new Object() );
+
+    a.run();
+    
+    assertThat( events.size(), is( equalTo( 2 ) ) );
+  }
+  
+  @Test
+  public void testProgressFails() {
+    final AtomicBoolean causeIsNull = new AtomicBoolean( false );
+    final AtomicBoolean exceptionThrown = new AtomicBoolean( true );
+    Algorithm<Object, ?> a = new Algorithm<Object, Object>() {
+      @Override
+      protected Object runAlgorithm( Object problem ) {
+        fireProgressEvent( .1 );
+        causeIsNull.set( getCause() == null );
+        fireProgressEvent( .05 );
+        // only executed if throwing the exception fails
+        exceptionThrown.set( false );
+        return null;
+      }
+    };
+
+    a.setAccuracy( .1 );
+    a.setProblem( new Object() );
+    a.run();
+    
+    assertThat( causeIsNull.get(), is( true ) );
+    assertThat( exceptionThrown.get(), is( true ) );
+    assertThat( a.getCause(), is( instanceOf( IllegalArgumentException.class ) ) );
+    assertThat( a.getState(), is( equalTo( State.SOLVING_FAILED ) ) );
+  }
+  
   private void assertState( Algorithm<?, ?> t, Algorithm.State state ) {
     assertThat( t.getState(), is( equalTo( state ) ) );
     switch( state ) {

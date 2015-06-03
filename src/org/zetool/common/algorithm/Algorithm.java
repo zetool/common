@@ -167,7 +167,7 @@ public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
 
   /**
    * Dispatches an algorithm progress event with the specified message and current progress value to all listeners. The
-   * method is a shortcut for fireEvent(String.format(formatStr, params)).
+   * method is a shortcut for {@code fireEvent(String.format(formatStr, params))}.
    *
    * @param formatStr the format string part of the message to be dispatched.
    * @param params    the parameters used by the format string.
@@ -183,14 +183,10 @@ public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
    * @throws IllegalArgumentException if the progress value is less than the previous one.
    */
   protected final void fireProgressEvent( double progress ) {
-    if( progress < this.progress ) {
-      throw new IllegalArgumentException( "The progress values must be monotonically increasing." );
+    if( checkProgress( progress ) ) {
+      this.progress = progress;
+      fireEvent( new AlgorithmProgressEvent( this, progress ) );
     }
-    if( progress - this.progress < accuracy ) { // ignore small progresses
-      return;
-    }
-    this.progress = progress;
-    fireEvent( new AlgorithmProgressEvent( this, progress ) );
   }
 
   /**
@@ -201,12 +197,22 @@ public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
    * @throws IllegalArgumentException if the progress value is less than the previous one.
    */
   protected final void fireProgressEvent( double progress, String message ) {
-    if( progress < this.progress ) {
-      throw new IllegalArgumentException( "The progress values must be "
-              + "monotonically increasing." );
+    if( checkProgress( progress ) ) {
+      this.progress = progress;
+      fireEvent( new AlgorithmDetailedProgressEvent( this, progress, message ) );      
     }
-    this.progress = progress;
-    fireEvent( new AlgorithmDetailedProgressEvent( this, progress, message ) );
+  }
+  
+  /**
+   * Checks if the progress is valid, i.e. is larger than the old progress and it is larger than the {@link #accuracy}.
+   * @param progress the new progress
+   * @return {@literal true} if an event for the given progress should be fired, {@false otherwise}
+   */
+  private boolean checkProgress( double progress ) {
+    if( progress < this.progress ) {
+      throw new IllegalArgumentException( "The progress values must be monotonically increasing." );
+    }
+    return progress - this.progress >= accuracy;
   }
 
   /**
@@ -576,10 +582,6 @@ public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
         state = State.SOLVING_FAILED;
         LOG.log( Level.SEVERE, "No more memory. Execution stopped: ", ex );
         Debug.printException( ex );
-      } catch( Throwable t ) {
-        this.cause = t;
-        LOG.log( Level.SEVERE, "Failure: ", t );
-        state = State.SOLVING_FAILED;
       } finally {
         runtime = System.currentTimeMillis() - startTime;
         AlgorithmTerminatedEvent ev = null;
