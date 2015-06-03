@@ -18,7 +18,10 @@ package org.zetool.common.algorithm;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -31,6 +34,7 @@ import static org.junit.Assert.fail;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.zetool.common.algorithm.Algorithm.State;
 
 /**
  *
@@ -100,6 +104,54 @@ public class AbstractAlgorithmTest {
     assertThat( t.called, is( true ) );
     assertState( t, Algorithm.State.SOLVED );
   }
+
+  @Test
+  public void testRunFails() {
+    RuntimeException re = new RuntimeException();
+    Algorithm<Object, ?> a = new Algorithm<Object, Object>() {
+
+      @Override
+      protected Object runAlgorithm( Object problem ) {
+        throw re;
+      }
+    };
+    a.setProblem( new Object() );
+    a.run();
+
+    assertState( a, State.SOLVING_FAILED );
+    assertThat( a.getCause(), is( same( re ) ) );
+  }
+  
+  @Test
+  public void testRunning() {
+    final AtomicBoolean continueComputation = new AtomicBoolean( false );
+    final AtomicBoolean executionStarted = new AtomicBoolean( false );
+    Algorithm<Object, ?> a = new Algorithm<Object, Object>() {
+      @Override
+      protected Object runAlgorithm( Object problem ) {
+        executionStarted.set( true );
+        while( !continueComputation.get() ) {
+          try {
+            Thread.sleep( 50 );
+          } catch( InterruptedException ex ) {
+            Logger.getLogger( AbstractAlgorithmTest.class.getName() ).log( Level.SEVERE, null, ex );
+          }
+        }
+        return null;
+      }
+    };
+    a.setProblem( new Object() );
+    (new Thread( a )).start();
+    while( !executionStarted.get() ) {
+      try {
+        Thread.sleep( 50 );
+      } catch( InterruptedException ex ) {
+        Logger.getLogger( AbstractAlgorithmTest.class.getName() ).log( Level.SEVERE, null, ex );
+      }
+    }
+    assertState( a, State.SOLVING );
+    continueComputation.set( true );    
+  }
   
   @Test
   public void testSolution() {
@@ -160,24 +212,25 @@ public class AbstractAlgorithmTest {
   private void assertState( Algorithm<?, ?> t, Algorithm.State state ) {
     assertThat( t.getState(), is( equalTo( state ) ) );
     switch( state ) {
-      case SOLVED:
-        assertThat( t.isPaused(), is( false ) );
-        assertThat( t.isProblemInitialized(), is( true ) );
-        assertThat( t.isProblemSolved(), is( true ) );
-        assertThat( t.isRunning(), is( false ) );
-        break;
-      case SOLVING:
-        fail( "Not implemented: " + state );
-        break;
-      case SOLVING_FAILED:
-        fail( "Not implemented: " + state );
-        break;
       case UNINITIALIZED:
         assertThat( t.isPaused(), is( false ) );
         assertThat( t.isProblemInitialized(), is( false ) );
         assertThat( t.isProblemSolved(), is( false ) );
         assertThat( t.isRunning(), is( false ) );
         break;
+      case SOLVING:
+        assertThat( t.isPaused(), is( false ) );
+        assertThat( t.isProblemInitialized(), is( true ) );
+        assertThat( t.isProblemSolved(), is( false ) );
+        assertThat( t.isRunning(), is( true ) );
+        break;
+      case SOLVED:
+        assertThat( t.isPaused(), is( false ) );
+        assertThat( t.isProblemInitialized(), is( true ) );
+        assertThat( t.isProblemSolved(), is( true ) );
+        assertThat( t.isRunning(), is( false ) );
+        break;
+      case SOLVING_FAILED:
       case WAITING:
         assertThat( t.isPaused(), is( false ) );
         assertThat( t.isProblemInitialized(), is( true ) );

@@ -42,6 +42,7 @@ import java.util.logging.Logger;
  * @author Martin Groß
  */
 public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
+  private Throwable cause;
 
   /* An enumeration type that specifies the current state of the algorithm. */
   public enum State {
@@ -563,15 +564,22 @@ public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
         solution = runAlgorithm( problem );
         state = State.SOLVED;
       } catch( AssertionError e ) {
+        this.cause = e;
         state = State.SOLVING_FAILED;
         LOG.log( Level.SEVERE, "An assertion error has occured: ", e );
       } catch( RuntimeException ex ) {
+        this.cause = ex;
         state = State.SOLVING_FAILED;
         handleException( ex );
       } catch( OutOfMemoryError ex ) {
+        this.cause = ex;
         state = State.SOLVING_FAILED;
         LOG.log( Level.SEVERE, "No more memory. Execution stopped: ", ex );
         Debug.printException( ex );
+      } catch( Throwable t ) {
+        this.cause = t;
+        LOG.log( Level.SEVERE, "Failure: ", t );
+        state = State.SOLVING_FAILED;
       } finally {
         runtime = System.currentTimeMillis() - startTime;
         AlgorithmTerminatedEvent ev = null;
@@ -594,7 +602,17 @@ public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
    */
   protected void handleException( RuntimeException exception ) {
     LOG.log( java.util.logging.Level.SEVERE, "Exception in Algorithm " + this.name, exception );
-    throw exception;
+    exception.printStackTrace( System.err );
+    this.cause = exception;
+  }
+  
+  /**
+   * Returns the {@link Error} or {@RuntimeException} that occured during the execution of the
+   * algorithm.
+   * @return the exception that occured while executing the algorithm
+   */
+  public Throwable getCause() {
+    return cause;
   }
 
   /**
