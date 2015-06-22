@@ -584,13 +584,7 @@ public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
         Debug.printException( ex );
       } finally {
         runtime = System.currentTimeMillis() - startTime;
-        AlgorithmTerminatedEvent ev = null;
-        try {
-          ev = new AlgorithmTerminatedEvent( this );
-        } catch( IllegalStateException ex2 ) {
-          Debug.printException( ex2 );
-        }
-        fireEvent( ev );
+        fireEvent( new AlgorithmTerminatedEvent( this ) );
       }
     }
   }
@@ -604,7 +598,6 @@ public abstract class Algorithm<P, S> implements AlgorithmI<P, S> {
    */
   protected void handleException( RuntimeException exception ) {
     LOG.log( java.util.logging.Level.SEVERE, "Exception in Algorithm " + this.name, exception );
-    exception.printStackTrace( System.err );
     this.cause = exception;
   }
   
