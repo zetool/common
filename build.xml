@@ -343,4 +343,8 @@
         <report todir="${reports.dir}/junit-html"/>
       </junitreport>
     </target>
+
+  <target name="dist.travis" depends="build" description="generating dist and test for Travis CI" >
+    <jar jarfile="$../../lib/${lib.name}-rc.jar" basedir="${build.dir}/classes"/>
+  </target>
   </project>
