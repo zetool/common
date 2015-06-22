@@ -72,6 +72,48 @@
       <fileset dir="src" includes="**/*.xml,**/*.properties,**/*.txt,**/*.ico" />
     </copy>
   </target>
+  
+    <path id="groovy.classpath">
+      <fileset dir="lib" includes="groovy-all-2.4.3.jar"/>
+    </path>
+<taskdef name="groovyc"
+         classname="org.codehaus.groovy.ant.Groovyc"
+         classpathref="groovy.classpath"/>
+
+<target name="build.test.groovy" depends="resolve">
+<groovyc srcdir="${test.src.dir}" destdir="${test.build.dir}/classes">
+        <classpath>
+        <path refid="core.path"/>
+        <path refid="test.path"/>
+        <pathelement path="${classes.dir}"/>
+        <pathelement path="${classpath}"/>
+      </classpath>
+</groovyc>
+</target>
+
+<target name="test.groovy" depends="build.test.groovy">
+<junit printsummary="yes" haltonfailure="no" showoutput="true">
+  <!-- some details omitted -->
+          <classpath>
+            <path refid="test.path"/>
+            <path refid="core.path"/>
+            <pathelement path="${classes.dir}"/>
+            <pathelement path="${classpath}"/>                    
+            <pathelement path="${test.build.dir}/classes"/>
+          </classpath>
+      <formatter type="xml"/>
+
+    <batchtest todir="${test.reports.dir}">
+    <fileset dir="${test.build.dir}/groovy-classes">
+      <include name="**/*Test*"/>
+      <!-- a '$' in the filename means it's an inner class -->
+      <exclude name="**/*$*"/>
+    </fileset>
+  </batchtest>
+</junit>  
+</target>
+
+
 
   <target name="test" depends="build.test" description="Perform JUnit tests.">
     <junit printsummary="yes" haltonfailure="no" showoutput="true">
@@ -282,10 +324,16 @@
           <formatter type="plain" usefile="false" />
           <formatter type="xml"/>
           <batchtest fork="yes" todir="${reports.dir}/junit-xml">
-            <fileset dir="${test.src.dir}">
+    <fileset dir="${test.build.dir}/classes">
+      <include name="**/*Test*"/>
+      <!-- a '$' in the filename means it's an inner class -->
+      <exclude name="**/*$*"/>
+    </fileset>
+
+<!--            <fileset dir="${test.src.dir}">
                 <include name="**/*Test*.java"/>
                 <exclude name="**/AllTests.java"/>
-            </fileset>
+            </fileset>-->
           </batchtest>
         </junit>
       </jacoco:coverage>
