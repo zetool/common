@@ -102,7 +102,7 @@
   </target>
 
   <target name="dist-rc" depends="build" description="generating dist and test" >
-    <jar jarfile="${lib.dir.rc}/${lib.name}-rc.jar" basedir="${build.dir}/classes"/>
+    <jar jarfile="${dist.dir}/${lib.name}-rc.jar" basedir="${build.dir}/classes"/>
   </target>
 
   <target name="javadoc" depends="init" description="Creates the JavaDoc documentation for the project.">
