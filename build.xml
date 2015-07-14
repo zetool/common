@@ -105,6 +105,9 @@
     <jar jarfile="${dist.dir}/${lib.name}-rc.jar" basedir="${build.dir}/classes"/>
   </target>
 
+  <target name="dist-rc-git" depends="dist-rc" description="generating dist and test" >
+  </target>
+
   <target name="javadoc" depends="init" description="Creates the JavaDoc documentation for the project.">
     <javadoc destdir="${javadoc.dir}" sourcepath="${src.dir}" windowtitle="${lib.name}" author="true" version="true" use="true"
     charset="UTF-8" encoding="UTF-8" docencoding="UTF-8"> <!-- Anything else than UTF and you shall end up in hell! -->
