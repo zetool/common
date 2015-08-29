@@ -26,5 +26,11 @@ public class Functions {
      * @param object the consumed object
      */
     public static <R> void sinkConsumer(R object) {
+        // sink consumer does nothing.
+    }
+    
+    
+    /** Private utility class constructor. */
+    private Functions() {
     }
 }
