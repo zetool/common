@@ -22,7 +22,7 @@ package org.zetool.common.localization;
 public final class CommonLocalization {
   /** Localization access for collection classes. */
   public final static Localization LOC = LocalizationManager.getManager().getLocalization(
-          "de.tu_berlin.coga.common.localization.default" );
+          "org.zetool.common.localization.default" );
 
   /** Utility class constructor. */
   private CommonLocalization() {}
