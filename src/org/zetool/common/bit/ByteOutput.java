@@ -22,6 +22,10 @@ import java.util.stream.Stream;
  * @author Jan-Philipp Kappmeier
  */
 public class ByteOutput {
+    
+    /** Private utility class constructor. */
+    private ByteOutput() {
+    }
 
     public static byte[] combineBytes(byte[]... bytes) {
         byte[] output = new byte[totalLength(bytes)];
