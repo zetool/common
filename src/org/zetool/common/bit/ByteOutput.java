@@ -23,9 +23,8 @@ import java.util.stream.Stream;
  */
 public class ByteOutput {
 
-    static byte[] combineBytes(byte[]... bytes) {
-        int completeLength = totalLength(bytes);
-        byte[] output = new byte[completeLength];
+    public static byte[] combineBytes(byte[]... bytes) {
+        byte[] output = new byte[totalLength(bytes)];
         int startIndex = 0;
         for(byte[] current : bytes ) {
             System.arraycopy(current, 0, output, startIndex, current.length);
@@ -34,7 +33,7 @@ public class ByteOutput {
         return output;
     }
     
-    static int totalLength(byte[]... bytes) {
+    public static int totalLength(byte[]... bytes) {
         return Stream.of(bytes).map(x -> x.length).mapToInt(Integer::intValue).sum();
     }
     
