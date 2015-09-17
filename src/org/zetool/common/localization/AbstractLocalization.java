@@ -30,21 +30,13 @@ import java.util.ResourceBundle;
  */
 public abstract class AbstractLocalization implements Localization {
 
-    /**
-     * The resource bundle that is used by this localization instance.
-     */
+    /** The resource bundle that is used by this localization instance. */
     private final String bundleName;
-    /**
-     * The resource bundle that is selected (containing the localized strings).
-     */
+    /** The resource bundle that is selected (containing the localized strings). */
     private ResourceBundle bundle;
-    /**
-     * A prefix that is added to the keys for localized strings.
-     */
+    /** A prefix that is added to the keys for localized strings. */
     private String prefix = "";
-    /**
-     * Indicates if only the key is returned, if an unknown key was used. Otherwise some larger text is returned.
-     */
+    /** Indicates if only the key is returned, if an unknown key was used. Otherwise some larger text is returned. */
     private final boolean returnKeyOnly = true;
 
     private final List<Locale> supportedLocales = new ArrayList<>();
