@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.Stack;
 
 /**
  * {@code Loalization} is a class that provides the ability to localize an application. It supports access to files
@@ -34,8 +35,8 @@ public abstract class AbstractLocalization implements Localization {
     private final String bundleName;
     /** The resource bundle that is selected (containing the localized strings). */
     private ResourceBundle bundle;
-    /** A prefix that is added to the keys for localized strings. */
-    private String prefix = "";
+    /** A stack of prefixes that is added to the keys for localized strings. */
+    private final Stack<String> prefix = new Stack<>();
     /** Indicates if only the key is returned, if an unknown key was used. Otherwise some larger text is returned. */
     private final boolean returnKeyOnly = true;
 
@@ -71,9 +72,10 @@ public abstract class AbstractLocalization implements Localization {
     @Override
     public final String getString(String key) {
         try {
-            return key.isEmpty() ? "" : bundle.getString(prefix + key);
+            return key.isEmpty() ? "" : bundle.getString(currentPrefix() + key);
         } catch (MissingResourceException ex) {
-            return returnKeyOnly ? prefix + key : "Unknown Language key: '" + prefix + key + "'";
+            return returnKeyOnly ? currentPrefix() + key
+                    : "Unknown Language key: '" + currentPrefix() + key + "'";
         }
     }
 
@@ -99,7 +101,7 @@ public abstract class AbstractLocalization implements Localization {
      */
     @Override
     public final void setPrefix(String prefix) {
-        this.prefix = prefix;
+        this.prefix.push(prefix);
     }
 
     /**
@@ -109,7 +111,10 @@ public abstract class AbstractLocalization implements Localization {
      */
     @Override
     public final void clearPrefix() {
-        setPrefix("");
+        if(prefix.isEmpty()) {
+            throw new IllegalStateException("No prefix set");
+        }
+        prefix.pop();
     }
 
     void setLocale(Locale locale) {
@@ -119,5 +124,9 @@ public abstract class AbstractLocalization implements Localization {
     @Override
     public String toString() {
         return "Localization: " + bundleName;
+    }
+
+    private String currentPrefix() {
+        return prefix.empty() ? "" : prefix.peek();
     }
 }
