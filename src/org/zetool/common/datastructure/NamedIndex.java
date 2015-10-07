@@ -22,8 +22,8 @@ package org.zetool.common.datastructure;
  */
 public class NamedIndex extends SimpleTuple<String, Integer> {
 
-    public NamedIndex( String name, int index ) {
-        super( name, index );
+    public NamedIndex(String name, int index) {
+        super(name, index);
     }
 
     public String getName() {
