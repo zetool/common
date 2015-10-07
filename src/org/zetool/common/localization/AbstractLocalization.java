@@ -17,11 +17,14 @@ package org.zetool.common.localization;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import java.util.Stack;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * {@code Loalization} is a class that provides the ability to localize an application. It supports access to files
@@ -36,9 +39,9 @@ public abstract class AbstractLocalization implements Localization {
     /** The resource bundle that is selected (containing the localized strings). */
     private ResourceBundle bundle;
     /** A stack of prefixes that is added to the keys for localized strings. */
-    private final Stack<String> prefix = new Stack<>();
+    private final Deque<String> prefix = new LinkedList<>();
     /** Indicates if only the key is returned, if an unknown key was used. Otherwise some larger text is returned. */
-    private final boolean returnKeyOnly = true;
+    private boolean returnKeyOnly = true;
 
     private final List<Locale> supportedLocales = new ArrayList<>();
 
@@ -74,8 +77,9 @@ public abstract class AbstractLocalization implements Localization {
         try {
             return key.isEmpty() ? "" : bundle.getString(currentPrefix() + key);
         } catch (MissingResourceException ex) {
-            return returnKeyOnly ? currentPrefix() + key
-                    : "Unknown Language key: '" + currentPrefix() + key + "'";
+            String msg = "Unknown Language key: '" + currentPrefix() + key + "'";
+            Logger.getGlobal().log(Level.FINEST, msg, ex);
+            return returnKeyOnly ? currentPrefix() + key : msg;
         }
     }
 
@@ -90,7 +94,9 @@ public abstract class AbstractLocalization implements Localization {
         try {
             return key.isEmpty() ? "" : bundle.getString(key);
         } catch (MissingResourceException ex) {
-            return returnKeyOnly ? key : "Unknown Language key: '" + key + "'";
+            String msg = "Unknown Language key: '" + key + "'";
+            Logger.getGlobal().log(Level.FINEST, msg, ex);
+            return returnKeyOnly ? key : msg;
         }
     }
 
@@ -121,12 +127,20 @@ public abstract class AbstractLocalization implements Localization {
         bundle = ResourceBundle.getBundle(bundleName, locale);
     }
 
+    public boolean isReturnKeyOnly() {
+        return returnKeyOnly;
+    }
+
+    public void setReturnKeyOnly(boolean returnKeyOnly) {
+        this.returnKeyOnly = returnKeyOnly;
+    }
+
     @Override
     public String toString() {
         return "Localization: " + bundleName;
     }
 
     private String currentPrefix() {
-        return prefix.empty() ? "" : prefix.peek();
+        return prefix.isEmpty() ? "" : prefix.peek();
     }
 }
