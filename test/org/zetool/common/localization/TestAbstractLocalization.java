@@ -46,6 +46,7 @@ public class TestAbstractLocalization {
         assertThat(loc.getStringWithoutPrefix("entry.with.some.prefix"), is(equalTo("test-value")));
         assertThat(loc.getStringWithoutPrefix("entry.with.other.prefix"),
                 is(equalTo("other-value")));
+        assertThat(loc.getStringWithoutPrefix("some.undefined"), is(equalTo("some.undefined")));
     }
     
     @Test(expected = IllegalStateException.class)

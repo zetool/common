@@ -21,9 +21,10 @@ package org.zetool.common.localization;
  */
 public final class CommonLocalization {
   /** Localization access for collection classes. */
-  public final static Localization LOC = LocalizationManager.getManager().getLocalization(
+  public static final Localization LOC = LocalizationManager.getManager().getLocalization(
           "org.zetool.common.localization.default" );
 
   /** Utility class constructor. */
-  private CommonLocalization() {}
+  private CommonLocalization() {
+  }
 }
