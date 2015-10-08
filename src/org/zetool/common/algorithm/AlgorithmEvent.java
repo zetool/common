@@ -35,7 +35,7 @@ public abstract class AlgorithmEvent {
   /**
    * The algorithm the event occurred in.
    */
-  private Algorithm<?, ?> algorithm;
+  private AbstractAlgorithm<?, ?> algorithm;
   /**
    * The time at which the event occurred in milliseconds elapsed since
    * midnight, January 1, 1970 UTC.
@@ -50,7 +50,7 @@ public abstract class AlgorithmEvent {
    * @param eventTime the time at which the event occurred in milliseconds
    * elapsed since midnight, January 1, 1970 UTC.
    */
-  protected AlgorithmEvent( Algorithm<?, ?> algorithm, Quantity<TimeUnits> eventTime ) {
+  protected AlgorithmEvent( AbstractAlgorithm<?, ?> algorithm, Quantity<TimeUnits> eventTime ) {
     this.algorithm = algorithm;
     this.eventTime = eventTime;
   }
@@ -60,7 +60,7 @@ public abstract class AlgorithmEvent {
    *
    * @return the algorithm the event occurred in.
    */
-  public final Algorithm<?, ?> getAlgorithm() {
+  public final AbstractAlgorithm<?, ?> getAlgorithm() {
     return algorithm;
   }
 

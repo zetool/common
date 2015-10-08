@@ -34,7 +34,7 @@ import static org.junit.Assert.fail;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.zetool.common.algorithm.Algorithm.State;
+import org.zetool.common.algorithm.AbstractAlgorithm.State;
 
 /**
  *
@@ -45,7 +45,7 @@ public class AbstractAlgorithmTest {
   @Rule
   public ExpectedException exception = ExpectedException.none();
   
-  private static class FakeAlgorithm extends Algorithm<Object, Object> {
+  private static class FakeAlgorithm extends AbstractAlgorithm<Object, Object> {
     private boolean called = false;
     
     public FakeAlgorithm() {
@@ -78,15 +78,15 @@ public class AbstractAlgorithmTest {
 
   @Test
   public void testAnonymous() {
-    assertAlgorithm( new Algorithm<Object, Object>() {
+    assertAlgorithm( new AbstractAlgorithm<Object, Object>() {
       @Override protected Object runAlgorithm( Object problem ) { return null; }
     }, "Algorithm" );
   }
 
-  private void assertAlgorithm( Algorithm<?, ?> t, String name ) {
+  private void assertAlgorithm( AbstractAlgorithm<?, ?> t, String name ) {
     assertThat( t.getName(), is( equalTo( name ) ) );
     assertThat( t.getParameterSet(), is( not( nullValue() ) ) );
-    assertState( t, Algorithm.State.UNINITIALIZED );
+    assertState( t, AbstractAlgorithm.State.UNINITIALIZED );
   }
   
   @Test
@@ -94,21 +94,21 @@ public class AbstractAlgorithmTest {
     FakeAlgorithm t = new FakeAlgorithm();
     Object problem = new Object();
     
-    assertState( t, Algorithm.State.UNINITIALIZED );
+    assertState( t, AbstractAlgorithm.State.UNINITIALIZED );
     t.setProblem( problem );
-    assertState( t, Algorithm.State.WAITING );
+    assertState( t, AbstractAlgorithm.State.WAITING );
     
     t.run();
     
     assertThat( t.getProblem(), is( same( problem ) ) );
     assertThat( t.called, is( true ) );
-    assertState( t, Algorithm.State.SOLVED );
+    assertState( t, AbstractAlgorithm.State.SOLVED );
   }
 
   @Test
   public void testRunFails() {
     RuntimeException re = new RuntimeException();
-    Algorithm<Object, ?> a = new Algorithm<Object, Object>() {
+    AbstractAlgorithm<Object, ?> a = new AbstractAlgorithm<Object, Object>() {
 
       @Override
       protected Object runAlgorithm( Object problem ) {
@@ -126,7 +126,7 @@ public class AbstractAlgorithmTest {
   public void testRunning() {
     final AtomicBoolean continueComputation = new AtomicBoolean( false );
     final AtomicBoolean executionStarted = new AtomicBoolean( false );
-    Algorithm<Object, ?> a = new Algorithm<Object, Object>() {
+    AbstractAlgorithm<Object, ?> a = new AbstractAlgorithm<Object, Object>() {
       @Override
       protected Object runAlgorithm( Object problem ) {
         executionStarted.set( true );
@@ -170,7 +170,7 @@ public class AbstractAlgorithmTest {
   
   @Test
   public void testListener() {
-    Algorithm<Object,?> t = new FakeAlgorithm();
+    AbstractAlgorithm<Object,?> t = new FakeAlgorithm();
     final List<AlgorithmEvent> events = new LinkedList<>();
     t.addAlgorithmListener( (AlgorithmEvent event) -> events.add( event ) );
     t.setProblem( new Object() );
@@ -183,7 +183,7 @@ public class AbstractAlgorithmTest {
   
   @Test( expected = IllegalStateException.class)
   public void testAddListenerFails() {
-    Algorithm<Object,?> t = new FakeAlgorithm();
+    AbstractAlgorithm<Object,?> t = new FakeAlgorithm();
     t.setProblem( new Object() );
     t.run();
     
@@ -192,7 +192,7 @@ public class AbstractAlgorithmTest {
   
   @Test
   public void testRemoveListener() {
-    Algorithm<Object, ?> t = new FakeAlgorithm();
+    AbstractAlgorithm<Object, ?> t = new FakeAlgorithm();
     t.removeAlgorithmListener( (AlgorithmEvent event) -> {} );
     final AtomicInteger i1 = new AtomicInteger();
     final AtomicInteger i2 = new AtomicInteger();
@@ -211,7 +211,7 @@ public class AbstractAlgorithmTest {
 
   @Test
   public void testProgress() {
-    Algorithm<Object, ?> a = new Algorithm<Object, Object>() {
+    AbstractAlgorithm<Object, ?> a = new AbstractAlgorithm<Object, Object>() {
       @Override
       protected Object runAlgorithm( Object problem ) {
         fireProgressEvent( .25 );
@@ -239,7 +239,7 @@ public class AbstractAlgorithmTest {
   public void testProgressFails() {
     final AtomicBoolean causeIsNull = new AtomicBoolean( false );
     final AtomicBoolean exceptionThrown = new AtomicBoolean( true );
-    Algorithm<Object, ?> a = new Algorithm<Object, Object>() {
+    AbstractAlgorithm<Object, ?> a = new AbstractAlgorithm<Object, Object>() {
       @Override
       protected Object runAlgorithm( Object problem ) {
         fireProgressEvent( .1 );
@@ -261,7 +261,7 @@ public class AbstractAlgorithmTest {
     assertThat( a.getState(), is( equalTo( State.SOLVING_FAILED ) ) );
   }
   
-  private void assertState( Algorithm<?, ?> t, Algorithm.State state ) {
+  private void assertState( AbstractAlgorithm<?, ?> t, AbstractAlgorithm.State state ) {
     assertThat( t.getState(), is( equalTo( state ) ) );
     switch( state ) {
       case UNINITIALIZED:

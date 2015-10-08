@@ -37,12 +37,12 @@ public class AlgorithmDetailedProgressEvent extends AlgorithmProgressEvent {
      */
     private String message;
 
-    public AlgorithmDetailedProgressEvent(Algorithm algorithm, double progress, String message) {
+    public AlgorithmDetailedProgressEvent(AbstractAlgorithm algorithm, double progress, String message) {
         super(algorithm, progress);
         this.message = message;
     }
 
-    public AlgorithmDetailedProgressEvent(Algorithm algorithm, Quantity<TimeUnits> eventTime, double progress, String message) {
+    public AlgorithmDetailedProgressEvent(AbstractAlgorithm algorithm, Quantity<TimeUnits> eventTime, double progress, String message) {
         super(algorithm, eventTime, progress);
     }
 

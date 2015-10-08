@@ -24,7 +24,7 @@ public class AlgorithmStatusEvent extends AlgorithmEvent {
      * @param algorithm the algorithm for which progress occurred.
 		 * @param text the status text message
      */
-    public AlgorithmStatusEvent(Algorithm<?,?> algorithm, String text) {
+    public AlgorithmStatusEvent(AbstractAlgorithm<?,?> algorithm, String text) {
 				this( algorithm, new Quantity<>( System.currentTimeMillis(), TimeUnits.MilliSeconds ), text );
     }
 
@@ -35,7 +35,7 @@ public class AlgorithmStatusEvent extends AlgorithmEvent {
 		 * @param eventTime the time (in milliseconds) when the event occured
      * @param text the status message
      */
-    public AlgorithmStatusEvent(Algorithm<?,?> algorithm, Quantity<TimeUnits> eventTime, String text) {
+    public AlgorithmStatusEvent(AbstractAlgorithm<?,?> algorithm, Quantity<TimeUnits> eventTime, String text) {
         super(algorithm, eventTime);
         this.message = text;
     }

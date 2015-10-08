@@ -32,7 +32,7 @@ public class AlgorithmStartedEvent extends AlgorithmEvent {
      * Creates a {@code AlgorithmStartedEvent} for the specified algorithm.
      * @param algorithm the algorithm whose execution started.
      */
-    public AlgorithmStartedEvent(Algorithm algorithm) {
+    public AlgorithmStartedEvent(AbstractAlgorithm algorithm) {
         super(algorithm, algorithm.getStartTime());
     }
 }

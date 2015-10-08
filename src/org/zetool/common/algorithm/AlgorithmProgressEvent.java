@@ -35,7 +35,7 @@ public class AlgorithmProgressEvent extends AlgorithmEvent {
 	 * @throws IllegalArgumentException if the progress value is not between 0
 	 * and 1 (inclusively).
 	 */
-	public AlgorithmProgressEvent( Algorithm<?,?> algorithm, double progress ) {
+	public AlgorithmProgressEvent( AbstractAlgorithm<?,?> algorithm, double progress ) {
 		this( algorithm, new Quantity<>( System.currentTimeMillis(), TimeUnits.MilliSeconds ), progress );
 	}
 
@@ -48,7 +48,7 @@ public class AlgorithmProgressEvent extends AlgorithmEvent {
 	 * @throws IllegalArgumentException if the progress value is not between 0
 	 * and 1 (inclusively).
 	 */
-	public AlgorithmProgressEvent( Algorithm<?,?> algorithm, Quantity<TimeUnits> eventTime, double progress ) {
+	public AlgorithmProgressEvent( AbstractAlgorithm<?,?> algorithm, Quantity<TimeUnits> eventTime, double progress ) {
 		super( algorithm, eventTime );
 		if( progress < 0.0 )
 			throw new IllegalArgumentException( "The progress value must not be < 0.0." );

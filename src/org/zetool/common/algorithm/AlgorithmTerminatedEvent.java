@@ -32,7 +32,7 @@ public class AlgorithmTerminatedEvent extends AlgorithmEvent {
 	 * Creates an {@code AlgorithmTerminatedEvent} for the specified algorithm.
 	 * @param algorithm the algorithm that has terminated.
 	 */
-	public AlgorithmTerminatedEvent( Algorithm<?,?> algorithm ) {
+	public AlgorithmTerminatedEvent( AbstractAlgorithm<?,?> algorithm ) {
 		super( algorithm, new Quantity<>( algorithm.getStartTime().getValue() + algorithm.getRuntime().getValue(), TimeUnits.MilliSeconds ) );
 		runtime = algorithm.getRuntime();
 	}
@@ -43,7 +43,7 @@ public class AlgorithmTerminatedEvent extends AlgorithmEvent {
 	 * @param algorithm the algorithm that has terminated.
 	 * @param runtime the running time of the algorithm
 	 */
-	public AlgorithmTerminatedEvent( Algorithm<?,?> algorithm, Quantity<TimeUnits> runtime ) {
+	public AlgorithmTerminatedEvent( AbstractAlgorithm<?,?> algorithm, Quantity<TimeUnits> runtime ) {
 		this( algorithm );
 		this.runtime = runtime;
 	}
