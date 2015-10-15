@@ -15,9 +15,6 @@
  */
 package org.zetool.common.algorithm;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  * Executes an algorithm on a transformed problem instance and afterwards also transforms the solution. As a parameter
  * the {@code Transformation} needs an algorithm computing a solution for the transformed problem.
@@ -64,7 +61,7 @@ public class Transformation<P, T, R, S> extends AbstractAlgorithm<P, S> implemen
     }
 
     @Override
-    public void eventOccurred(AlgorithmEvent event) {
+    public void eventOccurred(AbstractAlgorithmEvent event) {
         fireEvent(event);
     }
 

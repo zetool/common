@@ -34,5 +34,5 @@ public interface AlgorithmListener extends EventListener {
      * being listened to.
      * @param event the event which occurred.
      */
-    void eventOccurred(AlgorithmEvent event);
+    void eventOccurred(AbstractAlgorithmEvent event);
 }

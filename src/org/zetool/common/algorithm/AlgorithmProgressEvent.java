@@ -13,7 +13,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
 package org.zetool.common.algorithm;
 
 import org.zetool.common.util.units.Quantity;
@@ -21,58 +20,59 @@ import org.zetool.common.util.units.TimeUnits;
 
 /**
  * An algorithm event that is fired by the algorithm when progress occurs.
+ *
  * @author Martin Groß
  */
-public class AlgorithmProgressEvent extends AlgorithmEvent {
-	/** The current progress value, 0 <= progress <= 1. */
-	private double progress;
+public class AlgorithmProgressEvent extends AbstractAlgorithmEvent {
 
-	/**
-	 * Creates an {@code AlgorithmProgressEvent} for the specified
-	 * algorithm and the current progress value.
-	 * @param algorithm the algorithm for which progress occurred.
-	 * @param progress the progress value.
-	 * @throws IllegalArgumentException if the progress value is not between 0
-	 * and 1 (inclusively).
-	 */
-	public AlgorithmProgressEvent( AbstractAlgorithm<?,?> algorithm, double progress ) {
-		this( algorithm, new Quantity<>( System.currentTimeMillis(), TimeUnits.MilliSeconds ), progress );
-	}
+    /** The current progress value, 0 <= progress <= 1. */
+    private double progress;
 
-	/**
-	 * Creates an {@code AlgorithmProgressEvent} for the specified
-	 * algorithm and the current progress value.
-	 * @param algorithm the algorithm for which progress occurred.
-	 * @param eventTime the time when the event was fired
-	 * @param progress the progress value.
-	 * @throws IllegalArgumentException if the progress value is not between 0
-	 * and 1 (inclusively).
-	 */
-	public AlgorithmProgressEvent( AbstractAlgorithm<?,?> algorithm, Quantity<TimeUnits> eventTime, double progress ) {
-		super( algorithm, eventTime );
-		if( progress < 0.0 )
-			throw new IllegalArgumentException( "The progress value must not be < 0.0." );
-		else if( progress > 1.0 )
-			throw new IllegalArgumentException( "The progress values must not not be > 1.0." );
-		this.progress = progress;
-	}
+    /**
+     * Creates an {@code AlgorithmProgressEvent} for the specified algorithm and the current progress value.
+     *
+     * @param algorithm the algorithm for which progress occurred.
+     * @param progress the progress value.
+     * @throws IllegalArgumentException if the progress value is not between 0 and 1 (inclusively).
+     */
+    public AlgorithmProgressEvent(Algorithm<?, ?> algorithm, double progress) {
+        this(algorithm, new Quantity<>(System.currentTimeMillis(), TimeUnits.MilliSeconds), progress);
+    }
 
-	/**
-	 * Returns the current progress value, which is zero at the beginning and 1
-	 * after successfully terminating.
-	 * @return the current progress value.
-	 */
-	public double getProgress() {
-		return progress;
-	}
+    /**
+     * Creates an {@code AlgorithmProgressEvent} for the specified algorithm and the current progress value.
+     *
+     * @param algorithm the algorithm for which progress occurred.
+     * @param eventTime the time when the event was fired
+     * @param progress the progress value.
+     * @throws IllegalArgumentException if the progress value is not between 0 and 1 (inclusively).
+     */
+    public AlgorithmProgressEvent(Algorithm<?, ?> algorithm, Quantity<TimeUnits> eventTime, double progress) {
+        super(algorithm, eventTime);
+        if (progress < 0.0) {
+            throw new IllegalArgumentException("The progress value must not be < 0.0.");
+        } else if (progress > 1.0) {
+            throw new IllegalArgumentException("The progress values must not not be > 1.0.");
+        }
+        this.progress = progress;
+    }
 
-	/**
-	 * Returns the current progress value as an integer between 0 and 100. The
-	 * progress value is 0 at the beginning of the algorithm and 100 after
-	 * a successful termination of the algorithm.
-	 * @return the current progress value.
-	 */
-	public int getProgressAsInteger() {
-		return (int) Math.round( progress * 100 );
-	}
+    /**
+     * Returns the current progress value, which is zero at the beginning and 1 after successfully terminating.
+     *
+     * @return the current progress value.
+     */
+    public double getProgress() {
+        return progress;
+    }
+
+    /**
+     * Returns the current progress value as an integer between 0 and 100. The progress value is 0 at the beginning of
+     * the algorithm and 100 after a successful termination of the algorithm.
+     *
+     * @return the current progress value.
+     */
+    public int getProgressAsInteger() {
+        return (int) Math.round(progress * 100);
+    }
 }

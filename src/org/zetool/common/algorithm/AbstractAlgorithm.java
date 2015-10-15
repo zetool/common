@@ -146,7 +146,7 @@ public abstract class AbstractAlgorithm<P, S> implements Algorithm<P, S> {
      *
      * @param event the event to be dispatched to the listeners.
      */
-    protected final void fireEvent(AlgorithmEvent event) {
+    protected final void fireEvent(AbstractAlgorithmEvent event) {
         if (algorithmListeners != null) {
             algorithmListeners.stream().forEach(listener -> listener.eventOccurred(event));
         }
@@ -625,7 +625,7 @@ public abstract class AbstractAlgorithm<P, S> implements Algorithm<P, S> {
          * @param event the event which occurred.
          */
         @Override
-        public void eventOccurred(AlgorithmEvent event) {
+        public void eventOccurred(AbstractAlgorithmEvent event) {
             String message = "";
             if (event instanceof AlgorithmStartedEvent) {
                 message = String.format("%1$s: %2$s gestartet...",

@@ -86,41 +86,41 @@ public class AbstractAlgorithmTest {
         }, "AbstractAlgorithm");
     }
 
-    
-        static class AlgorithmEventCounter implements AlgorithmListener {
-            public int started = 0;
-            public int terminated = 0;
-            public boolean terminatedAfterStarted = false;
+    static class AlgorithmEventCounter implements AlgorithmListener {
 
-            @Override
-            public void eventOccurred(AlgorithmEvent event) {
-                System.out.println("Event: " + event);
-                if( event instanceof AlgorithmStartedEvent) {
-                    started++;
-                }
-                if( event instanceof AlgorithmTerminatedEvent ) {
-                    terminated++;
-                    if( started > 0 ) {
-                        terminatedAfterStarted = true;
-                    }
+        public int started = 0;
+        public int terminated = 0;
+        public boolean terminatedAfterStarted = false;
+
+        @Override
+        public void eventOccurred(AbstractAlgorithmEvent event) {
+            System.out.println("Event: " + event);
+            if (event instanceof AlgorithmStartedEvent) {
+                started++;
+            }
+            if (event instanceof AlgorithmTerminatedEvent) {
+                terminated++;
+                if (started > 0) {
+                    terminatedAfterStarted = true;
                 }
             }
-        };
-    
+        }
+    };
+
     @Test(expected = IllegalStateException.class)
     public void testFailsWithoutInitialization() {
-        Algorithm<?,?> algorithm = new FakeAlgorithm();
+        Algorithm<?, ?> algorithm = new FakeAlgorithm();
         algorithm.call();
     }
-    
+
     @Test
     public void testFiresEvents() {
         AlgorithmEventCounter listener = new AlgorithmEventCounter();
-        AbstractAlgorithm<Object,Object> algorithm = new FakeAlgorithm();
+        AbstractAlgorithm<Object, Object> algorithm = new FakeAlgorithm();
         algorithm.setProblem(new Object());
         algorithm.addAlgorithmListener(listener);
         algorithm.run();
-        
+
         assertThat(listener.started, is(equalTo(1)));
         assertThat(listener.terminated, is(equalTo(1)));
         assertThat(listener.terminatedAfterStarted, is(equalTo(true)));
@@ -214,8 +214,8 @@ public class AbstractAlgorithmTest {
     @Test
     public void testListener() {
         AbstractAlgorithm<Object, ?> t = new FakeAlgorithm();
-        final List<AlgorithmEvent> events = new LinkedList<>();
-        t.addAlgorithmListener((AlgorithmEvent event) -> events.add(event));
+        final List<AbstractAlgorithmEvent> events = new LinkedList<>();
+        t.addAlgorithmListener((AbstractAlgorithmEvent event) -> events.add(event));
         t.setProblem(new Object());
 
         t.run();
@@ -230,19 +230,19 @@ public class AbstractAlgorithmTest {
         t.setProblem(new Object());
         t.run();
 
-        t.addAlgorithmListener((AlgorithmEvent event) -> {
+        t.addAlgorithmListener((AbstractAlgorithmEvent event) -> {
         });
     }
 
     @Test
     public void testRemoveListener() {
         AbstractAlgorithm<Object, ?> t = new FakeAlgorithm();
-        t.removeAlgorithmListener((AlgorithmEvent event) -> {
+        t.removeAlgorithmListener((AbstractAlgorithmEvent event) -> {
         });
         final AtomicInteger i1 = new AtomicInteger();
         final AtomicInteger i2 = new AtomicInteger();
-        AlgorithmListener al1 = (AlgorithmEvent event) -> i1.incrementAndGet();
-        AlgorithmListener al2 = (AlgorithmEvent event) -> i2.incrementAndGet();
+        AlgorithmListener al1 = (AbstractAlgorithmEvent event) -> i1.incrementAndGet();
+        AlgorithmListener al2 = (AbstractAlgorithmEvent event) -> i2.incrementAndGet();
         t.addAlgorithmListener(al1);
         t.addAlgorithmListener(al2);
         t.removeAlgorithmListener(al2);
@@ -252,6 +252,30 @@ public class AbstractAlgorithmTest {
 
         assertThat(i1.get(), is(greaterThan(0)));
         assertThat(i2.get(), is(equalTo(0)));
+    }
+    
+    @Test
+    public void testAddListenersFromOtherInstance() {
+        AbstractAlgorithm<Object, Object> firstAlgorithm = new FakeAlgorithm();
+        final AtomicInteger i1 = new AtomicInteger();
+        final AtomicInteger i2 = new AtomicInteger();
+        AlgorithmListener al1 = (AbstractAlgorithmEvent event) -> i1.incrementAndGet();
+        AlgorithmListener al2 = (AbstractAlgorithmEvent event) -> i2.incrementAndGet();
+        
+        firstAlgorithm.addAlgorithmListener(al1);
+        firstAlgorithm.addAlgorithmListener(al2);
+        
+        AbstractAlgorithm<Object,Object> secondAlgorithm = new FakeAlgorithm();
+        secondAlgorithm.addAlgorithmListener(firstAlgorithm);
+        firstAlgorithm.removeAlgorithmListener(al2);
+        
+        secondAlgorithm.setProblem(new Object());
+        secondAlgorithm.run();
+        
+        assertState(firstAlgorithm, AbstractAlgorithm.State.UNINITIALIZED);
+        assertState(secondAlgorithm, AbstractAlgorithm.State.SOLVED);
+        assertThat(i1.get(), is(greaterThan(0)));
+        assertThat(i2.get(), is(greaterThan(0)));
     }
 
     @Test
@@ -266,8 +290,8 @@ public class AbstractAlgorithmTest {
                 return null;
             }
         };
-        final List<AlgorithmEvent> events = new LinkedList<>();
-        a.addAlgorithmListener((AlgorithmEvent event) -> {
+        final List<AbstractAlgorithmEvent> events = new LinkedList<>();
+        a.addAlgorithmListener((AbstractAlgorithmEvent event) -> {
             if (event instanceof AlgorithmProgressEvent) {
                 events.add(event);
             }
@@ -306,9 +330,9 @@ public class AbstractAlgorithmTest {
         assertThat(a.getState(), is(equalTo(State.SOLVING_FAILED)));
     }
 
-    private void assertState(AbstractAlgorithm<?, ?> t, AbstractAlgorithm.State state) {
-        assertThat(t.getState(), is(equalTo(state)));
-        switch (state) {
+    private void assertState(AbstractAlgorithm<?, ?> t, AbstractAlgorithm.State expectedState) {
+        assertThat(t.getState(), is(equalTo(expectedState)));
+        switch (expectedState) {
             case UNINITIALIZED:
                 assertThat(t.isPaused(), is(false));
                 assertThat(t.isProblemInitialized(), is(false));
@@ -335,7 +359,7 @@ public class AbstractAlgorithmTest {
                 assertThat(t.isRunning(), is(false));
                 break;
             default:
-                fail("Undefined state in test: " + state);
+                fail("Undefined state in test: " + expectedState);
         }
     }
 }

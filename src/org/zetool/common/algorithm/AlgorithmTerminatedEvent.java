@@ -25,7 +25,7 @@ import org.zetool.common.util.units.TimeUnits;
  * 
  * @author Martin Groß
  */
-public class AlgorithmTerminatedEvent extends AlgorithmEvent {
+public class AlgorithmTerminatedEvent extends AbstractAlgorithmEvent {
 	Quantity<TimeUnits> runtime = null;
 
 	/**
