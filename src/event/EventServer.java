@@ -26,18 +26,17 @@ import java.util.Map;
 public class EventServer {
 
     private static EventServer instance;
+    protected Map<Class<? extends Event>, List<EventListener>> listeners;
+
+    private EventServer() {
+        listeners = new HashMap<>();
+    }
 
     public static EventServer getInstance() {
         if (instance == null) {
             instance = new EventServer();
         }
         return instance;
-    }
-
-    protected Map<Class<? extends Event>, List<EventListener>> listeners;
-
-    private EventServer() {
-        listeners = new HashMap<>();
     }
 
     public <T extends Event> void registerListener(EventListener<? super T> listener, Class<T> eventType) {

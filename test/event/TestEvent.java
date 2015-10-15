@@ -35,7 +35,7 @@ public class TestEvent {
         }
     }
 
-    private static class SubEvent extends HelpEvent {
+    private static class SubEvent extends HelpEvent implements Event {
 
         public SubEvent(String text) {
             super(text);
@@ -73,6 +73,19 @@ public class TestEvent {
         HelpEventListener eventListener = new HelpEventListener();
 
         es.registerListener(eventListener, HelpEvent.class);
+
+        es.dispatchEvent(new SubEvent("text"));
+        assertThat(eventListener.called, is(equalTo(1)));
+        assertThat(eventListener.text, is(equalTo("text")));
+    }
+
+    @Test
+    public void testListenerNotifiedOnlyOnce() {
+        EventServer es = EventServer.getInstance();
+        HelpEventListener eventListener = new HelpEventListener();
+
+        es.registerListener(eventListener, HelpEvent.class);
+        es.registerListener(eventListener, SubEvent.class);
 
         es.dispatchEvent(new SubEvent("text"));
         assertThat(eventListener.called, is(equalTo(1)));
