@@ -32,8 +32,8 @@ public class AlgorithmProgressEventTest {
 
     @Test
     public void testRangesWorks() {
-        Algorithm algorithmMock = context.mock(Algorithm.class);
-        AlgorithmProgressEvent progressEvent = new AlgorithmProgressEvent(algorithmMock, 0.3);
+        Algorithm<?,?> algorithmMock = context.mock(Algorithm.class);
+        AlgorithmProgressEvent<?,?> progressEvent = new AlgorithmProgressEvent<>(algorithmMock, 0.3);
         assertThat(progressEvent.getAlgorithm(), is(equalTo(algorithmMock)));
         assertThat(progressEvent.getProgress(), is(closeTo(0.3, 10e-8)));
         assertThat(progressEvent.getProgressAsInteger(), is(equalTo(30)));
@@ -41,18 +41,18 @@ public class AlgorithmProgressEventTest {
 
     @Test
     public void testBoundaryRanges() {
-        Algorithm algorithmMock = context.mock(Algorithm.class);
-        assertThat( new AlgorithmProgressEvent(algorithmMock, 0), is(CoreMatchers.notNullValue()));
-        assertThat( new AlgorithmProgressEvent(algorithmMock, 1), is(CoreMatchers.notNullValue()));
+        Algorithm<?,?> algorithmMock = context.mock(Algorithm.class);
+        assertThat( new AlgorithmProgressEvent<>(algorithmMock, 0), is(CoreMatchers.notNullValue()));
+        assertThat( new AlgorithmProgressEvent<>(algorithmMock, 1), is(CoreMatchers.notNullValue()));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testNegativeProgressFails() {
-        assertThat( new AlgorithmProgressEvent(context.mock(Algorithm.class), -0.0001), is(CoreMatchers.notNullValue()));
+        assertThat( new AlgorithmProgressEvent<>(context.mock(Algorithm.class), -0.0001), is(CoreMatchers.notNullValue()));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testLargeProgressFails() {
-        assertThat( new AlgorithmProgressEvent(context.mock(Algorithm.class), 1.0001), is(CoreMatchers.notNullValue()));
+        assertThat( new AlgorithmProgressEvent<>(context.mock(Algorithm.class), 1.0001), is(CoreMatchers.notNullValue()));
     }
 }
