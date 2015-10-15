@@ -13,7 +13,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
 package event;
 
 import java.util.HashMap;
@@ -25,7 +24,7 @@ import java.util.Map;
  *
  */
 public class EventServer {
-    
+
     private static EventServer instance;
 
     public static EventServer getInstance() {
@@ -34,50 +33,59 @@ public class EventServer {
         }
         return instance;
     }
-    
+
     protected Map<Class<? extends Event>, List<EventListener>> listeners;
-    
+
     private EventServer() {
-        listeners = new HashMap<Class<? extends Event>, List<EventListener>>();
+        listeners = new HashMap<>();
     }
-    
+
     public <T extends Event> void registerListener(EventListener<? super T> listener, Class<T> eventType) {
         if (!listeners.containsKey(eventType)) {
-            listeners.put(eventType, new LinkedList<EventListener>());
+            listeners.put(eventType, new LinkedList<>());
         }
         if (!listeners.get(eventType).contains(listener)) {
             listeners.get(eventType).add(listener);
         }
     }
-    
-    public <T extends Event> void unregisterListener(EventListener<? super T> listener, Class<T> eventType) {        
+
+    public <T extends Event> void unregisterListener(EventListener<? super T> listener, Class<T> eventType) {
         if (!listeners.containsKey(eventType)) {
             return;
         }
         if (listeners.get(eventType).contains(listener)) {
             listeners.get(eventType).remove(listener);
-        }        
+        }
     }
-    
+
     public void dispatchEvent(Event e) {
-        Class<?> eventType = e.getClass();
-        Map<EventListener, Boolean> notified = new HashMap<EventListener, Boolean>();
-        do {            
+        Class<? extends Event> eventType = e.getClass();
+        Map<EventListener, Boolean> notified = new HashMap<>();
+        do {
             notifyListeners(e, eventType, notified);
             for (Class<?> cl : eventType.getInterfaces()) {
-                notifyListeners(e, cl, notified);
+                if( Event.class.isAssignableFrom(cl)) {
+                    notifyListeners(e, (Class<? extends Event>)cl, notified);
+                }
             }
-            eventType = eventType.getSuperclass();
+            Class<?> superType = eventType.getSuperclass();
+            if( superType != null && Event.class.isAssignableFrom(superType)) {
+                eventType = (Class<? extends Event>)superType;
+            } else {
+                eventType = null;
+            }
         } while (eventType != null);
     }
-    
-    protected void notifyListeners(Event e, Class<?> eventType, Map<EventListener, Boolean> notified) {
+
+    protected void notifyListeners(Event e, Class<? extends Event> eventType, Map<EventListener, Boolean> notified) {
         if (listeners.containsKey(eventType)) {
             for (EventListener listener : listeners.get(eventType)) {
-                if (notified.containsKey(listener) && notified.get(listener)) continue;
+                if (notified.containsKey(listener) && notified.get(listener)) {
+                    continue;
+                }
                 listener.handleEvent(e);
                 notified.put(listener, Boolean.TRUE);
             }
-        }        
+        }
     }
 }

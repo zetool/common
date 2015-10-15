@@ -15,7 +15,6 @@
  */
 package org.zetool.common.algorithm;
 
-import com.oracle.jrockit.jfr.EventDefinition;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
