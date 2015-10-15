@@ -20,14 +20,14 @@ package org.zetool.common.algorithm;
  *
  * @author Martin Groß
  */
-public class AlgorithmStartedEvent extends AbstractAlgorithmEvent {
+public class AlgorithmStartedEvent<P, S> extends AbstractAlgorithmEvent<P, S> {
 
     /**
      * Creates a {@code AlgorithmStartedEvent} for the specified algorithm.
      *
      * @param algorithm the algorithm whose execution started.
      */
-    public AlgorithmStartedEvent(AbstractAlgorithm algorithm) {
+    public AlgorithmStartedEvent(AbstractAlgorithm<P, S> algorithm) {
         super(algorithm, algorithm.getStartTime());
     }
 }

@@ -24,10 +24,10 @@ import org.zetool.common.util.units.TimeUnits;
  *
  * @author Martin Groß
  */
-public abstract class AbstractAlgorithmEvent {
+public abstract class AbstractAlgorithmEvent<P, S> {
 
     /** The algorithm the event occurred in. */
-    private final Algorithm<?, ?> algorithm;
+    private final Algorithm<P, S> algorithm;
     /** The time at which the event occurred in milliseconds elapsed since midnight, January 1, 1970 UTC. */
     private final Quantity<TimeUnits> eventTime;
 
@@ -38,7 +38,7 @@ public abstract class AbstractAlgorithmEvent {
      * @param eventTime the time at which the event occurred in milliseconds elapsed since midnight, January 1, 1970
      * UTC.
      */
-    protected AbstractAlgorithmEvent(Algorithm<?, ?> algorithm, Quantity<TimeUnits> eventTime) {
+    protected AbstractAlgorithmEvent(Algorithm<P, S> algorithm, Quantity<TimeUnits> eventTime) {
         this.algorithm = algorithm;
         this.eventTime = eventTime;
     }
@@ -48,7 +48,7 @@ public abstract class AbstractAlgorithmEvent {
      *
      * @return the algorithm the event occurred in.
      */
-    public final Algorithm<?, ?> getAlgorithm() {
+    public final Algorithm<P, S> getAlgorithm() {
         return algorithm;
     }
 

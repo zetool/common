@@ -14,11 +14,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/*
- * AlgorithmDetailedProgressEvent.java
- *
- */
-
 package org.zetool.common.algorithm;
 
 import org.zetool.common.util.units.Quantity;
@@ -30,19 +25,17 @@ import org.zetool.common.util.units.TimeUnits;
  * 
  * @author Martin Groß
  */
-public class AlgorithmDetailedProgressEvent extends AlgorithmProgressEvent {
+public class AlgorithmDetailedProgressEvent<P, S> extends AlgorithmProgressEvent<P, S> {
 
-    /**
-     * A short description of the task currently performed by the algorithm.
-     */
+    /** A short description of the task currently performed by the algorithm. */
     private String message;
 
-    public AlgorithmDetailedProgressEvent(AbstractAlgorithm algorithm, double progress, String message) {
+    public AlgorithmDetailedProgressEvent(AbstractAlgorithm<P, S> algorithm, double progress, String message) {
         super(algorithm, progress);
         this.message = message;
     }
 
-    public AlgorithmDetailedProgressEvent(AbstractAlgorithm algorithm, Quantity<TimeUnits> eventTime, double progress, String message) {
+    public AlgorithmDetailedProgressEvent(AbstractAlgorithm<P, S> algorithm, Quantity<TimeUnits> eventTime, double progress, String message) {
         super(algorithm, eventTime, progress);
     }
 

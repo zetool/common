@@ -24,7 +24,7 @@ import org.zetool.common.util.units.TimeUnits;
  *
  * @author Jan-Philipp Kappmeier
  */
-public class AlgorithmStatusEvent extends AbstractAlgorithmEvent {
+public class AlgorithmStatusEvent<P, S> extends AbstractAlgorithmEvent<P, S> {
 
     /** An algorithm specific message. */
     private String message;
@@ -35,7 +35,7 @@ public class AlgorithmStatusEvent extends AbstractAlgorithmEvent {
      * @param algorithm the algorithm for which progress occurred.
      * @param text the status text message
      */
-    public AlgorithmStatusEvent(AbstractAlgorithm<?, ?> algorithm, String text) {
+    public AlgorithmStatusEvent(AbstractAlgorithm<P, S> algorithm, String text) {
         this(algorithm, new Quantity<>(System.currentTimeMillis(), TimeUnits.MilliSeconds), text);
     }
 
@@ -46,7 +46,7 @@ public class AlgorithmStatusEvent extends AbstractAlgorithmEvent {
      * @param eventTime the time (in milliseconds) when the event occured
      * @param text the status message
      */
-    public AlgorithmStatusEvent(AbstractAlgorithm<?, ?> algorithm, Quantity<TimeUnits> eventTime, String text) {
+    public AlgorithmStatusEvent(AbstractAlgorithm<P, S> algorithm, Quantity<TimeUnits> eventTime, String text) {
         super(algorithm, eventTime);
         this.message = text;
     }

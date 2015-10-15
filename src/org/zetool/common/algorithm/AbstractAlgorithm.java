@@ -158,7 +158,7 @@ public abstract class AbstractAlgorithm<P, S> implements Algorithm<P, S> {
      * @param message the message to be dispatched.
      */
     protected final void fireEvent(String message) {
-        fireEvent(new AlgorithmDetailedProgressEvent(this, progress, message));
+        fireEvent(new AlgorithmDetailedProgressEvent<>(this, progress, message));
     }
 
     /**
@@ -181,7 +181,7 @@ public abstract class AbstractAlgorithm<P, S> implements Algorithm<P, S> {
     protected final void fireProgressEvent(double progress) {
         if (checkProgress(progress)) {
             this.progress = progress;
-            fireEvent(new AlgorithmProgressEvent(this, progress));
+            fireEvent(new AlgorithmProgressEvent<>(this, progress));
         }
     }
 
@@ -195,7 +195,7 @@ public abstract class AbstractAlgorithm<P, S> implements Algorithm<P, S> {
     protected final void fireProgressEvent(double progress, String message) {
         if (checkProgress(progress)) {
             this.progress = progress;
-            fireEvent(new AlgorithmDetailedProgressEvent(this, progress, message));
+            fireEvent(new AlgorithmDetailedProgressEvent<>(this, progress, message));
         }
     }
 
@@ -561,7 +561,7 @@ public abstract class AbstractAlgorithm<P, S> implements Algorithm<P, S> {
                 startTime = System.currentTimeMillis();
                 state = State.SOLVING;
                 progress = 0;
-                fireEvent(new AlgorithmStartedEvent(this));
+                fireEvent(new AlgorithmStartedEvent<>(this));
                 solution = runAlgorithm(problem);
                 state = State.SOLVED;
             } catch (AssertionError e) {
@@ -579,7 +579,7 @@ public abstract class AbstractAlgorithm<P, S> implements Algorithm<P, S> {
                 Debug.printException(ex);
             } finally {
                 runtime = System.currentTimeMillis() - startTime;
-                fireEvent(new AlgorithmTerminatedEvent(this));
+                fireEvent(new AlgorithmTerminatedEvent<>(this));
             }
         }
     }

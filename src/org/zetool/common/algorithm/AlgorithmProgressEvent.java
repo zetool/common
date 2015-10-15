@@ -23,7 +23,7 @@ import org.zetool.common.util.units.TimeUnits;
  *
  * @author Martin Groß
  */
-public class AlgorithmProgressEvent extends AbstractAlgorithmEvent {
+public class AlgorithmProgressEvent<P, S> extends AbstractAlgorithmEvent<P, S> {
 
     /** The current progress value, 0 <= progress <= 1. */
     private double progress;
@@ -35,7 +35,7 @@ public class AlgorithmProgressEvent extends AbstractAlgorithmEvent {
      * @param progress the progress value.
      * @throws IllegalArgumentException if the progress value is not between 0 and 1 (inclusively).
      */
-    public AlgorithmProgressEvent(Algorithm<?, ?> algorithm, double progress) {
+    public AlgorithmProgressEvent(Algorithm<P, S> algorithm, double progress) {
         this(algorithm, new Quantity<>(System.currentTimeMillis(), TimeUnits.MilliSeconds), progress);
     }
 
@@ -47,7 +47,7 @@ public class AlgorithmProgressEvent extends AbstractAlgorithmEvent {
      * @param progress the progress value.
      * @throws IllegalArgumentException if the progress value is not between 0 and 1 (inclusively).
      */
-    public AlgorithmProgressEvent(Algorithm<?, ?> algorithm, Quantity<TimeUnits> eventTime, double progress) {
+    public AlgorithmProgressEvent(Algorithm<P, S> algorithm, Quantity<TimeUnits> eventTime, double progress) {
         super(algorithm, eventTime);
         if (progress < 0.0) {
             throw new IllegalArgumentException("The progress value must not be < 0.0.");

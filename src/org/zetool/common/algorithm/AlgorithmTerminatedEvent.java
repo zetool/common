@@ -13,42 +13,43 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
 package org.zetool.common.algorithm;
 
 import org.zetool.common.util.units.Quantity;
 import org.zetool.common.util.units.TimeUnits;
 
 /**
- * A special algorithm event that occurs when the algorithm terminates (either
- * by completing successfully or by an uncaught runtime exception).
- * 
+ * A special algorithm event that occurs when the algorithm terminates (either by completing successfully or by an
+ * uncaught runtime exception).
+ *
  * @author Martin Groß
  */
-public class AlgorithmTerminatedEvent extends AbstractAlgorithmEvent {
-	Quantity<TimeUnits> runtime = null;
+public class AlgorithmTerminatedEvent<P, S> extends AbstractAlgorithmEvent<P, S> {
 
-	/**
-	 * Creates an {@code AlgorithmTerminatedEvent} for the specified algorithm.
-	 * @param algorithm the algorithm that has terminated.
-	 */
-	public AlgorithmTerminatedEvent( AbstractAlgorithm<?,?> algorithm ) {
-		super( algorithm, new Quantity<>( algorithm.getStartTime().getValue() + algorithm.getRuntime().getValue(), TimeUnits.MilliSeconds ) );
-		runtime = algorithm.getRuntime();
-	}
+    Quantity<TimeUnits> runtime = null;
 
-	/**
-	 * Creates an {@code AlgorithmTerminatedEvent} for the specified
-	 * algorithm and saves the runtime of the algorithm.
-	 * @param algorithm the algorithm that has terminated.
-	 * @param runtime the running time of the algorithm
-	 */
-	public AlgorithmTerminatedEvent( AbstractAlgorithm<?,?> algorithm, Quantity<TimeUnits> runtime ) {
-		this( algorithm );
-		this.runtime = runtime;
-	}
+    /**
+     * Creates an {@code AlgorithmTerminatedEvent} for the specified algorithm.
+     *
+     * @param algorithm the algorithm that has terminated.
+     */
+    public AlgorithmTerminatedEvent(AbstractAlgorithm<P, S> algorithm) {
+        super(algorithm, new Quantity<>(algorithm.getStartTime().getValue() + algorithm.getRuntime().getValue(), TimeUnits.MilliSeconds));
+        runtime = algorithm.getRuntime();
+    }
 
-	public Quantity<TimeUnits> getRuntime() {
-		return runtime;
-	}
+    /**
+     * Creates an {@code AlgorithmTerminatedEvent} for the specified algorithm and saves the runtime of the algorithm.
+     *
+     * @param algorithm the algorithm that has terminated.
+     * @param runtime the running time of the algorithm
+     */
+    public AlgorithmTerminatedEvent(AbstractAlgorithm<P, S> algorithm, Quantity<TimeUnits> runtime) {
+        this(algorithm);
+        this.runtime = runtime;
+    }
+
+    public Quantity<TimeUnits> getRuntime() {
+        return runtime;
+    }
 }
