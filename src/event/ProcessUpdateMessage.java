@@ -13,23 +13,23 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
 package event;
 
 /**
- * 
+ *
  * @author Jan-Philipp Kappmeier
  */
 public class ProcessUpdateMessage {
-		public int progress = 0;
-		public String taskName = "";
-		public String taskProgressInformation = "";
-		public String taskDetailedProgressInformation = "";
-		
-		public ProcessUpdateMessage( int progress, String taskName, String taskProgressInformation, String taskDetailedProgressInformation ) {
-			this.progress = progress;
-			this.taskName = taskName;
-			this.taskProgressInformation = taskProgressInformation;
-			this.taskDetailedProgressInformation = taskDetailedProgressInformation;
-		}
+
+    public final int progress;
+    public final String taskName;
+    public final String taskProgressInformation;
+    public final String taskDetailedProgressInformation;
+
+    public ProcessUpdateMessage(int progress, String taskName, String taskProgressInformation, String taskDetailedProgressInformation) {
+        this.progress = progress;
+        this.taskName = taskName;
+        this.taskProgressInformation = taskProgressInformation;
+        this.taskDetailedProgressInformation = taskDetailedProgressInformation;
+    }
 }

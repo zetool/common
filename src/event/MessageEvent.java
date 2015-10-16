@@ -13,47 +13,45 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
-/*
- * MessageEvent.java
- * Created on 19.12.2007, 02:09:37
- */
 package event;
 
 /**
  * This is a simple messaging event to submit status messages or error messages.
- * @param <S> 
+ *
+ * @param <S>
  * @author Jan-Philipp Kappmeier
  */
 public class MessageEvent<S> implements Event {
-	public enum MessageType {
-		Status,
-		Error,
-		MousePosition,
-		EditMode,
-		Log,
-		LogError,
-		VideoFrame;
-	}
-	protected S source;
-	private String msg;
-	private MessageType type;
 
-	public MessageEvent( S source, MessageType type, String msg ) {
-		this.source = source;
-		this.msg = msg;
-		this.type = type;
-	}
+    public enum MessageType {
 
-	public String getMessage() {
-		return msg;
-	}
+        Status,
+        Error,
+        MousePosition,
+        EditMode,
+        Log,
+        LogError,
+        VideoFrame;
+    }
+    protected final S source;
+    private final String message;
+    private final MessageType type;
 
-	public S getSource() {
-		return source;
-	}
+    public MessageEvent(S source, MessageType type, String msg) {
+        this.source = source;
+        this.message = msg;
+        this.type = type;
+    }
 
-	public MessageType getType() {
-		return type;
-	}
+    public String getMessage() {
+        return message;
+    }
+
+    public S getSource() {
+        return source;
+    }
+
+    public MessageType getType() {
+        return type;
+    }
 }

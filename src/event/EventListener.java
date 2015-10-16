@@ -18,7 +18,7 @@ package event;
 
 /**
  *
- * @param <T> 
+ * @param <T> the event type the listener can handle
  */
 public interface EventListener<T extends Event> {
     
