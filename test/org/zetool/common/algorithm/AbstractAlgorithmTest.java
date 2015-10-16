@@ -21,11 +21,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.hamcrest.CoreMatchers;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.jmock.AbstractExpectations.same;
 import static org.junit.Assert.assertThat;
@@ -328,6 +330,41 @@ public class AbstractAlgorithmTest {
         assertThat(exceptionThrown.get(), is(true));
         assertThat(a.getCause(), is(instanceOf(IllegalArgumentException.class)));
         assertThat(a.getState(), is(equalTo(State.SOLVING_FAILED)));
+    }
+    
+    @Test
+    public void testRangesWorks() {
+        AbstractAlgorithm<?,?> mock = new FakeAlgorithm();
+        mock.setAccuracy(0.3);
+        assertThat(mock.getAccuracy(), is(closeTo(0.3, 10e-8)));
+    }
+
+    @Test
+    public void testBoundaryRanges() {
+        AbstractAlgorithm<?,?> mock = new FakeAlgorithm();
+        mock.setAccuracy(0.0000001);
+        assertThat(mock.getAccuracy(), is(closeTo(0, 10e-6)));
+        mock.setAccuracy(1.0);
+        assertThat(mock.getAccuracy(), is(closeTo(1, 10e-8)));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testNegativeProgressFails() {
+        AbstractAlgorithm<?,?> mock = new FakeAlgorithm();
+        mock.setAccuracy(0.0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAccuracyLimitFails() {
+        AbstractAlgorithm<?,?> mock = new FakeAlgorithm();
+        mock.setAccuracy(1.0001);
+    }
+    
+    @Test
+    public void testIntegralAccuracy() {
+        AbstractAlgorithm<?,?> mock = new FakeAlgorithm();
+        mock.setAccuracy(2);
+        assertThat(mock.getAccuracy(), is(closeTo(0.5, 10e-8)));
     }
 
     private void assertState(AbstractAlgorithm<?, ?> t, AbstractAlgorithm.State expectedState) {
