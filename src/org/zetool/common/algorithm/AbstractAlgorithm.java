@@ -23,6 +23,7 @@ import org.zetool.common.util.units.TimeUnits;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -292,7 +293,7 @@ public abstract class AbstractAlgorithm<P, S> implements Algorithm<P, S> {
                     + " Changing the underlying instance could lead to undefined behaviour!");
         }
         if (this.problem != problem) {
-            this.problem = problem;
+            this.problem = Objects.requireNonNull(problem, "Problem instance cannot be null!");
             runtime = 0;
             solution = null;
             startTime = 0;
@@ -318,7 +319,7 @@ public abstract class AbstractAlgorithm<P, S> implements Algorithm<P, S> {
      * @throws IllegalArgumentException if arrucarcy is not within the allowed range
      */
     public void setAccuracy(double accuracy) {
-        if (accuracy < 0 || accuracy > 1) {
+        if (accuracy <= 0 || accuracy > 1) {
             throw new IllegalArgumentException("Invalid value for accuracy: " + accuracy);
         }
         this.accuracy = accuracy;
@@ -558,7 +559,7 @@ public abstract class AbstractAlgorithm<P, S> implements Algorithm<P, S> {
                     " Please call setProblem() first.");
         } else {
             try {
-                startTime = System.currentTimeMillis();
+                startTime = getTime();
                 state = State.SOLVING;
                 progress = 0;
                 fireEvent(new AlgorithmStartedEvent<>(this));
@@ -578,7 +579,7 @@ public abstract class AbstractAlgorithm<P, S> implements Algorithm<P, S> {
                 log.log(Level.SEVERE, "No more memory. Execution stopped: ", ex);
                 Debug.printException(ex);
             } finally {
-                runtime = System.currentTimeMillis() - startTime;
+                runtime = getTime() - startTime;
                 fireEvent(new AlgorithmTerminatedEvent<>(this));
             }
         }
@@ -654,6 +655,10 @@ public abstract class AbstractAlgorithm<P, S> implements Algorithm<P, S> {
 
     public final void setPaused(boolean paused) {
         this.paused = paused;
+    }
+    
+    protected long getTime() {
+        return System.currentTimeMillis();
     }
 
 }

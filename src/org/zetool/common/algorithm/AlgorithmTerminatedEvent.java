@@ -45,7 +45,7 @@ public class AlgorithmTerminatedEvent<P, S> extends AbstractAlgorithmEvent<P, S>
      * @param runtime the running time of the algorithm
      */
     public AlgorithmTerminatedEvent(AbstractAlgorithm<P, S> algorithm, Quantity<TimeUnits> runtime) {
-        this(algorithm);
+        super(algorithm, runtime);
         this.runtime = runtime;
     }
 
