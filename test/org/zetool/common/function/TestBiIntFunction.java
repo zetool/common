@@ -14,7 +14,7 @@ public class TestBiIntFunction {
     @Test
     public void test() {
         Function<Integer, Integer> square = t -> t * t;
-        BiIntFunction<Integer> sum = (int t, int u) -> t + u;
+        IntBiFunction<Integer> sum = (int t, int u) -> t + u;
         assertThat(sum.andThen(square).apply(3, 4), is(equalTo(49)));
         assertThat(sum.andThen(square).apply(2, 3), is(equalTo(25)));
     }

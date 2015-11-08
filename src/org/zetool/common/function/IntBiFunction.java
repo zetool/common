@@ -8,7 +8,7 @@ import java.util.function.Function;
  * @author Jan-Philipp Kappmeier
  */
 @FunctionalInterface
-public interface BiIntFunction<R> {
+public interface IntBiFunction<R> {
 
     R apply(int t, int u);
 
@@ -21,7 +21,7 @@ public interface BiIntFunction<R> {
      * @return a composed function that first applies this integer bi-function and then {@code after}
      * @throws NullPointerException if after is null
      */
-    default <S> BiIntFunction<S> andThen(Function<? super R, ? extends S> after) {
+    default <S> IntBiFunction<S> andThen(Function<? super R, ? extends S> after) {
         return (int t, int u) -> Objects.requireNonNull(after).apply(apply(t, u));
     }
 }
