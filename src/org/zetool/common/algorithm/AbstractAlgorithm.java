@@ -578,6 +578,10 @@ public abstract class AbstractAlgorithm<P, S> implements Algorithm<P, S> {
                 state = State.SOLVING_FAILED;
                 log.log(Level.SEVERE, "No more memory. Execution stopped: ", ex);
                 Debug.printException(ex);
+            } catch (Throwable ex ) {
+                this.cause = ex;
+                state = State.SOLVING_FAILED;
+                log.log(Level.SEVERE, "Failed: ", ex);
             } finally {
                 runtime = getTime() - startTime;
                 fireEvent(new AlgorithmTerminatedEvent<>(this));
