@@ -43,7 +43,7 @@ public class TimeUnits extends AbstractUnitScale<TimeUnits> {
   /** The rarely used unit for a century, which are approximately 100 years. */
   public static final TimeUnits Centuries = new TimeUnits( "c", "century", 10, Years );
   /** A Julian millennium consists of 365,250 days. */
-  public static final TimeUnits Millenia = new TimeUnits( "m", "millenium", Integer.MAX_VALUE, Centuries );
+  public static final TimeUnits Millenia = new TimeUnits( "m", "millennium", Integer.MAX_VALUE, Centuries );
 
   static {
     PicoSeconds.setSmaller( PicoSeconds );

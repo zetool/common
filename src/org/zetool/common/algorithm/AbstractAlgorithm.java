@@ -53,7 +53,7 @@ public abstract class AbstractAlgorithm<P, S> implements Algorithm<P, S> {
         WAITING,
         /** The algorithm is executing. Problem cannot be changed anymore. */
         SOLVING,
-        /** An error during the execution occured. */
+        /** An error during the execution occurred. */
         SOLVING_FAILED,
         /** The algorithm is executed. Only state where {@link #getSolution() } is allowed to be called. */
         SOLVED;
@@ -568,7 +568,7 @@ public abstract class AbstractAlgorithm<P, S> implements Algorithm<P, S> {
             } catch (AssertionError e) {
                 this.cause = e;
                 state = State.SOLVING_FAILED;
-                log.log(Level.SEVERE, "An assertion error has occured: ", e);
+                log.log(Level.SEVERE, "An assertion error has occurred: ", e);
             } catch (RuntimeException ex) {
                 this.cause = ex;
                 state = State.SOLVING_FAILED;
@@ -604,8 +604,8 @@ public abstract class AbstractAlgorithm<P, S> implements Algorithm<P, S> {
     /**
      * Returns the {@link Error} or {
      *
-     * @RuntimeException} that occured during the execution of the algorithm.
-     * @return the exception that occured while executing the algorithm
+     * @RuntimeException} that occurred during the execution of the algorithm.
+     * @return the exception that occurred while executing the algorithm
      */
     public Throwable getCause() {
         return cause;

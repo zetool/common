@@ -51,7 +51,7 @@ public final class IOTools {
    * @return the new filename including the path, the prefix and the number
    * @throws java.lang.IllegalArgumentException if digits is less or equal to zero
    * @throws java.lang.IllegalStateException if there are too many files beginning with prefix for
-   * the specified number of digits or if an error converting the digits occured.
+   * the specified number of digits or if an error converting the digits occurred.
    */
   public static String getNextFreeNumberedFilepath( String path, String filePrefix, int digits ) {
     return path + getNextFreeNumberedFilename( path, filePrefix, digits );
@@ -68,7 +68,7 @@ public final class IOTools {
    * @return the new filename without the path, the prefix and the number
    * @throws java.lang.IllegalArgumentException if digits is less or equal to zero
    * @throws java.lang.IllegalStateException if there are too many files beginning with prefix for
-   * the specified number of digits or if an error converting the digits occured.
+   * the specified number of digits or if an error converting the digits occurred.
    */
   public static String getNextFreeNumberedFilename( String path, String filePrefix, int digits ) {
     if( digits <= 0 ) {

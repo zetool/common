@@ -43,7 +43,7 @@ public class AlgorithmStatusEvent<P, S> extends AbstractAlgorithmEvent<P, S> {
      * Creates an {@code AlgorithmStatusEvent} for the specified algorithm and sets a status message.
      *
      * @param algorithm the algorithm for which this status is defined
-     * @param eventTime the time (in milliseconds) when the event occured
+     * @param eventTime the time (in milliseconds) when the event occurred
      * @param text the status message
      */
     public AlgorithmStatusEvent(AbstractAlgorithm<P, S> algorithm, Quantity<TimeUnits> eventTime, String text) {
