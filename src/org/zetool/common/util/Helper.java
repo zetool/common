@@ -16,7 +16,6 @@
 package org.zetool.common.util;
 
 import java.util.Iterator;
-import java.util.Objects;
 
 /**
  * Some helper methods that are needed every now and then.
@@ -25,9 +24,7 @@ import java.util.Objects;
  */
 public final class Helper {
 
-    /**
-     * Private utility class constructor.
-     */
+    /** Private utility class constructor. */
     private Helper() {
     }
 
