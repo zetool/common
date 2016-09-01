@@ -68,23 +68,10 @@ public class RGBColorChooserTest {
         } else {
             try {
                 SwingUtilities.invokeAndWait(r);
-                createRobot().waitForIdle();
             } catch (InterruptedException | InvocationTargetException e) {
                 throw new AssertionError("Failed to execute in event dispatch thread");
             }
         }
-    }
-
-    private static Robot createRobot() {
-        Robot robot = null;
-        try {
-            robot = new Robot();
-            robot.setAutoWaitForIdle(true);
-            robot.setAutoDelay(5);
-        } catch (AWTException e) {
-            throw new AssertionError("Failed to create robot");
-        }
-        return robot;
     }
 
 }
