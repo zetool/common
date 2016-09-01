@@ -30,9 +30,11 @@ import javax.swing.colorchooser.AbstractColorChooserPanel;
  * @author Jan-Philipp Kappmeier
  */
 public class RGBColorChooser extends JColorChooser {
+    public static final String DIALOG_NAME = "color";
 
   public RGBColorChooser( Color initialColor ) {
     super( initialColor );
+
     for( AbstractColorChooserPanel p : getChooserPanels() ) {
       if( !p.getDisplayName().equals( "RGB" ) ) {
         removeChooserPanel( p );
@@ -54,6 +56,7 @@ public class RGBColorChooser extends JColorChooser {
     JColorChooser colorChooser = new RGBColorChooser( initialColor );
     OKListener ok = new OKListener( colorChooser );
     JDialog dialog = createDialog( component, title, true, colorChooser, ok, null );
+    dialog.setName(DIALOG_NAME);
     dialog.setVisible( true );
     dialog.dispose();
 

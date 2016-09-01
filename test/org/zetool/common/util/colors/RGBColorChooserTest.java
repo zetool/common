@@ -1,14 +1,18 @@
 package org.zetool.common.util.colors;
 
-import java.awt.Color;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+
+import java.awt.AWTException;
+import java.awt.Color;
+import java.awt.Dialog;
+import java.awt.Frame;
+import java.awt.Robot;
+import java.lang.reflect.InvocationTargetException;
+import java.util.concurrent.Callable;
+import javax.swing.SwingUtilities;
+
 import org.junit.Test;
 
 /**
@@ -23,36 +27,64 @@ public class RGBColorChooserTest {
 
         assertThat(c.getChooserPanels().length, is(equalTo(1)));
     }
-    
-//    @Test
-//    public void returnedColorCorrect() throws InterruptedException {
-//        Callable r = new Callable() {
-//            @Override
-//            public Object call() throws Exception {
-//                System.out.println("In future 1");
-//                RGBColorChooser.showDialog(null, "RGB", Color.yellow);
-//                return null;
-//            }
-//        };
-//        
-//        List<Callable<Object>> futures = new LinkedList<>();
-//        futures.add(r);
-//        
-//        ExecutorService e = Executors.newCachedThreadPool();
-//        
-//        Callable r2 = new Callable() {
-//            final ExecutorService e1 = e;
-//            
-//            @Override
-//            public Object call() throws Exception {
-//                System.out.println("In future 2");
-//                return null;
-//            }
-//            
-//        };
-//        
-//        futures.add(r2);
-//        
-//        e.invokeAll(futures);
-//    }
+
+    @Test
+    public void constructorTest() {
+        Color initColor = Color.red;
+        Callable<Color> runnable = () -> RGBColorChooser.showDialog(null, "RGB", initColor);
+
+        StaticDialogSupplier<Color> shower = new StaticDialogSupplier<>(runnable, RGBColorChooser.DIALOG_NAME);
+        shower.init();
+
+        Dialog d = shower.getDialog();
+        d.setVisible(false);
+
+        Color retColor = shower.getResult();
+
+        assertThat(retColor, is(equalTo(initColor)));
+
+        disposeAllFrames();
+    }
+
+    public static void disposeAllFrames() {
+        runInEventDispatchThread(() -> Frame.getFrames());
+    }
+
+    private static void dispose(Frame[] frames) {
+        for (Frame frame : frames) {
+            frame.dispose();
+        }
+    }
+
+    /**
+     * Executes a runnable in the event dispatch thread. This is just a convenient wrapper that
+     * throws an{@link AssertionError} in case of failure.
+     *
+     * @param r the runnable to be executed
+     */
+    public static void runInEventDispatchThread(final Runnable r) {
+        if (SwingUtilities.isEventDispatchThread()) {
+            r.run();
+        } else {
+            try {
+                SwingUtilities.invokeAndWait(r);
+                createRobot().waitForIdle();
+            } catch (InterruptedException | InvocationTargetException e) {
+                throw new AssertionError("Failed to execute in event dispatch thread");
+            }
+        }
+    }
+
+    private static Robot createRobot() {
+        Robot robot = null;
+        try {
+            robot = new Robot();
+            robot.setAutoWaitForIdle(true);
+            robot.setAutoDelay(5);
+        } catch (AWTException e) {
+            throw new AssertionError("Failed to create robot");
+        }
+        return robot;
+    }
+
 }
