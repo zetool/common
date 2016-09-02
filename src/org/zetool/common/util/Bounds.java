@@ -26,13 +26,13 @@ package org.zetool.common.util;
 public enum Bounds {
 
     /** The upper direction. */
-    Upper(0, -1, 0),
-    /** The Right direction. */
-    Right(1, 0, 2),
+    UPPER(0, -1, 0),
+    /** The RIGHT direction. */
+    RIGHT(1, 0, 1),
     /** The lower direction. */
-    Bottom(0, 1, 4),
-    /** The Left direction. */
-    Left(-1, 0, 6);
+    LOWER(0, 1, 2),
+    /** The LEFT direction. */
+    LEFT(-1, 0, 3);
 
     /** The offset value in {@code x}-direction. */
     private final int xOffset;
@@ -79,7 +79,7 @@ public enum Bounds {
      * @return the opposite direction
      */
     public final Bounds invert() {
-        return values()[(id + 4) % 8];
+        return values()[(id + 2) % 4];
     }
 
     /**
@@ -99,11 +99,11 @@ public enum Bounds {
     }
 
     public Bounds getClockwise() {
-        return values()[(id + 2) % 8];
+        return values()[(id + 1) % 4];
     }
 
     public Bounds getCounterClockwise() {
-        return values()[(id - 2 + 8) % 8];
+        return values()[(id - 1 + 4) % 4];
     }
 
     public double distance() {

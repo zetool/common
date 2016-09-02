@@ -80,6 +80,8 @@ public final class IOTools {
       for( File file : files ) {
         fileNumber = Math.max( fileNumber, fileNumber(file, digits, filePrefix ) + 1 );
       }
+    } else {
+        throw new IllegalArgumentException( "Path points to a file" );
     }
     try {
       return filePrefix + Formatter.fillLeadingZeros( fileNumber, digits );
@@ -123,7 +125,7 @@ public final class IOTools {
       } else if( command.charAt( i ) == ' ' && !quotes ) {
         s = addElement( ret, s );
       } else {
-        s += command.charAt( i );
+        s += Character.toString(command.charAt( i ));
       }
     }
     addElement( ret, s );
