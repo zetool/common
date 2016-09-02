@@ -4,13 +4,14 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import java.awt.AWTException;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Frame;
-import java.awt.Robot;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.Callable;
+import javax.swing.JColorChooser;
+import javax.swing.JDialog;
 import javax.swing.SwingUtilities;
 
 import org.junit.Test;
@@ -20,6 +21,7 @@ import org.junit.Test;
  * @author Jan-Philipp Kappmeier
  */
 public class RGBColorChooserTest {
+    private static final Color INIT_COLOR = Color.red;
 
     @Test
     public void onlyRrbPanel() {
@@ -30,8 +32,7 @@ public class RGBColorChooserTest {
 
     @Test
     public void constructorTest() {
-        Color initColor = Color.red;
-        Callable<Color> runnable = () -> RGBColorChooser.showDialog(null, "RGB", initColor);
+        Callable<Color> runnable = () -> RGBColorChooser.showDialog(null, "RGB", INIT_COLOR);
 
         StaticDialogSupplier<Color> shower = new StaticDialogSupplier<>(runnable, RGBColorChooser.DIALOG_NAME);
         shower.init();
@@ -41,9 +42,37 @@ public class RGBColorChooserTest {
 
         Color retColor = shower.getResult();
 
-        assertThat(retColor, is(equalTo(initColor)));
+        assertThat(retColor, is(equalTo(INIT_COLOR)));
 
         disposeAllFrames();
+    }
+
+    @Test
+    public void selectedColorReturnedOnOK() {
+        Color newColor = Color.green;
+        Callable<Color> runnable = () -> RGBColorChooser.showDialog(null, "RGB", INIT_COLOR);
+
+        StaticDialogSupplier<Color> shower = new StaticDialogSupplier<>(runnable, RGBColorChooser.DIALOG_NAME);
+        shower.init();
+
+        JDialog d = (JDialog)shower.getDialog();
+        
+        changeColorTo(d, newColor);
+        d.getRootPane().getDefaultButton().doClick();
+        
+        Color retColor = shower.getResult();
+        assertThat(retColor, is(equalTo(newColor)));
+
+        disposeAllFrames();
+    }
+    
+    private void changeColorTo(JDialog d, Color color) {
+        for (Component c : d.getContentPane().getComponents()) {
+            if (c instanceof JColorChooser) {
+                JColorChooser ch = (JColorChooser) c;
+                ch.setColor(color);
+            }
+        }
     }
 
     public static void disposeAllFrames() {

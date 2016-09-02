@@ -10,7 +10,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.function.BooleanSupplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -63,14 +62,7 @@ public class StaticDialogSupplier<T> {
         shower.start();
 
         // Wait until doalog shows up
-        BooleanSupplier s = new BooleanSupplier() {
-            @Override
-            public boolean getAsBoolean() {
-                Dialog dialog = findNamedDialog(dialogName);
-                return dialog != null;
-            }
-        };
-        ConditionWaiter st = new ConditionWaiter(s);
+        ConditionWaiter st = new ConditionWaiter(() -> findNamedDialog(dialogName) != null);
         st.waitForConditionUntil(10);
         if (!st.succeed()) {
             throw new AssertionError("Not successful in waiting");
