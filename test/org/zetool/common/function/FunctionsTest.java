@@ -13,5 +13,5 @@ public class FunctionsTest {
     public void sinkConsumerAcceptsNull() {
         sinkConsumer(new Object());
         sinkConsumer(null);
-    }    
+    }
 }
