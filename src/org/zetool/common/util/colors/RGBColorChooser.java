@@ -44,7 +44,7 @@ public class RGBColorChooser extends JColorChooser {
     }
 
     /**
-     * Displays a modal color {@link JColorChoosers} that only allows to use the RGB color table.
+     * Displays a modal color {@link JColorChooser} that only allows to use the RGB color table.
      *
      * @param component the parent component
      * @param title the title of the dialog window

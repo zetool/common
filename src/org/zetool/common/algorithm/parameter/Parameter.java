@@ -21,7 +21,7 @@ import java.util.Iterator;
  * different parameters in a ParameterSet. After a successful value change, the
  * ParameterSet is notified of the change.
  *
- * @param T the type of this parameter's values.
+ * @param <T> the type of this parameter's values.
  * @author Martin Groß
  */
 public class Parameter<T> {
@@ -216,11 +216,11 @@ public class Parameter<T> {
 
     /**
      * Changes the value of this parameter to the specified one. Before the
-     * value is changed, it is first checked by {@link validate} and then by
+     * value is changed, it is first checked by {@link #validate(Object) } and then by
      * the parameter set, if this parameter belongs to one. If both checks are
      * passed, the value is changed and the parent parameter set is notified.
      * @param value the new value of this parameter.
-     * @return a <code>ValidationResult</code> specifying whether the operation
+     * @return a {@link ValidationResult} specifying whether the operation
      * was a success or a failure.
      */
     public ValidationResult setValue(T value) {

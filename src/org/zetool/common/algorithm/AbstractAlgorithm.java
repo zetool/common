@@ -602,9 +602,9 @@ public abstract class AbstractAlgorithm<P, S> implements Algorithm<P, S> {
     }
 
     /**
-     * Returns the {@link Error} or {
+     * Returns the {@link Error} or {@link Exception} that occurred during the algorithm's execution.
      *
-     * @RuntimeException} that occured during the execution of the algorithm.
+     * @throws RuntimeException that occured during the execution of the algorithm
      * @return the exception that occured while executing the algorithm
      */
     public Throwable getCause() {

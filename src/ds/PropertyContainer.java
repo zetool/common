@@ -103,10 +103,10 @@ public class PropertyContainer implements Iterable<String> {
     }
 
     /**
-     * Toggles a boolean value and returns the new value.
+     * Toggles a {@code boolean} value and returns the new value.
      *
-     * @param key
-     * @return
+     * @param key the key of the value to be toggled
+     * @return the new value of the {@code boolean} parameter
      */
     public boolean toggle(String key) {
         final boolean temp = !getAsBoolean(key);
