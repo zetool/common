@@ -20,6 +20,11 @@ package org.zetool.common.function;
  * @author Jan-Philipp Kappmeier
  */
 public class Functions {
+    
+    /** Private utility class constructor. */
+    private Functions() {
+    }
+
     /**
      * A consumer function that does nothing.
      * @param <R> the type of the consumed object
@@ -27,10 +32,5 @@ public class Functions {
      */
     public static <R> void sinkConsumer(R object) {
         // sink consumer does nothing.
-    }
-    
-    
-    /** Private utility class constructor. */
-    private Functions() {
     }
 }
