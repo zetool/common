@@ -26,7 +26,7 @@ import java.util.Map;
 public class EventServer {
 
     private static EventServer instance;
-    protected Map<Class<? extends Event>, List<EventListener>> listeners;
+    protected Map<Class<? extends Event>, List<EventListener<?>>> listeners;
 
     private EventServer() {
         listeners = new HashMap<>();
@@ -59,24 +59,24 @@ public class EventServer {
 
     public void dispatchEvent(Event e) {
         Class<? extends Event> eventType = e.getClass();
-        Map<EventListener, Boolean> notified = new HashMap<>();
+        Map<EventListener<? super Event>, Boolean> notified = new HashMap<>();
         do {
             notifyListeners(e, eventType, notified);
             for (Class<?> cl : eventType.getInterfaces()) {
-                if( Event.class.isAssignableFrom(cl)) {
-                    notifyListeners(e, (Class<? extends Event>)cl, notified);
+                if (Event.class.isAssignableFrom(cl)) {
+                    notifyListeners(e, (Class<? extends Event>) cl, notified);
                 }
             }
             Class<?> superType = eventType.getSuperclass();
-            if( superType != null && Event.class.isAssignableFrom(superType)) {
-                eventType = (Class<? extends Event>)superType;
+            if (superType != null && Event.class.isAssignableFrom(superType)) {
+                eventType = (Class<? extends Event>) superType;
             } else {
                 eventType = null;
             }
         } while (eventType != null);
     }
 
-    protected void notifyListeners(Event e, Class<? extends Event> eventType, Map<EventListener, Boolean> notified) {
+    protected void notifyListeners(Event e, Class<? extends Event> eventType, Map<EventListener<? super Event>, Boolean> notified) {
         if (listeners.containsKey(eventType)) {
             for (EventListener listener : listeners.get(eventType)) {
                 if (notified.containsKey(listener) && notified.get(listener)) {
