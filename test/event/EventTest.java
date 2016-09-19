@@ -19,12 +19,14 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import org.junit.Test;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 /**
  *
  * @author Jan-Philipp Kappmeier
  */
-public class TestEvent {
+public class EventTest {
 
     private static class HelpEvent implements Event {
 

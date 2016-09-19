@@ -26,7 +26,7 @@ import java.util.Map;
 public class EventServer {
 
     private static EventServer instance;
-    protected Map<Class<? extends Event>, List<EventListener<?>>> listeners;
+    protected Map<Class<? extends Event>, List<EventListener<? extends Event>>> listeners;
 
     private EventServer() {
         listeners = new HashMap<>();
@@ -57,33 +57,35 @@ public class EventServer {
         }
     }
 
-    public void dispatchEvent(Event e) {
-        Class<? extends Event> eventType = e.getClass();
-        Map<EventListener<? super Event>, Boolean> notified = new HashMap<>();
+    public <T extends Event> void dispatchEvent(T e) {
+        Class<? super T> eventType = (Class<T>)e.getClass();
+        Map<EventListener<T>, Boolean> notified = new HashMap<>();
         do {
-            notifyListeners(e, eventType, notified);
+            notifyListeners(e, (Class<T>)eventType, notified);
             for (Class<?> cl : eventType.getInterfaces()) {
                 if (Event.class.isAssignableFrom(cl)) {
-                    notifyListeners(e, (Class<? extends Event>) cl, notified);
+                    
+                    notifyListeners(e, (Class<T>) cl, notified);
                 }
             }
-            Class<?> superType = eventType.getSuperclass();
+            Class<? super T> superType = eventType.getSuperclass();
             if (superType != null && Event.class.isAssignableFrom(superType)) {
-                eventType = (Class<? extends Event>) superType;
+                eventType = (Class<? super T>) superType;
             } else {
                 eventType = null;
             }
         } while (eventType != null);
     }
 
-    protected void notifyListeners(Event e, Class<? extends Event> eventType, Map<EventListener<? super Event>, Boolean> notified) {
+    protected <T extends Event> void notifyListeners(T e, Class<T> eventType, Map<EventListener<T>, Boolean> notified) {
         if (listeners.containsKey(eventType)) {
-            for (EventListener listener : listeners.get(eventType)) {
-                if (notified.containsKey(listener) && notified.get(listener)) {
+            for (EventListener<?> listener : listeners.get(eventType)) {
+                EventListener<T> typedListener = (EventListener<T>)listener;
+                if (notified.containsKey(typedListener) && notified.get(typedListener)) {
                     continue;
                 }
-                listener.handleEvent(e);
-                notified.put(listener, Boolean.TRUE);
+                typedListener.handleEvent(e);
+                notified.put(typedListener, Boolean.TRUE);
             }
         }
     }
