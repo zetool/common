@@ -64,8 +64,10 @@ public class EventServer {
         if (!listeners.containsKey(eventType)) {
             listeners.put(eventType, new LinkedList<>());
         }
-        if (!listeners.get(eventType).contains(listener)) {
-            listeners.get(eventType).add(listener);
+
+        EventListener<? extends Event> typedListener = (EventListener<? extends Event>) listener;
+        if (!listeners.get(eventType).contains(typedListener)) {
+            listeners.get(eventType).add(typedListener);
         }
     }
 
@@ -126,8 +128,7 @@ public class EventServer {
     
     @SuppressWarnings("unchecked")
     private Class<? extends Event> getSafe(Class<?> superType) {
-        Class<? extends Event> r2 = (Class<? extends Event>) superType;
-        return r2;
+        return (Class<? extends Event>) superType;
     }
 
     private <T extends Event> void notifyListeners(T e, Class<? extends Event> eventType, Map<EventListener<? extends Event>, Boolean> notified) {
