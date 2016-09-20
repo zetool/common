@@ -18,9 +18,8 @@ package event;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 import org.junit.Test;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 /**
  *
@@ -70,6 +69,19 @@ public class EventTest {
     }
 
     @Test
+    public void doubleAddingOnlyNotifiedOnce() {
+        EventServer es = EventServer.getInstance();
+        HelpEventListener eventListener = new HelpEventListener();
+
+        es.registerListener(eventListener, HelpEvent.class);
+        es.registerListener(eventListener, HelpEvent.class);
+
+        es.dispatchEvent(new HelpEvent("single message"));
+        assertThat(eventListener.called, is(equalTo(1)));
+        assertThat(eventListener.text, is(equalTo("single message")));
+    }
+
+    @Test
     public void testEventServerDispatchesSubclasses() {
         EventServer es = EventServer.getInstance();
         HelpEventListener eventListener = new HelpEventListener();
@@ -92,5 +104,31 @@ public class EventTest {
         es.dispatchEvent(new SubEvent("text"));
         assertThat(eventListener.called, is(equalTo(1)));
         assertThat(eventListener.text, is(equalTo("text")));
+    }
+    
+    @Test
+    public void removeListener() {
+        EventServer es = EventServer.getInstance();
+        HelpEventListener eventListener = new HelpEventListener();
+        
+        es.registerListener(eventListener, HelpEvent.class);
+        
+        es.dispatchEvent(new HelpEvent("first"));
+        assertThat(eventListener.called, is(equalTo(1)));
+        assertThat(eventListener.text, is(equalTo("first")));
+        
+        es.unregisterListener(eventListener, HelpEvent.class);
+        
+        es.dispatchEvent(new HelpEvent("second"));
+        assertThat(eventListener.called, is(equalTo(1)));
+        assertThat(eventListener.text, is(equalTo("first")));
+    }
+
+    @Test
+    public void removeNonExistingListener() {
+        EventServer es = EventServer.getInstance();
+        EventListener<Event> unusedEventListener = event -> fail();
+        
+        es.unregisterListener(unusedEventListener, Event.class);
     }
 }

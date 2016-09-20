@@ -84,8 +84,9 @@ public class EventServer {
             return;
         }
 
-        if (listeners.get(eventType).contains(listener)) {
-            listeners.get(eventType).remove(listener);
+        EventListener<? extends Event> typedListener = (EventListener<? extends Event>) listener;
+        if (listeners.get(eventType).contains(typedListener)) {
+            listeners.get(eventType).remove(typedListener);
         }
     }
 
