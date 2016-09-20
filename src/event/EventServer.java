@@ -21,17 +21,31 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * The event server allows for a certain event type to have some listeners who are notified when an event of the given
+ * type occurs. When an {@link Event} is dispatched, also listeners of all supertypes are notified. The notification process takes care about
+ * the notified listeners and makes sure that for each event each listener is only notified once.
+ * 
+ * The event server can be instantiated or used as a singleton.
  */
 public class EventServer {
-
+    /** The instance of the event server if used as a singleton. */
     private static EventServer instance;
+    
+    /** The mapping of registered {@link  Event} types to their respective {@link EventListener}s. */
     protected Map<Class<? extends Event>, List<EventListener<? extends Event>>> listeners;
 
+    /**
+     * Initializes the common instance of the singleton event server.
+     */
     private EventServer() {
         listeners = new HashMap<>();
     }
 
+    /**
+     * Returns a static instance of the {@code EventServer} that can be used as a singleton.
+     * 
+     * @return a singleton instance of the {@code EventServer}
+     */
     public static EventServer getInstance() {
         if (instance == null) {
             instance = new EventServer();
@@ -39,6 +53,13 @@ public class EventServer {
         return instance;
     }
 
+    /**
+     * Registers a listener for a certain type of event.
+     * 
+     * @param <T> the {@link Event} type
+     * @param listener the listener for events of the given type
+     * @param eventType the class of the event
+     */
     public <T extends Event> void registerListener(EventListener<? super T> listener, Class<T> eventType) {
         if (!listeners.containsKey(eventType)) {
             listeners.put(eventType, new LinkedList<>());
@@ -48,45 +69,83 @@ public class EventServer {
         }
     }
 
+    /**
+     * Removes a listener from the list of known listeners for a certain event type. If the listener is not registered,
+     * nothing happens.
+     * 
+     * @param <T> the event type
+     * @param listener the listener to be removed
+     * @param eventType the event type
+     */
     public <T extends Event> void unregisterListener(EventListener<? super T> listener, Class<T> eventType) {
         if (!listeners.containsKey(eventType)) {
             return;
         }
+
         if (listeners.get(eventType).contains(listener)) {
             listeners.get(eventType).remove(listener);
         }
     }
 
-    public <T extends Event> void dispatchEvent(T e) {
-        Class<? super T> eventType = (Class<T>)e.getClass();
-        Map<EventListener<T>, Boolean> notified = new HashMap<>();
+    /**
+     * Dispatches an event of some type to all listeners. During the dispatch process all subtypes of {@link Event}
+     * that are satisfied by {@code <T>} are notified.
+     * 
+     * @param <T> the type of the event
+     * @param event the event
+     */
+    public <T extends Event> void dispatchEvent(T event) {
+        Class<? extends Event> eventType = event.getClass();
+        Map<EventListener<? extends Event>, Boolean> notified = new HashMap<>();
+
         do {
-            notifyListeners(e, (Class<T>)eventType, notified);
+            notifyListeners(event, eventType, notified);
             for (Class<?> cl : eventType.getInterfaces()) {
                 if (Event.class.isAssignableFrom(cl)) {
-                    
-                    notifyListeners(e, (Class<T>) cl, notified);
+                    notifyListeners(event, getSafe(cl), notified);
                 }
             }
-            Class<? super T> superType = eventType.getSuperclass();
-            if (superType != null && Event.class.isAssignableFrom(superType)) {
-                eventType = (Class<? super T>) superType;
-            } else {
-                eventType = null;
-            }
+            
+            eventType = computeSuperEventType(eventType);
         } while (eventType != null);
     }
+    
+    /**
+     * Returns the super type of a given event type if it is still an {@link Event}, otherwise {@literal null}.
+     * @param eventType the current event type
+     * @return the super type which also is an {@link Event}, or {@literal null}
+     */
+    private Class<? extends Event> computeSuperEventType(Class<? extends Event> eventType) {
+            Class<?> superType = eventType.getSuperclass();
 
-    protected <T extends Event> void notifyListeners(T e, Class<T> eventType, Map<EventListener<T>, Boolean> notified) {
+            if (superType != null && Event.class.isAssignableFrom(superType)) {
+                return getSafe(superType);
+            }
+            return null;
+    }
+    
+    @SuppressWarnings("unchecked")
+    private Class<? extends Event> getSafe(Class<?> superType) {
+        Class<? extends Event> r2 = (Class<? extends Event>) superType;
+        return r2;
+    }
+
+    private <T extends Event> void notifyListeners(T e, Class<? extends Event> eventType, Map<EventListener<? extends Event>, Boolean> notified) {
         if (listeners.containsKey(eventType)) {
-            for (EventListener<?> listener : listeners.get(eventType)) {
-                EventListener<T> typedListener = (EventListener<T>)listener;
-                if (notified.containsKey(typedListener) && notified.get(typedListener)) {
+            for (EventListener<? extends Event> listener : listeners.get(eventType)) {
+                // Safe call here as the type is super of T and extends Event.
+                if (notified.containsKey(listener) && notified.get(listener)) {
                     continue;
                 }
+                EventListener<? super T> typedListener = getListener(listener);
                 typedListener.handleEvent(e);
-                notified.put(typedListener, Boolean.TRUE);
+                notified.put(listener, Boolean.TRUE);
             }
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> EventListener<? super T> getListener(EventListener<? extends Event> listener) {
+        return (EventListener<? super T>)listener;
     }
 }
