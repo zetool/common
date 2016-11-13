@@ -16,28 +16,22 @@
 package event;
 
 /**
- * This is a simple messaging event to submit status messages or error messages.
+ * A simple messaging event to submit status or error messages. The messages can have a source and also a generic type.
+ * The type can be an arbitrary {@link Enum}. Due to the limitations of Java generics {@code MessageEvent}s with different types
+ * can not be
+ * distinguished by the type of the {@link EventServer}.
  *
- * @param <S>
+ * @param <S> the source of the message
+ * @param <T> the type of the message, an {@link Enum}
  * @author Jan-Philipp Kappmeier
  */
-public class MessageEvent<S> implements Event {
+public class MessageEvent<S, T extends Enum<T>> implements Event {
 
-    public enum MessageType {
-
-        Status,
-        Error,
-        MousePosition,
-        EditMode,
-        Log,
-        LogError,
-        VideoFrame;
-    }
     protected final S source;
     private final String message;
-    private final MessageType type;
+    private final T type;
 
-    public MessageEvent(S source, MessageType type, String msg) {
+    public MessageEvent(S source, T type, String msg) {
         this.source = source;
         this.message = msg;
         this.type = type;
@@ -51,7 +45,7 @@ public class MessageEvent<S> implements Event {
         return source;
     }
 
-    public MessageType getType() {
+    public T getType() {
         return type;
     }
 }
