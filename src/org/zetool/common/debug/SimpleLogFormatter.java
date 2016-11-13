@@ -15,16 +15,17 @@ import java.util.logging.LogRecord;
  * @author Jan-Philipp Kappmeier
  */
 public class SimpleLogFormatter extends Formatter {
-	@Override
-	public synchronized String format( LogRecord record ) {
-		String message = formatMessage( record ) + "\n";
-		if( record.getThrown() != null ) {
-			OutputStream os = record.getLevel().intValue()>= Level.WARNING.intValue() ? System.err : System.out;
-			try (PrintWriter pw = new PrintWriter( os )) {
-				pw.println();
-				record.getThrown().printStackTrace( pw );
-			}
-		}
-		return message;
-	}
+
+    @Override
+    public synchronized String format(LogRecord record) {
+        String message = formatMessage(record) + "\n";
+        if (record.getThrown() != null) {
+            OutputStream os = record.getLevel().intValue() >= Level.WARNING.intValue() ? System.err : System.out;
+            try (PrintWriter pw = new PrintWriter(os)) {
+                pw.println();
+                record.getThrown().printStackTrace(pw);
+            }
+        }
+        return message;
+    }
 }

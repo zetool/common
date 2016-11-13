@@ -1,4 +1,3 @@
-
 package org.zetool.common.util.units;
 
 import org.junit.Ignore;
@@ -53,6 +52,5 @@ public class ConversionTest {
     public double getRange() {
       throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
     }
-    
   }
 }

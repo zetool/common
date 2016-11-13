@@ -41,7 +41,7 @@ public class TransformationTest {
     };
 
     @Test
-    public void testDefaultImplementation() {
+    public void defaultImplementation() {
         Transformation<Integer, Integer, Double, Double> transformation = new Transformation<>();
         transformation.setAlgorithm(a);
         transformation.setProblem(input);
@@ -49,9 +49,17 @@ public class TransformationTest {
         Double solution = transformation.getSolution();
         assertThat(solution, is(closeTo(output, 10e-8)));
     }
-    
+
+    @Test(expected = ClassCastException.class)
+    public void defaultSolutionTransformationFails() {
+        Transformation<Integer, Integer, Double, Boolean> transformation = new Transformation<>();
+        transformation.setAlgorithm(a);
+        transformation.setProblem(input);
+        Boolean b = transformation.call();
+    }
+
     @Test
-    public void testDefaultProblemTransformationFails() {
+    public void defaultProblemTransformationFailsAsAlgorithm() {
         Transformation<Double, Integer, Double, Double> transformation = new Transformation<>();
         transformation.setAlgorithm(a);
         transformation.setProblem(2.0);
@@ -60,13 +68,4 @@ public class TransformationTest {
         Throwable t = transformation.getCause();
         assertThat(t.getCause(), is(instanceOf(ClassCastException.class)));
     }
-    
-    @Test(expected = ClassCastException.class)
-    public void testDefaultSolutionTransformationFails() {
-        Transformation<Integer, Integer, Double, Boolean> transformation = new Transformation<>();
-        transformation.setAlgorithm(a);
-        transformation.setProblem(input);
-        Boolean b = transformation.call();
-    }
-    
 }
