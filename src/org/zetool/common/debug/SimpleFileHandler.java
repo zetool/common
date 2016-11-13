@@ -11,6 +11,7 @@ import java.nio.channels.FileChannel;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 
 /**
@@ -23,9 +24,61 @@ public class SimpleFileHandler extends StreamHandler {
     private Level maxLevel = Level.SEVERE;  // 
     private boolean append;
     private String fileName;
+    private final Object fileLock = new Object();
     private String lockFileName;
     private FileOutputStream lockStream;
     private File file;
+
+    /**
+     * Construct a default <tt>SimpleFileHandler</tt>. This will be configured entirely from <tt>LogManager</tt>
+     * properties (or their default values).
+     * <p>
+     *
+     * @exception IOException if there are IO problems opening the files.
+     * @exception SecurityException if a security manager exists and if the caller does not have
+     * <tt>LoggingPermission("control"))</tt>.
+     * @exception NullPointerException if pattern property is an empty String.
+     */
+    public SimpleFileHandler() throws IOException {
+        super.setLevel(minLevel);
+        openFile();
+    }
+
+    /**
+     * Initialize a <tt>SimpleFileHandler</tt> to write to the given filename.
+     *
+     * @param fileName the name of the output file
+     * @exception IOException if there are IO problems opening the files.
+     * @exception SecurityException if a security manager exists and if the caller does not have
+     * <tt>LoggingPermission("control")</tt>.
+     * @exception IllegalArgumentException if pattern is an empty string
+     */
+    public SimpleFileHandler(String fileName) throws IOException {
+        if (fileName.length() < 1) {
+            throw new IllegalArgumentException();
+        }
+        this.fileName = fileName;
+        openFile();
+    }
+
+    /**
+     * Initialize a <tt>SimpleFileHandler</tt> to write to the given filename, with optional append.
+     *
+     * @param fileName the name of the output file
+     * @param append specifies append mode
+     * @exception IOException if there are IO problems opening the files.
+     * @exception SecurityException if a security manager exists and if the caller does not have
+     * <tt>LoggingPermission("control")</tt>.
+     * @exception IllegalArgumentException if pattern is an empty string
+     */
+    public SimpleFileHandler(String fileName, boolean append) throws IOException {
+        if (fileName.length() < 1) {
+            throw new IllegalArgumentException();
+        }
+        this.fileName = fileName;
+        this.append = append;
+        openFile();
+    }
 
     public Level getMinLevel() {
         return minLevel;
@@ -50,57 +103,6 @@ public class SimpleFileHandler extends StreamHandler {
     }
 
     /**
-     * Construct a default <tt>SimpleFileHandler</tt>. This will be configured entirely from <tt>LogManager</tt>
-     * properties (or their default values).
-     * <p>
-     *
-     * @exception IOException if there are IO problems opening the files.
-     * @exception SecurityException if a security manager exists and if the caller does not have
-     * <tt>LoggingPermission("control"))</tt>.
-     * @exception NullPointerException if pattern property is an empty String.
-     */
-    public SimpleFileHandler() throws IOException, SecurityException {
-        super.setLevel(minLevel);
-        openFile();
-    }
-
-    /**
-     * Initialize a <tt>SimpleFileHandler</tt> to write to the given filename.
-     *
-     * @param fileName the name of the output file
-     * @exception IOException if there are IO problems opening the files.
-     * @exception SecurityException if a security manager exists and if the caller does not have
-     * <tt>LoggingPermission("control")</tt>.
-     * @exception IllegalArgumentException if pattern is an empty string
-     */
-    public SimpleFileHandler(String fileName) throws IOException, SecurityException {
-        if (fileName.length() < 1) {
-            throw new IllegalArgumentException();
-        }
-        this.fileName = fileName;
-        openFile();
-    }
-
-    /**
-     * Initialize a <tt>SimpleFileHandler</tt> to write to the given filename, with optional append.
-     *
-     * @param fileName the name of the output file
-     * @param append specifies append mode
-     * @exception IOException if there are IO problems opening the files.
-     * @exception SecurityException if a security manager exists and if the caller does not have
-     * <tt>LoggingPermission("control")</tt>.
-     * @exception IllegalArgumentException if pattern is an empty string
-     */
-    public SimpleFileHandler(String fileName, boolean append) throws IOException, SecurityException {
-        if (fileName.length() < 1) {
-            throw new IllegalArgumentException();
-        }
-        this.fileName = fileName;
-        this.append = append;
-        openFile();
-    }
-
-    /**
      * Private method to open the set of output files, based on the configured instance variables.
      */
     private void openFile() throws IOException {
@@ -116,7 +118,7 @@ public class SimpleFileHandler extends StreamHandler {
             // Because some systems (e.g., Solaris) can only do file locks
             // between processes (and not within a process), we first check
             // if we ourself already have the file locked.
-            synchronized (lockFileName) {
+            synchronized (fileLock) {
                 FileChannel fc;
                 lockStream = new FileOutputStream(lockFileName);
                 fc = lockStream.getChannel();
@@ -129,10 +131,10 @@ public class SimpleFileHandler extends StreamHandler {
                     // This normally indicates that locking is not supported
                     // on the target directory.  We have to proceed without
                     // getting a lock.   Drop through.
+                    Logger.getLogger(SimpleFileHandler.class.getName()).log(Level.SEVERE, null, ex);
                     available = true;
                 }
-                if (available) // stop, if locking worked
-                {
+                if (available) { // stop, if locking worked
                     break;
                 }
 
@@ -172,7 +174,7 @@ public class SimpleFileHandler extends StreamHandler {
      * <tt>LoggingPermission("control")</tt>.
      */
     @Override
-    public synchronized void close() throws SecurityException {
+    public synchronized void close() {
         super.close();
         // Unlock the lock file.
         if (lockFileName == null) {
@@ -184,6 +186,7 @@ public class SimpleFileHandler extends StreamHandler {
             lockStream.close();
         } catch (Exception ex) {
             // some problems. cannot handle that
+            Logger.getLogger(SimpleFileHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         new File(lockFileName).delete();
         lockFileName = null;
