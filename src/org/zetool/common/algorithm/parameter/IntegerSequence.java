@@ -61,7 +61,7 @@ public class IntegerSequence implements Sequence<Integer> {
 
             @Override
             public boolean hasNext() {
-                return current != last;
+                return Double.doubleToLongBits(current) != Double.doubleToLongBits(last);
             }
 
             @Override

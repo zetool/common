@@ -61,7 +61,7 @@ public class DoubleSequence implements Sequence<Double> {
 
             @Override
             public boolean hasNext() {
-                return current != last;
+                return Double.doubleToLongBits(current) != Double.doubleToLongBits(last);
             }
 
             @Override

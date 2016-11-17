@@ -25,55 +25,72 @@ import java.util.concurrent.Callable;
  */
 public interface Algorithm<P, S> extends Runnable, Callable<S> {
 
-  /**
-   * Returns the instance of the problem that is to be solved.
-   *
-   * @return the instance of the problem that is to be solved.
-   */
-  public P getProblem();
+    /**
+     * Sets the parameters to be used by the algorithm instance. The method is only valid to be called when the
+     * algorithm is currently not being executed, i.e. {@link #isRunning()} is {@literal false}.
+     *
+     * The method checks the parameters are exactly the parameters expected and also that they are not violating. It is
+     * advisable to provide a ({@code static}) method to provide a parameter set validator.
+     *
+     * By default the implementation expects an empty parameter set meaning the algorithm does not rely on any other
+     * parameters.
+     * 
+     * @throws IllegalArgumentException if the parameters are not the one expected by the algorithm or if they violate
+     * the {@literal Algorithm}'s constraints.
+     */
+    default void setParameters() {
+        throw new IllegalArgumentException("Algorithm " + this + " does not support parameters.");
+    }
 
-  /**
-   * Specifies the instance of the problem this algorithm is going to solve.
-   *
-   * @param problem the instance of the problem that is to be solved.
-   * @throws IllegalStateException if the algorithm is running
-   */
-  public void setProblem( P problem );
+    /**
+     * Returns the instance of the problem that is to be solved.
+     *
+     * @return the instance of the problem that is to be solved.
+     */
+    public P getProblem();
 
-  /**
-   * Returns the solution computed by the algorithm.
-   *
-   * @return the solution to the algorithm.
-   * @throws IllegalStateException if the problem has not been solved yet.
-   */
-  public S getSolution();
+    /**
+     * Specifies the instance of the problem this algorithm is going to solve.
+     *
+     * @param problem the instance of the problem that is to be solved.
+     * @throws IllegalStateException if the algorithm is running
+     */
+    public void setProblem(P problem);
 
-  /**
-   * Returns whether the algorithm is currently begin executed.
-   *
-   * @return {@code true} if this algorithm is currently running and {@code false} otherwise.
-   */
-  public boolean isRunning();
+    /**
+     * Returns the solution computed by the algorithm.
+     *
+     * @return the solution to the algorithm.
+     * @throws IllegalStateException if the problem has not been solved yet.
+     */
+    public S getSolution();
 
-  /**
-   * The framework method for executing the algorithm. It is responsible for recording the runtime of the actual
-   * algorithm in addition to handling exceptions and recording the solution to the problem instance.
-   * 
-   * Calling the method solves the problem, afterwords it can be accessed using {@link #getSolution() }.
-   *
-   * @throws IllegalStateException if the instance of the problem has not been specified yet.
-   */
-  @Override
-  public void run();
+    /**
+     * Returns whether the algorithm is currently being executed.
+     *
+     * @return {@code true} if this algorithm is currently running and {@code false} otherwise.
+     */
+    public boolean isRunning();
 
-  /**
-   * A framework method for executing the algorithm and returning the result.
-   * 
-   * Calling the method solves the problem and returns the solution. The solution is stored and can be accessed
-   * again using {@link #getSolution() }.
-   *
-   * @return the solution to the algorithm.
-   */
-  @Override
-  public S call();
+    /**
+     * The framework method for executing the algorithm. It is responsible for recording the runtime of the actual
+     * algorithm in addition to handling exceptions and recording the solution to the problem instance.
+     *
+     * Calling the method solves the problem, afterwords it can be accessed using {@link #getSolution() }.
+     *
+     * @throws IllegalStateException if the instance of the problem has not been specified yet.
+     */
+    @Override
+    public void run();
+
+    /**
+     * A framework method for executing the algorithm and returning the result.
+     *
+     * Calling the method solves the problem and returns the solution. The solution is stored and can be accessed again
+     * using {@link #getSolution() }.
+     *
+     * @return the solution to the algorithm.
+     */
+    @Override
+    public S call();
 }
