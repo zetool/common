@@ -10,11 +10,17 @@ import org.zetool.common.algorithm.template.ParameterTemplateSet;
  *
  */
 public class ParameterSet {
+    public static final ParameterSet EMPTY_PARAMETER_SET = new ParameterSet();
+
     /**
      * Stores the listeners of this set.
      */
     private final Set<Parameter<?>> parameters = new LinkedHashSet<>();
 
+    private ParameterSet() {
+        // Empty
+    }
+    
     public ParameterSet(ParameterTemplateSet parameterTemplates) {
         for (ParameterTemplate t : parameterTemplates) {
             this.parameters.add(t.getParameter(parameterTemplates.getValue(t)));

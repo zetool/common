@@ -15,11 +15,6 @@
  */
 package org.zetool.common.algorithm;
 
-import org.zetool.common.algorithm.parameter.ParameterSet;
-import org.zetool.common.debug.Debug;
-import org.zetool.common.util.Formatter;
-import org.zetool.common.util.units.Quantity;
-import org.zetool.common.util.units.TimeUnits;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,6 +22,11 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.zetool.common.debug.Debug;
+import org.zetool.common.util.Formatter;
+import org.zetool.common.util.units.Quantity;
+import org.zetool.common.util.units.TimeUnits;
+import org.zetool.common.datastructure.parameter.ParameterSet;
 
 /**
  * The basic framework class for algorithms. It allows to define input and output of an algorithm by using generics and
@@ -93,13 +93,13 @@ public abstract class AbstractAlgorithm<P, S> implements Algorithm<P, S> {
     public AbstractAlgorithm() {
         description = "";
         name = getClass().getSimpleName().isEmpty() ? getClass().getSuperclass().getSimpleName() : getClass().getSimpleName();
-        parameterSet = new ParameterSet();
+        parameterSet = ParameterSet.EMPTY_PARAMETER_SET;
     }
 
     public AbstractAlgorithm(String name) {
         description = "";
         this.name = name;
-        parameterSet = new ParameterSet();
+        parameterSet = ParameterSet.EMPTY_PARAMETER_SET;
     }
 
     /**
