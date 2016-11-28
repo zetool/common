@@ -24,7 +24,7 @@ public abstract class AbstractUnitScale<U> implements UnitScale<U> {
    * @param symbol the short representation string
    * @param name the long representation string
    * @param range how much of the unit is the next larger scale
-   * @param previous the preceeding unit. Note that successor units are initialized in a static-initializer block
+   * @param previous the preceding unit. Note that successor units are initialized in a static-initializer block
    */
   protected AbstractUnitScale( String symbol, String name, double range, U previous ) {
     this.symbol = symbol;

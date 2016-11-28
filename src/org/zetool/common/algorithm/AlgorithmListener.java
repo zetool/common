@@ -23,7 +23,7 @@ package org.zetool.common.algorithm;
 import java.util.EventListener;
 
 /**
- * The interface for classes that want to recieve events from algorithms.
+ * The interface for classes that want to receive events from algorithms.
  * @author Martin Groß
  */
 @FunctionalInterface
