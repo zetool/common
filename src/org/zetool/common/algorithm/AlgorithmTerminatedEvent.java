@@ -34,7 +34,7 @@ public class AlgorithmTerminatedEvent<P, S> extends AbstractAlgorithmEvent<P, S>
      * @param algorithm the algorithm that has terminated.
      */
     public AlgorithmTerminatedEvent(AbstractAlgorithm<P, S> algorithm) {
-        super(algorithm, new Quantity<>(algorithm.getStartTime().getValue() + algorithm.getRuntime().getValue(), TimeUnits.MilliSeconds));
+        super(algorithm, new Quantity<>(algorithm.getStartTime().getValue() + algorithm.getRuntime().getValue(), TimeUnits.MILLI_SECOND));
         runtime = algorithm.getRuntime();
     }
 

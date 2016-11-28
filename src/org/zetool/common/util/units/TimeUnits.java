@@ -15,49 +15,47 @@
  */
 package org.zetool.common.util.units;
 
-import org.zetool.common.util.Helper;
-
 /**
  * An enumeration containing time units following the SI system for times less than a seconds. For larger times, the
  * non-SI units minutes, hours etc. are used.
  */
 public class TimeUnits extends AbstractUnitScale<TimeUnits> {
   /** One picosecond equals 10^-12 seconds. */
-  public static final TimeUnits PicoSeconds = new TimeUnits( "ps", "picosecond", null );
+  public static final TimeUnits PICO_SECOND = new TimeUnits( "ps", "picosecond", null );
   /** One picosecond equals 10^-9 seconds. */
-  public static final TimeUnits NanoSeconds = new TimeUnits( "ns", "nanoseconds", PicoSeconds );
+  public static final TimeUnits NANO_SECOND = new TimeUnits( "ns", "nanoseconds", PICO_SECOND );
   /** One picosecond equals 10^-6 seconds. */
-  public static final TimeUnits Microsecond = new TimeUnits( "µs", "mycroseconds", NanoSeconds );
+  public static final TimeUnits MICRO_SECOND = new TimeUnits( "µs", "mycroseconds", NANO_SECOND );
   /** One picosecond equals 10^-3 seconds. */
-  public static final TimeUnits MilliSeconds = new TimeUnits( "ms", "milliseconds", Microsecond );
+  public static final TimeUnits MILLI_SECOND = new TimeUnits( "ms", "milliseconds", MICRO_SECOND );
   /** The international second. */
-  public static final TimeUnits Seconds = new TimeUnits( "s", "seconds", 60, MilliSeconds );
+  public static final TimeUnits SECOND = new TimeUnits( "s", "seconds", 60, MILLI_SECOND );
   /** The non-SI unit for 60 seconds. */
-  public static final TimeUnits Minutes = new TimeUnits( "min", "minutes", 60, Seconds );
+  public static final TimeUnits MINUTE = new TimeUnits( "min", "minutes", 60, SECOND );
   /** The non-SI unit for 60 minutes. */
-  public static final TimeUnits Hours = new TimeUnits( "h", "hour", 24, Minutes );
+  public static final TimeUnits HOUR = new TimeUnits( "h", "hour", 24, MINUTE );
   /** The non-SI unit for 24 hours. */
-  public static final TimeUnits Days = new TimeUnits( "d", "day", 365.25, Hours );
+  public static final TimeUnits DAY = new TimeUnits( "d", "day", 365.25, HOUR );
   /** The non-SI unit for a Julian year which is 365.25 days. */
-  public static final TimeUnits Years = new TimeUnits( "a", "year", 100, Days );
+  public static final TimeUnits YEAR = new TimeUnits( "a", "year", 100, DAY );
   /** The rarely used unit for a century, which are approximately 100 years. */
-  public static final TimeUnits Centuries = new TimeUnits( "c", "century", 10, Years );
+  public static final TimeUnits CENTURY = new TimeUnits( "c", "century", 10, YEAR );
   /** A Julian millennium consists of 365,250 days. */
-  public static final TimeUnits Millenia = new TimeUnits( "m", "millennium", Integer.MAX_VALUE, Centuries );
+  public static final TimeUnits MILLENIUM = new TimeUnits( "m", "millennium", Integer.MAX_VALUE, CENTURY );
 
   static {
-    PicoSeconds.setSmaller( PicoSeconds );
-    PicoSeconds.setLarger( NanoSeconds );
-    NanoSeconds.setLarger( Microsecond );
-    Microsecond.setLarger( MilliSeconds );
-    MilliSeconds.setLarger( Seconds );
-    Seconds.setLarger( Minutes );
-    Minutes.setLarger( Hours );
-    Hours.setLarger( Days );
-    Days.setLarger( Years );
-    Years.setLarger( Centuries );
-    Centuries.setLarger( Millenia );
-    Millenia.setLarger( Millenia );
+    PICO_SECOND.setSmaller(PICO_SECOND );
+    PICO_SECOND.setLarger(NANO_SECOND );
+    NANO_SECOND.setLarger(MICRO_SECOND );
+    MICRO_SECOND.setLarger(MILLI_SECOND );
+    MILLI_SECOND.setLarger(SECOND );
+    SECOND.setLarger(MINUTE );
+    MINUTE.setLarger(HOUR );
+    HOUR.setLarger(DAY );
+    DAY.setLarger(YEAR );
+    YEAR.setLarger(CENTURY );
+    CENTURY.setLarger( MILLENIUM );
+    MILLENIUM.setLarger( MILLENIUM );
   }
 
   /**

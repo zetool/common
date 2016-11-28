@@ -342,7 +342,7 @@ public abstract class AbstractAlgorithm<P, S> implements Algorithm<P, S> {
      */
     public final Quantity<TimeUnits> getRuntime() {
         if (state == State.SOLVED || state == State.SOLVING_FAILED) {
-            return new Quantity<>(runtime, TimeUnits.MilliSeconds);
+            return new Quantity<>(runtime, TimeUnits.MILLI_SECOND);
         }
         throw new IllegalStateException("The algorithm has not terminated yet."
                 + " Please call run() first and wait for its termination.");
@@ -357,7 +357,7 @@ public abstract class AbstractAlgorithm<P, S> implements Algorithm<P, S> {
      */
     public final String getRuntimeAsString() {
         if (state == State.SOLVED || state == State.SOLVING_FAILED) {
-            return Formatter.formatUnit(runtime, TimeUnits.MilliSeconds, 2);
+            return Formatter.formatUnit(runtime, TimeUnits.MILLI_SECOND, 2);
         }
         throw new IllegalStateException("The algorithm has not terminated yet. "
                 + "Please call run() first and wait for its termination.");
@@ -387,7 +387,7 @@ public abstract class AbstractAlgorithm<P, S> implements Algorithm<P, S> {
      */
     public final Quantity<TimeUnits> getStartTime() {
         if (state != State.WAITING) {
-            return new Quantity<>(startTime, TimeUnits.MilliSeconds);
+            return new Quantity<>(startTime, TimeUnits.MILLI_SECOND);
         }
         throw new IllegalStateException("The execution of the algorithm has not started yet." + 
                 " Please call run() first.");

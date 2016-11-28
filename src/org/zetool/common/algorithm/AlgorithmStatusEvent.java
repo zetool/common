@@ -36,7 +36,7 @@ public class AlgorithmStatusEvent<P, S> extends AbstractAlgorithmEvent<P, S> {
      * @param text the status text message
      */
     public AlgorithmStatusEvent(AbstractAlgorithm<P, S> algorithm, String text) {
-        this(algorithm, new Quantity<>(System.currentTimeMillis(), TimeUnits.MilliSeconds), text);
+        this(algorithm, new Quantity<>(System.currentTimeMillis(), TimeUnits.MILLI_SECOND), text);
     }
 
     /**
