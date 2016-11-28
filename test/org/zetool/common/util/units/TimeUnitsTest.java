@@ -33,7 +33,7 @@ public class TimeUnitsTest {
    */
   private static final TimeUnits[] units = new TimeUnits[]{TimeUnits.PicoSeconds, TimeUnits.NanoSeconds,
     TimeUnits.Microsecond, TimeUnits.MilliSeconds, TimeUnits.Seconds, TimeUnits.Minutes, TimeUnits.Hours,
-    TimeUnits.Days, TimeUnits.Years, TimeUnits.Centuries, TimeUnits.Millenia};
+    TimeUnits.Days, TimeUnits.Years, TimeUnits.Centuries, TimeUnits.Millennia};
 
   @Test
   public void testList() {
