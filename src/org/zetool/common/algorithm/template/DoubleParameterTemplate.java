@@ -93,7 +93,7 @@ public class DoubleParameterTemplate extends DefaultParameterTemplate<Double> {
      * @return the result of the validation.
      */
     @Override
-    protected DefaultParameterTemplate.ValidationResult validate(Double value) {
+    public DefaultParameterTemplate.ValidationResult validate(Double value) {
         if (value < lowerBound) {
             return new DefaultParameterTemplate.ValidationResult(false, value + " is smaller than " + lowerBound + ".");
         }

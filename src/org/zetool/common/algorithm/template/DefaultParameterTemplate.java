@@ -89,7 +89,6 @@ public class DefaultParameterTemplate<T> implements ParameterTemplate<T> {
      *
      * @return <code>true</code> if a candidate for a next value exists, <code>false</code> otherwise.
      */
-    @Override
     public boolean hasNextValue() {
         return iterator != null && iterator.hasNext();
     }
@@ -175,7 +174,7 @@ public class DefaultParameterTemplate<T> implements ParameterTemplate<T> {
      * @param value the value that is to be validated.
      * @return the result of the validation.
      */
-    protected ValidationResult validate(T value) {
+    public ValidationResult validate(T value) {
         return ValidationResult.SUCCESS;
     }
 

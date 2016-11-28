@@ -93,7 +93,7 @@ public class IntegerParameterTemplate extends DefaultParameterTemplate<Integer> 
      * @return the result of the validation.
      */
     @Override
-    protected ValidationResult validate(Integer value) {
+    public ValidationResult validate(Integer value) {
         if (value < lowerBound) {
             return new ValidationResult(false, value + " is smaller than " + lowerBound + ".");
         }

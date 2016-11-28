@@ -12,8 +12,8 @@ import org.zetool.common.algorithm.template.DefaultParameterTemplate.ValidationR
  *
  */
 public abstract class AbstractParameterTemplateSet implements ParameterTemplateSet {
-    private final Set<DefaultParameterTemplate<?>> parameterTemplates;
-    private final Map<DefaultParameterTemplate, Parameter> values = new HashMap<>();
+    private final Set<ParameterTemplate<?>> parameterTemplates;
+    private final Map<ParameterTemplate, Parameter> values = new HashMap<>();
 
     /**
      * Creates a new ParameterSet.
@@ -22,25 +22,26 @@ public abstract class AbstractParameterTemplateSet implements ParameterTemplateS
         parameterTemplates = Collections.emptySet();
     }
 
-    protected AbstractParameterTemplateSet(Set<DefaultParameterTemplate<?>> parameterTemplates) {
+    protected AbstractParameterTemplateSet(Set<ParameterTemplate<?>> parameterTemplates) {
         this.parameterTemplates = parameterTemplates;
     }
     
     @Override
-    public <T> ValidationResult isChangeValid(DefaultParameterTemplate<T> template, T value) {
+    public <T> ValidationResult isChangeValid(ParameterTemplate<T> template, T value) {
         return template.validate(value);
     }
     
-    public <T> T getValue(DefaultParameterTemplate<T> template) {
+    @Override
+    public <T> T getValue(ParameterTemplate<T> template) {
         return (T) values.get(template);
     }
     
-    protected <T> void updateValue(DefaultParameterTemplate<T> template, T value) {
+    protected <T> void updateValue(ParameterTemplate<T> template, T value) {
         values.put(template, template.getParameter(value));
     }
 
     @Override
-    public Iterator<DefaultParameterTemplate<?>> iterator() {
+    public Iterator<ParameterTemplate<?>> iterator() {
         return parameterTemplates.iterator();
     }
 

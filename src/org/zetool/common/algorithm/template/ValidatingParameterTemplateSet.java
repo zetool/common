@@ -16,15 +16,15 @@ public class ValidatingParameterTemplateSet extends AbstractParameterTemplateSet
         super();
     }
 
-    private ValidatingParameterTemplateSet(Set<DefaultParameterTemplate<?>> parameterTemplates) {
+    private ValidatingParameterTemplateSet(Set<ParameterTemplate<?>> parameterTemplates) {
         super(parameterTemplates);
     }
 
     public static class Builder {
 
-        private final Set<DefaultParameterTemplate<?>> parameterTemplates = new LinkedHashSet<>();
+        private final Set<ParameterTemplate<?>> parameterTemplates = new LinkedHashSet<>();
 
-        public <T> Builder withParameters(DefaultParameterTemplate<T> parameterTemplate) {
+        public <T> Builder withParameters(ParameterTemplate<T> parameterTemplate) {
             parameterTemplates.add(parameterTemplate);
             return this;
         }
@@ -76,11 +76,12 @@ public class ValidatingParameterTemplateSet extends AbstractParameterTemplateSet
     }
 
     
-    public <T> ValidationResult update(DefaultParameterTemplate<T> template, T value) {
+    public <T> ValidationResult update(ParameterTemplate<T> template, T value) {
         ValidationResult result = isChangeValid(template, value);
         if (result == ValidationResult.SUCCESS) {
-            super.updateValue(template, value);
+            //super.updateValue(template, value);
         }
         return result;
     }
+
 }

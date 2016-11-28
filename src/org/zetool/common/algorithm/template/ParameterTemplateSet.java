@@ -6,11 +6,11 @@ import org.zetool.common.algorithm.template.DefaultParameterTemplate.ValidationR
  *
  * @author Jan-Philipp Kappmeier
  */
-public interface ParameterTemplateSet extends Iterable<DefaultParameterTemplate<?>> {
-    <T> T getValue(DefaultParameterTemplate<T> template);
+public interface ParameterTemplateSet extends Iterable<ParameterTemplate<?>> {
+    <T> T getValue(ParameterTemplate<T> temwplate);
 
-    <T> ValidationResult isChangeValid(DefaultParameterTemplate<T> template, T value);
+    <T> ValidationResult isChangeValid(ParameterTemplate<T> template, T value);
 
-    <T> ValidationResult update(DefaultParameterTemplate<T> template, T value);
+    <T> ValidationResult update(ParameterTemplate<T> template, T value);
 
 }

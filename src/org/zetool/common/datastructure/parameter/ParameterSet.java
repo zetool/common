@@ -1,10 +1,10 @@
 package org.zetool.common.datastructure.parameter;
 
-import org.zetool.common.algorithm.template.DefaultParameterTemplate;
-import org.zetool.common.algorithm.template.ParameterTemplateSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import org.zetool.common.algorithm.template.ParameterTemplate;
+import org.zetool.common.algorithm.template.ParameterTemplateSet;
 
 /**
  *
@@ -13,10 +13,10 @@ public class ParameterSet {
     /**
      * Stores the listeners of this set.
      */
-    private Set<Parameter<?>> parameters = new LinkedHashSet<>();
+    private final Set<Parameter<?>> parameters = new LinkedHashSet<>();
 
     public ParameterSet(ParameterTemplateSet parameterTemplates) {
-        for (DefaultParameterTemplate t : parameterTemplates) {
+        for (ParameterTemplate t : parameterTemplates) {
             this.parameters.add(t.getParameter(parameterTemplates.getValue(t)));
         }
     }

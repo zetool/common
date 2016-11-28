@@ -75,7 +75,7 @@ public class StringParameterTemplate extends DefaultParameterTemplate<String> {
      * @return the result of the validation.
      */
     @Override
-    protected ValidationResult validate(String value) {
+    public ValidationResult validate(String value) {
         if (regularExpression != null && !value.matches(regularExpression)) {
             return new ValidationResult(false, "'" + value + "' does not match the RegEx '" + regularExpression + "'.");
         } else {

@@ -1,6 +1,7 @@
 package org.zetool.common.algorithm.template;
 
 import java.util.Set;
+import org.zetool.common.algorithm.template.DefaultParameterTemplate.ValidationResult;
 
 /**
  *
@@ -11,14 +12,14 @@ public class NonValidatingParameterTemplateSet extends AbstractParameterTemplate
     public NonValidatingParameterTemplateSet() {
     }
 
-    public NonValidatingParameterTemplateSet(Set<DefaultParameterTemplate<?>> parameterTemplates) {
+    public NonValidatingParameterTemplateSet(Set<ParameterTemplate<?>> parameterTemplates) {
         super(parameterTemplates);
     }
     
     @Override
-    public <T> DefaultParameterTemplate.ValidationResult update(DefaultParameterTemplate<T> template, T value) {
-        DefaultParameterTemplate.ValidationResult result = isChangeValid(template, value);
-        if (result == DefaultParameterTemplate.ValidationResult.SUCCESS) {
+    public <T> ValidationResult update(ParameterTemplate<T> template, T value) {
+        ValidationResult result = isChangeValid(template, value);
+        if (result == ValidationResult.SUCCESS) {
             super.updateValue(template, value);
         }
         return result;
