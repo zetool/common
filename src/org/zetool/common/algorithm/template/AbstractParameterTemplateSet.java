@@ -12,6 +12,7 @@ import org.zetool.common.algorithm.template.DefaultParameterTemplate.ValidationR
  *
  */
 public abstract class AbstractParameterTemplateSet implements ParameterTemplateSet {
+
     private final Set<ParameterTemplate<?>> parameterTemplates;
     private final Map<ParameterTemplate, Parameter> values = new HashMap<>();
 
@@ -25,17 +26,17 @@ public abstract class AbstractParameterTemplateSet implements ParameterTemplateS
     protected AbstractParameterTemplateSet(Set<ParameterTemplate<?>> parameterTemplates) {
         this.parameterTemplates = parameterTemplates;
     }
-    
+
     @Override
     public <T> ValidationResult isChangeValid(ParameterTemplate<T> template, T value) {
         return template.validate(value);
     }
-    
+
     @Override
     public <T> T getValue(ParameterTemplate<T> template) {
         return (T) values.get(template);
     }
-    
+
     protected <T> void updateValue(ParameterTemplate<T> template, T value) {
         values.put(template, template.getParameter(value));
     }
@@ -43,6 +44,16 @@ public abstract class AbstractParameterTemplateSet implements ParameterTemplateS
     @Override
     public Iterator<ParameterTemplate<?>> iterator() {
         return parameterTemplates.iterator();
+    }
+
+    @Override
+    public <T> boolean contains(ParameterTemplate<T> template) {
+        return values.containsKey(template);
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return values.isEmpty();
     }
 
 }

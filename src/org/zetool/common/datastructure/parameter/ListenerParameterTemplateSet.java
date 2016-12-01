@@ -75,4 +75,15 @@ public class ListenerParameterTemplateSet implements ParameterTemplateSet {
     public Iterator<ParameterTemplate<?>> iterator() {
         return pts.iterator();
     }
+
+    @Override
+    public <T> boolean contains(ParameterTemplate<T> template) {
+        return pts.contains(template);
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return pts.isEmpty();
+    }
+    
 }

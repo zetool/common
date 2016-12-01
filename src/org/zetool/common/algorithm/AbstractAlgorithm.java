@@ -22,6 +22,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.zetool.common.debug.Debug;
 import org.zetool.common.util.Formatter;
 import org.zetool.common.util.units.Quantity;
@@ -93,13 +94,13 @@ public abstract class AbstractAlgorithm<P, S> implements Algorithm<P, S> {
     public AbstractAlgorithm() {
         description = "";
         name = getClass().getSimpleName().isEmpty() ? getClass().getSuperclass().getSimpleName() : getClass().getSimpleName();
-        parameterSet = ParameterSet.EMPTY_PARAMETER_SET;
+        parameterSet = ParameterSet.emptyParameterSet();
     }
 
     public AbstractAlgorithm(String name) {
         description = "";
         this.name = name;
-        parameterSet = ParameterSet.EMPTY_PARAMETER_SET;
+        parameterSet = ParameterSet.emptyParameterSet();
     }
 
     /**
