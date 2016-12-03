@@ -1,10 +1,10 @@
 package org.zetool.common.datastructure.parameter;
 
-import org.zetool.common.algorithm.template.DefaultParameterTemplate;
-import org.zetool.common.algorithm.template.ParameterTemplateSet;
 import java.util.HashSet;
 import java.util.Iterator;
 import org.zetool.common.algorithm.template.ValidationResult;
+import org.zetool.common.algorithm.template.ParameterTemplate;
+import org.zetool.common.algorithm.template.ParameterTemplateSet;
 
 /**
  *
@@ -19,7 +19,7 @@ public class ListenerParameterTemplateSet implements ParameterTemplateSet {
     private ParameterTemplateSet pts;
 
     @Override
-    public <T> ValidationResult update(DefaultParameterTemplate<T> template, T value) {
+    public <T> ValidationResult update(ParameterTemplate<T> template, T value) {
         T oldValue = getValue(template);
         ValidationResult result = pts.update(template, value);
         if (result == ValidationResult.SUCCESS) {
@@ -37,7 +37,7 @@ public class ListenerParameterTemplateSet implements ParameterTemplateSet {
      * @param oldValue the old value of the parameter.
      * @param newValue the new value of the parameter.
      */
-    protected <T> void fireParameterChanged(DefaultParameterTemplate<T> parameter, T oldValue, T newValue) {
+    protected <T> void fireParameterChanged(ParameterTemplate<T> parameter, T oldValue, T newValue) {
         for (ParameterChangedListener listener : listeners) {
             listener.parameterChanged(parameter, oldValue, newValue);
         }
@@ -62,17 +62,28 @@ public class ListenerParameterTemplateSet implements ParameterTemplateSet {
     }
 
     @Override
-    public <T> T getValue(DefaultParameterTemplate<T> template) {
+    public <T> T getValue(ParameterTemplate<T> template) {
         return pts.getValue(template);
     }
 
     @Override
-    public <T> ValidationResult isChangeValid(DefaultParameterTemplate<T> template, T value) {
+    public <T> ValidationResult isChangeValid(ParameterTemplate<T> template, T value) {
         return pts.isChangeValid(template, value);
     }
 
     @Override
-    public Iterator<DefaultParameterTemplate<?>> iterator() {
+    public Iterator<ParameterTemplate<?>> iterator() {
         return pts.iterator();
     }
+
+    @Override
+    public <T> boolean contains(ParameterTemplate<T> template) {
+        return pts.contains(template);
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return pts.isEmpty();
+    }
+    
 }

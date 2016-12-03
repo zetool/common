@@ -15,11 +15,6 @@
  */
 package org.zetool.common.algorithm;
 
-import org.zetool.common.algorithm.parameter.ParameterSet;
-import org.zetool.common.debug.Debug;
-import org.zetool.common.util.Formatter;
-import org.zetool.common.util.units.Quantity;
-import org.zetool.common.util.units.TimeUnits;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,6 +22,12 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.zetool.common.debug.Debug;
+import org.zetool.common.util.Formatter;
+import org.zetool.common.util.units.Quantity;
+import org.zetool.common.util.units.TimeUnits;
+import org.zetool.common.datastructure.parameter.ParameterSet;
 
 /**
  * The basic framework class for algorithms. It allows to define input and output of an algorithm by using generics and
@@ -53,7 +54,7 @@ public abstract class AbstractAlgorithm<P, S> implements Algorithm<P, S> {
         WAITING,
         /** The algorithm is executing. Problem cannot be changed anymore. */
         SOLVING,
-        /** An error during the execution occured. */
+        /** An error during the execution occurred. */
         SOLVING_FAILED,
         /** The algorithm is executed. Only state where {@link #getSolution() } is allowed to be called. */
         SOLVED;
@@ -93,13 +94,13 @@ public abstract class AbstractAlgorithm<P, S> implements Algorithm<P, S> {
     public AbstractAlgorithm() {
         description = "";
         name = getClass().getSimpleName().isEmpty() ? getClass().getSuperclass().getSimpleName() : getClass().getSimpleName();
-        parameterSet = new ParameterSet();
+        parameterSet = ParameterSet.emptyParameterSet();
     }
 
     public AbstractAlgorithm(String name) {
         description = "";
         this.name = name;
-        parameterSet = new ParameterSet();
+        parameterSet = ParameterSet.emptyParameterSet();
     }
 
     /**
@@ -342,7 +343,7 @@ public abstract class AbstractAlgorithm<P, S> implements Algorithm<P, S> {
      */
     public final Quantity<TimeUnits> getRuntime() {
         if (state == State.SOLVED || state == State.SOLVING_FAILED) {
-            return new Quantity<>(runtime, TimeUnits.MilliSeconds);
+            return new Quantity<>(runtime, TimeUnits.MILLI_SECOND);
         }
         throw new IllegalStateException("The algorithm has not terminated yet."
                 + " Please call run() first and wait for its termination.");
@@ -357,7 +358,7 @@ public abstract class AbstractAlgorithm<P, S> implements Algorithm<P, S> {
      */
     public final String getRuntimeAsString() {
         if (state == State.SOLVED || state == State.SOLVING_FAILED) {
-            return Formatter.formatUnit(runtime, TimeUnits.MilliSeconds, 2);
+            return Formatter.formatUnit(runtime, TimeUnits.MILLI_SECOND, 2);
         }
         throw new IllegalStateException("The algorithm has not terminated yet. "
                 + "Please call run() first and wait for its termination.");
@@ -387,7 +388,7 @@ public abstract class AbstractAlgorithm<P, S> implements Algorithm<P, S> {
      */
     public final Quantity<TimeUnits> getStartTime() {
         if (state != State.WAITING) {
-            return new Quantity<>(startTime, TimeUnits.MilliSeconds);
+            return new Quantity<>(startTime, TimeUnits.MILLI_SECOND);
         }
         throw new IllegalStateException("The execution of the algorithm has not started yet." + 
                 " Please call run() first.");
@@ -568,7 +569,7 @@ public abstract class AbstractAlgorithm<P, S> implements Algorithm<P, S> {
             } catch (AssertionError e) {
                 this.cause = e;
                 state = State.SOLVING_FAILED;
-                log.log(Level.SEVERE, "An assertion error has occured: ", e);
+                log.log(Level.SEVERE, "An assertion error has occurred: ", e);
             } catch (RuntimeException ex) {
                 this.cause = ex;
                 state = State.SOLVING_FAILED;
@@ -602,7 +603,8 @@ public abstract class AbstractAlgorithm<P, S> implements Algorithm<P, S> {
     }
 
     /**
-     * Returns the {@link Error} or {@link Exception} that occurred during the algorithm's execution.
+     * Returns the {@link Error} or {@link Exception} that occurred during the algorithm's
+     * execution.
      *
      * @throws RuntimeException that occured during the execution of the algorithm
      * @return the exception that occured while executing the algorithm

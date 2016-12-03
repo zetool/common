@@ -8,7 +8,7 @@ import java.util.Set;
  *
  */
 public abstract class DefaultParameterTemplateSet implements ParameterTemplateSet {
-    private final Set<DefaultParameterTemplate<?>> parameterTemplates;
+    private final Set<ParameterTemplate<?>> parameterTemplates;
 
     /**
      * Creates a new ParameterSet.
@@ -17,12 +17,12 @@ public abstract class DefaultParameterTemplateSet implements ParameterTemplateSe
         parameterTemplates = Collections.emptySet();
     }
 
-    protected DefaultParameterTemplateSet(Set<DefaultParameterTemplate<?>> parameterTemplates) {
+    protected DefaultParameterTemplateSet(Set<ParameterTemplate<?>> parameterTemplates) {
         this.parameterTemplates = parameterTemplates;
     }
     
     @Override
-    public Iterator<DefaultParameterTemplate<?>> iterator() {
+    public Iterator<ParameterTemplate<?>> iterator() {
         return parameterTemplates.iterator();
     }
 
@@ -67,4 +67,13 @@ public abstract class DefaultParameterTemplateSet implements ParameterTemplateSe
         return parameter;
     }
 
+    @Override
+    public <T> ValidationResult update(ParameterTemplate<T> template, T value) {
+        ValidationResult result = isChangeValid(template, value);
+        if (result == ValidationResult.SUCCESS) {
+            //super.updateValue(template, value);
+        }
+        return result;
+    }
+    
 }

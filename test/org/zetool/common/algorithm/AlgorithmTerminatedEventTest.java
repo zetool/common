@@ -38,7 +38,7 @@ public class AlgorithmTerminatedEventTest {
             }
         };
 
-        Quantity<TimeUnits> runtime = new Quantity<>(3, TimeUnits.Microsecond);
+        Quantity<TimeUnits> runtime = new Quantity<>(3, TimeUnits.MICRO_SECOND);
         AlgorithmTerminatedEvent<Object, Object> progressEvent = new AlgorithmTerminatedEvent<>(testInstance, runtime);
         assertThat(progressEvent.getRuntime(), is(equalTo(runtime)));
     }
@@ -67,7 +67,7 @@ public class AlgorithmTerminatedEventTest {
         testAlgorithm.setProblem(new Object());
         testAlgorithm.run();
         AlgorithmTerminatedEvent<Object, Object> progressEvent = new AlgorithmTerminatedEvent<>(testAlgorithm);
-        assertThat(progressEvent.getRuntime(), is(equalTo(new Quantity<>(10, TimeUnits.MilliSeconds))));
+        assertThat(progressEvent.getRuntime(), is(equalTo(new Quantity<>(10, TimeUnits.MILLI_SECOND))));
     }
 
 }

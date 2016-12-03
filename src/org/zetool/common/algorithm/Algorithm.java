@@ -16,6 +16,9 @@
 package org.zetool.common.algorithm;
 
 import java.util.concurrent.Callable;
+import org.zetool.common.algorithm.template.ParameterTemplateSet;
+import org.zetool.common.algorithm.template.Templates;
+import org.zetool.common.datastructure.parameter.ParameterSet;
 
 /**
  *
@@ -35,13 +38,37 @@ public interface Algorithm<P, S> extends Runnable, Callable<S> {
      * By default the implementation expects an empty parameter set meaning the algorithm does not rely on any other
      * parameters.
      * 
+     * @param parameters
      * @throws IllegalArgumentException if the parameters are not the one expected by the algorithm or if they violate
      * the {@literal Algorithm}'s constraints.
+     * @throws IllegalStateException when it is not possible to set new parameters, i.e. when the algorithm is running
+     * @see #acceptsParameters(org.zetool.common.datastructure.parameter.ParameterSet) 
      */
-    default void setParameters() {
+    default void setParameters(ParameterSet parameters) {
         throw new IllegalArgumentException("Algorithm " + this + " does not support parameters.");
     }
 
+    /**
+     * Verifies that the parameters are a valid set. When the parameters are valid
+     * {@link #setParameters(org.zetool.common.datastructure.parameter.ParameterSet) } accepts the parameters.
+     * Otherwise an {@link IllegalArgumentException} will be thrown.
+     * 
+     * @param parameters the parameters that are to be validated
+     * @return whether the parameters are valid
+     */
+    default boolean acceptsParameters(ParameterSet parameters) {
+        return false;
+    }
+
+    /**
+     * Returns the parameter templates describing parameters accepted by the {@literal Algorithm}.
+     * 
+     * @return the parameter template forthe parameters accepted by the algorithm
+     */
+    default ParameterTemplateSet getParameters() {
+      return Templates.emptyParameters();  
+    }
+    
     /**
      * Returns the instance of the problem that is to be solved.
      *

@@ -21,15 +21,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.hamcrest.CoreMatchers;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.greaterThan;
-import static org.jmock.AbstractExpectations.same;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import org.junit.Rule;
@@ -145,7 +144,7 @@ public class AbstractAlgorithmTest {
 
         t.run();
 
-        assertThat(t.getProblem(), is(same(problem)));
+        assertThat(t.getProblem(), is(sameInstance(problem)));
         assertThat(t.called, is(true));
         assertState(t, AbstractAlgorithm.State.SOLVED);
     }
@@ -164,7 +163,7 @@ public class AbstractAlgorithmTest {
         a.run();
 
         assertState(a, State.SOLVING_FAILED);
-        assertThat(a.getCause(), is(same(re)));
+        assertThat(a.getCause(), is(sameInstance(re)));
     }
 
     @Test
@@ -206,7 +205,7 @@ public class AbstractAlgorithmTest {
 
         t.run();
 
-        assertThat(t.getSolution(), is(same(problem)));
+        assertThat(t.getSolution(), is(sameInstance(problem)));
 
         t = new FakeAlgorithm();
         exception.expect(IllegalStateException.class);
