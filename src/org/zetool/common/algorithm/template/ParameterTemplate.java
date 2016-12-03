@@ -37,7 +37,7 @@ public interface ParameterTemplate<T> {
      *
      * @return <code>true</code> if a candidate for a next value exists, <code>false</code> otherwise.
      */
-    boolean hasNextValue();
+    //boolean hasNextValue();
 
     /**
      * Returns the number of values this parameter can take. Notice that this does only count the number of potential
@@ -56,7 +56,7 @@ public interface ParameterTemplate<T> {
      *
      * @return a <code>ValidationResult</code> specifying whether the operation was a success or a failure.
      */
-    T getFirstValue();
+    //T getFirstValue();
 
     /**
      * If this parameter has a sequence of values, this sets the current value to the next value in the sequence which
@@ -66,15 +66,6 @@ public interface ParameterTemplate<T> {
      *
      * @return a <code>ValidationResult</code> specifying whether this a success or a failure.
      */
-    T getNextValue();
-
-    //    /**
-    //     * Returns the current value of this parameter.
-    //     *
-    //     * @return the current value of this parameter.
-    //     */
-    //    public T getValue() {
-    //        return value;
-    //    }
-    
+    //T getNextValue();
+    ValidationResult validate(T value);
 }

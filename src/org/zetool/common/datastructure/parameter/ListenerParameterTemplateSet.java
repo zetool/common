@@ -4,7 +4,7 @@ import org.zetool.common.algorithm.template.DefaultParameterTemplate;
 import org.zetool.common.algorithm.template.ParameterTemplateSet;
 import java.util.HashSet;
 import java.util.Iterator;
-import org.zetool.common.algorithm.template.DefaultParameterTemplate.ValidationResult;
+import org.zetool.common.algorithm.template.ValidationResult;
 
 /**
  *

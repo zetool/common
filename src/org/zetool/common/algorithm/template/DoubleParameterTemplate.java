@@ -93,13 +93,13 @@ public class DoubleParameterTemplate extends DefaultParameterTemplate<Double> {
      * @return the result of the validation.
      */
     @Override
-    protected DefaultParameterTemplate.ValidationResult validate(Double value) {
+    public ValidationResult validate(Double value) {
         if (value < lowerBound) {
-            return new DefaultParameterTemplate.ValidationResult(false, value + " is smaller than " + lowerBound + ".");
+            return new ValidationResult(false, value + " is smaller than " + lowerBound + ".");
         }
         if (value > upperBound) {
-            return new DefaultParameterTemplate.ValidationResult(false, value + " is greater than " + upperBound + ".");
+            return new ValidationResult(false, value + " is greater than " + upperBound + ".");
         }
-        return DefaultParameterTemplate.ValidationResult.SUCCESS;
+        return ValidationResult.SUCCESS;
     }
 }

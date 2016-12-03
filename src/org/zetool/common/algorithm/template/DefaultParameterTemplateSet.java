@@ -1,37 +1,29 @@
 package org.zetool.common.algorithm.template;
 
-import java.util.LinkedHashSet;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.Set;
-import org.zetool.common.algorithm.template.DefaultParameterTemplate.ValidationResult;
 
 /**
  *
  */
-public class ValidatingParameterTemplateSet extends AbstractParameterTemplateSet {
+public abstract class DefaultParameterTemplateSet implements ParameterTemplateSet {
+    private final Set<DefaultParameterTemplate<?>> parameterTemplates;
 
     /**
      * Creates a new ParameterSet.
      */
-    public ValidatingParameterTemplateSet() {
-        super();
+    public DefaultParameterTemplateSet() {
+        parameterTemplates = Collections.emptySet();
     }
 
-    private ValidatingParameterTemplateSet(Set<DefaultParameterTemplate<?>> parameterTemplates) {
-        super(parameterTemplates);
+    protected DefaultParameterTemplateSet(Set<DefaultParameterTemplate<?>> parameterTemplates) {
+        this.parameterTemplates = parameterTemplates;
     }
-
-    public static class Builder {
-
-        private final Set<DefaultParameterTemplate<?>> parameterTemplates = new LinkedHashSet<>();
-
-        public <T> Builder withParameters(DefaultParameterTemplate<T> parameterTemplate) {
-            parameterTemplates.add(parameterTemplate);
-            return this;
-        }
-
-        public ValidatingParameterTemplateSet build() {
-            return new ValidatingParameterTemplateSet(parameterTemplates);
-        }
+    
+    @Override
+    public Iterator<DefaultParameterTemplate<?>> iterator() {
+        return parameterTemplates.iterator();
     }
 
     /**
@@ -75,12 +67,4 @@ public class ValidatingParameterTemplateSet extends AbstractParameterTemplateSet
         return parameter;
     }
 
-    
-    public <T> ValidationResult update(DefaultParameterTemplate<T> template, T value) {
-        ValidationResult result = isChangeValid(template, value);
-        if (result == ValidationResult.SUCCESS) {
-            super.updateValue(template, value);
-        }
-        return result;
-    }
 }

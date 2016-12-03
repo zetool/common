@@ -1,6 +1,6 @@
 package org.zetool.common.algorithm.template;
 
-import org.zetool.common.algorithm.template.DefaultParameterTemplate.ValidationResult;
+import org.zetool.common.algorithm.template.ValidationResult;
 
 /**
  *
