@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.zetool.common.algorithm.template;
 
 /**
@@ -11,22 +6,15 @@ package org.zetool.common.algorithm.template;
  */
 public class ValidationResult {
 
-    /**
-     * A constant representing a successful validation.
-     */
+    /** A constant representing a successful validation. */
     public static final ValidationResult SUCCESS = new ValidationResult(true, "");
-    /**
-     * A constant representing a failed validation.
-     */
+    /** A constant representing a failed validation. */
     public static final ValidationResult FAILURE = new ValidationResult(false, "");
-    /**
-     * The error message of the validation.
-     */
-    private String message;
-    /**
-     * Whether the validation was successful.
-     */
-    private boolean successful;
+
+    /** The error message of the validation. */
+    private final String message;
+    /** Whether the validation was successful. */
+    private final boolean successful;
 
     /**
      * Creates a new ValidationResult with the specified error message and success flag.
@@ -41,13 +29,15 @@ public class ValidationResult {
 
     /**
      * Combines this result with the given one. This concatenates the messages and performs a logical AND of their
-     * success flags. The result is then stored in this object.
+     * success flags. The result is then stored in a new object.
      *
      * @param result the result this result is to be combined with.
+     * @return the new validation result
      */
-    public void combine(ValidationResult result) {
-        message = (message + " " + result.getMessage()).trim();
-        successful = successful && result.isSuccessful();
+    public ValidationResult combine(ValidationResult result) {
+        String newMessage = (message + " " + result.getMessage()).trim();
+        boolean newSuccessful = successful && result.isSuccessful();
+        return new ValidationResult(newSuccessful, newMessage);
     }
 
     /**
@@ -62,16 +52,6 @@ public class ValidationResult {
     }
 
     /**
-     * Sets the error message of this validation result. Should be empty if and only if the validation was a
-     * success.
-     *
-     * @param message the error message of this validation result.
-     */
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    /**
      * Returns whether the validation was successful.
      *
      * @return whether the validation was successful.
@@ -79,14 +59,4 @@ public class ValidationResult {
     public boolean isSuccessful() {
         return successful;
     }
-
-    /**
-     * Sets whether the validation was successful.
-     *
-     * @param successful specifies whether the validation was successful.
-     */
-    public void setSuccessful(boolean successful) {
-        this.successful = successful;
-    }
-    
 }
