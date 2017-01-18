@@ -45,7 +45,7 @@ public class DoubleParameterTemplate extends DefaultParameterTemplate<Double> {
      * @param value the default value for this parameter.
      */
     public DoubleParameterTemplate(String name, String description, Double value, double lowerBound, double upperBound) {
-        super(name, description, value);
+        super(name, description, Double.TYPE, value);
         this.lowerBound = lowerBound;
         this.upperBound = upperBound;
     }
@@ -93,7 +93,7 @@ public class DoubleParameterTemplate extends DefaultParameterTemplate<Double> {
      * @return the result of the validation.
      */
     @Override
-    public ValidationResult validate(Double value) {
+    public ValidationResult isValid(Double value) {
         if (value < lowerBound) {
             return new ValidationResult(false, value + " is smaller than " + lowerBound + ".");
         }

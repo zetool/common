@@ -2,6 +2,7 @@ package org.zetool.common.datastructure.parameter;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import org.zetool.common.algorithm.template.ParameterAssignmentMap;
 import org.zetool.common.algorithm.template.ValidationResult;
 import org.zetool.common.algorithm.template.ParameterTemplate;
 import org.zetool.common.algorithm.template.ParameterTemplateSet;
@@ -18,15 +19,14 @@ public class ListenerParameterTemplateSet implements ParameterTemplateSet {
 
     private ParameterTemplateSet pts;
 
-    @Override
-    public <T> ValidationResult update(ParameterTemplate<T> template, T value) {
-        T oldValue = getValue(template);
-        ValidationResult result = pts.update(template, value);
-        if (result == ValidationResult.SUCCESS) {
-            fireParameterChanged(template, oldValue, value);
-        }
-        return result;
-    }
+//    public <T> ValidationResult update(ParameterTemplate<T> template, T value) {
+//        T oldValue = getValue(template);
+//        ValidationResult result = pts.update(template, value);
+//        if (result == ValidationResult.SUCCESS) {
+//            fireParameterChanged(template, oldValue, value);
+//        }
+//        return result;
+//    }
 
     /**
      * Informs all listeners that a parameter in this set has been changed by calling the method described in their
@@ -62,16 +62,6 @@ public class ListenerParameterTemplateSet implements ParameterTemplateSet {
     }
 
     @Override
-    public <T> T getValue(ParameterTemplate<T> template) {
-        return pts.getValue(template);
-    }
-
-    @Override
-    public <T> ValidationResult isChangeValid(ParameterTemplate<T> template, T value) {
-        return pts.isChangeValid(template, value);
-    }
-
-    @Override
     public Iterator<ParameterTemplate<?>> iterator() {
         return pts.iterator();
     }
@@ -84,6 +74,11 @@ public class ListenerParameterTemplateSet implements ParameterTemplateSet {
     @Override
     public boolean isEmpty() {
         return pts.isEmpty();
+    }
+
+    @Override
+    public ValidationResult isValid(ParameterAssignmentMap map) {
+        return pts.isValid(map);
     }
     
 }

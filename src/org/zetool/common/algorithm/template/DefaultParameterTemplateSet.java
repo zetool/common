@@ -9,7 +9,7 @@ import java.util.Set;
  */
 public class DefaultParameterTemplateSet implements ParameterTemplateSet {
 
-    private final Set<ParameterTemplate<?>> parameterTemplates;
+    private final Set<ParameterTemplate<? extends Object>> parameterTemplates;
 
     protected DefaultParameterTemplateSet(Set<ParameterTemplate<?>> parameterTemplates) {
         this.parameterTemplates = parameterTemplates;
@@ -21,22 +21,24 @@ public class DefaultParameterTemplateSet implements ParameterTemplateSet {
     }
 
     @Override
-    public <T> ValidationResult update(ParameterTemplate<T> template, T value) {
-        ValidationResult result = isChangeValid(template, value);
-        if (result == ValidationResult.SUCCESS) {
-            //super.updateValue(template, value);
+    public ValidationResult isValid(ParameterAssignmentMap map) {
+        // Validates all parameters
+        //return template.isValid(value);
+        for (ParameterTemplate<? extends Object> t : parameterTemplates ) {
+            ValidationResult singleValidate = validate(t, map.getValue(t));
+            if (singleValidate == ValidationResult.FAILURE) {
+                return ValidationResult.FAILURE;
+            }
         }
-        return result;
+        return ValidationResult.SUCCESS;
     }
 
-    @Override
-    public <T> T getValue(ParameterTemplate<T> template) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public <T> ValidationResult isChangeValid(ParameterTemplate<T> template, T value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private <T> ValidationResult validate(ParameterTemplate<T> t, Object v) {
+        if (t.getType().isInstance(v)) {
+            T vCast = t.getType().cast(v);
+            return t.isValid(vCast);
+        }
+        return ValidationResult.FAILURE;
     }
 
     @Override
@@ -90,7 +92,7 @@ public class DefaultParameterTemplateSet implements ParameterTemplateSet {
             } else if (Enum.class.isAssignableFrom(type)) {
                 parameter = new EnumParameterTemplate(name, description, (Class<? extends Enum>) type, (Enum) value);
             } else {
-                parameter = new DefaultParameterTemplate(name, description, value);
+                parameter = new DefaultParameterTemplate(name, description, type, value);
             }
             sets.add(parameter);
             return this;

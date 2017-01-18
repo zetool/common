@@ -21,18 +21,8 @@ public class TemplatesTest {
         assertThat(emptyParameters.iterator().hasNext(), is(false));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void retrieveValueFails() {
-        emptyParameters.getValue(mock(ParameterTemplate.class));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void updateFails() {
-        emptyParameters.update(mock(ParameterTemplate.class), new Object());
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void isValidFails() {
-        emptyParameters.isChangeValid(mock(ParameterTemplate.class), new Object());
+    @Test
+    public void retrieve() {
+        assertThat(emptyParameters.isValid(mock(ParameterAssignmentMap.class)), is(equalTo(ValidationResult.SUCCESS)));
     }
 }

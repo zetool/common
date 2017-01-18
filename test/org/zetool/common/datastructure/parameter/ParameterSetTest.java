@@ -11,8 +11,8 @@ import static org.junit.Assert.assertThat;
 import org.junit.Test;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import org.zetool.common.algorithm.template.ParameterAssignmentMap;
 import org.zetool.common.algorithm.template.ParameterTemplate;
-import org.zetool.common.algorithm.template.ParameterTemplateSet;
 
 /**
  *
@@ -30,15 +30,15 @@ public class ParameterSetTest {
 
     @Test
     public void templatesToParameterSet() {
-        ParameterTemplateSet pts = mock(ParameterTemplateSet.class);
+        ParameterAssignmentMap pam = mock(ParameterAssignmentMap.class);
         ParameterTemplate<Integer> i = mock(ParameterTemplate.class);
         ParameterTemplate<String> s = mock(ParameterTemplate.class);
 
         List<ParameterTemplate<?>> parameters = Arrays.asList(i, s);
-        when(pts.iterator()).thenReturn(parameters.iterator());
+        when(pam.iterator()).thenReturn(parameters.iterator());
 
-        when(pts.getValue(i)).thenReturn(3);
-        when(pts.getValue(s)).thenReturn("text");
+        when(pam.getValue(i)).thenReturn(3);
+        when(pam.getValue(s)).thenReturn("text");
 
         Parameter<Integer> intParam = mock(Parameter.class);
         Parameter<String> stringParam = mock(Parameter.class);
@@ -46,7 +46,7 @@ public class ParameterSetTest {
         when(i.getParameter(3)).thenReturn(intParam);
         when(s.getParameter("text")).thenReturn(stringParam);
 
-        ParameterSet ps = new ParameterSet(pts);
+        ParameterSet ps = new ParameterSet(pam);
 
         assertThat(ps.size(), is(equalTo(2)));
         assertThat(ps.isEmpty(), is(equalTo(false)));

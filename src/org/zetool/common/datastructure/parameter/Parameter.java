@@ -1,7 +1,7 @@
 package org.zetool.common.datastructure.parameter;
 
 /**
- *
+ * A {@code Parameter} consists of the name (for the parameter) and a value.
  * @param <T>
  */
 public class Parameter<T> {

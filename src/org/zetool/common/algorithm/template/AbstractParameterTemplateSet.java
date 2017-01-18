@@ -26,16 +26,6 @@ public abstract class AbstractParameterTemplateSet implements ParameterTemplateS
         this.parameterTemplates = parameterTemplates;
     }
 
-    @Override
-    public <T> ValidationResult isChangeValid(ParameterTemplate<T> template, T value) {
-        return template.validate(value);
-    }
-
-    @Override
-    public <T> T getValue(ParameterTemplate<T> template) {
-        return (T) values.get(template);
-    }
-
     protected <T> void updateValue(ParameterTemplate<T> template, T value) {
         values.put(template, template.getParameter(value));
     }

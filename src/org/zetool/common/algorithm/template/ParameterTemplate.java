@@ -1,5 +1,6 @@
 package org.zetool.common.algorithm.template;
 
+import java.util.Iterator;
 import org.zetool.common.datastructure.parameter.Parameter;
 
 /**
@@ -7,7 +8,15 @@ import org.zetool.common.datastructure.parameter.Parameter;
  * @param <T>
  * @author Jan-Philipp Kappmeier
  */
-public interface ParameterTemplate<T> {
+public interface ParameterTemplate<T> extends Iterable<T> {
+
+    /**
+     * Returns an {@link Iterator} over all the values that this parameter can take.
+     *
+     * @return an {@link Iterator} over all the values that this parameter can take
+     */
+    @Override
+    public Iterator<T> iterator();
 
     /**
      * Returns the description of this parameter.
@@ -15,6 +24,13 @@ public interface ParameterTemplate<T> {
      * @return the description of this parameter.
      */
     String getDescription();
+    
+    /**
+     * Returns the type of the parameter values.
+     * 
+     * @return the type of the parameter values
+     */
+    Class<T> getType();
 
     /**
      * Returns the name of this parameter.
@@ -23,24 +39,20 @@ public interface ParameterTemplate<T> {
      */
     String getName();
 
+    /**
+     * Returns the actual parameter for this template with the given value.
+     * 
+     * @param value the value that the parameter is set to
+     * @return an acutal parameter for this template with the given value
+     */
     Parameter<T> getParameter(T value);
 
     /**
-     * Returns the <code>Iterable</code> providing the iterator for the values that this parameter
-     * can take.
-     *
-     * @return the <code>Iterable</code> providing the iterator for the values that this parameter
-     * can take.
+     * Returns the default value for the parameter.
+     * @return 
      */
-    Iterable<T> getValues();
+    T getDefault();
 
-    /**
-     * Checks whether this parameter has a potential next value (which might not be valid).
-     *
-     * @return <code>true</code> if a candidate for a next value exists, <code>false</code>
-     * otherwise.
-     */
-    //boolean hasNextValue();
     /**
      * Returns the number of values this parameter can take. Notice that this does only count the
      * number of potential values it can take, not all of them might be valid with regard to the
@@ -52,31 +64,9 @@ public interface ParameterTemplate<T> {
     int numberOfValues();
 
     /**
-     * Sets this parameter to the first valid value and returns <code>true</code> if it finds one
-     * and <code>false</code> if it finds none. This also updates the internal iterator to this
-     * position. If the parameter has only one value, nothing happens, which is counted as a success
-     * by the method.
-     *
-     * @return a <code>ValidationResult</code> specifying whether the operation was a success or a
-     * failure.
+     * Returns whether it is valid to set a specific value for the parameter.
+     * @param value the value
+     * @return if the value is allowed
      */
-    //T getFirstValue();
-    /**
-     * If this parameter has a sequence of values, this sets the current value to the next value in
-     * the sequence which is valid and returns <code>true</code> if a valid next value was found.
-     * Otherwise, <code>false</code> is returned. If the parameter just has one value, the current
-     * value remains the same and <code>false</code> is returned.
-     *
-     * @return a <code>ValidationResult</code> specifying whether this a success or a failure.
-     */
-    //T getNextValue();
-    //    /**
-    //     * Returns the current value of this parameter.
-    //     *
-    //     * @return the current value of this parameter.
-    //     */
-    //    public T getValue() {
-    //        return value;
-    //    }
-    ValidationResult validate(T value);
+    ValidationResult isValid(T value);
 }

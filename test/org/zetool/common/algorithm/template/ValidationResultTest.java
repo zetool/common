@@ -46,9 +46,7 @@ public class ValidationResultTest {
             assertThat(vr.getMessage(), containsString(message1));
             assertThat(vr.getMessage(), containsString(message2));
             assertParameter(vr::isSuccessful, false);
-
         }
-
     }
 
     public static <T> void assertParameter(Supplier<T> s, T expected) {

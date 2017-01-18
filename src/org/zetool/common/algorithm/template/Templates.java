@@ -27,21 +27,6 @@ public class Templates {
                 = new EmptyParameterTemplateSet();
 
         @Override
-        public <T> T getValue(ParameterTemplate<T> template) {
-            throw new IllegalArgumentException();
-        }
-
-        @Override
-        public <T> ValidationResult isChangeValid(ParameterTemplate<T> template, T value) {
-            throw new IllegalArgumentException();
-        }
-
-        @Override
-        public <T> ValidationResult update(ParameterTemplate<T> template, T value) {
-            throw new IllegalArgumentException();
-        }
-
-        @Override
         public Iterator<ParameterTemplate<?>> iterator() {
             return Collections.emptyIterator();
         }
@@ -54,6 +39,15 @@ public class Templates {
         @Override
         public boolean isEmpty() {
             return true;
+        }
+
+        @Override
+        public ValidationResult isValid(ParameterAssignmentMap map) {
+            if (map.size() == 0) {
+                return ValidationResult.SUCCESS;
+            } else {
+                return ValidationResult.FAILURE;
+            }
         }
 
     };

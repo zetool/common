@@ -1,16 +1,23 @@
 package org.zetool.common.algorithm.template;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
- *
+ * A parameter assignment map is a mapping of values to parameters. The parameters are initially specified by a
+ * {@link ParameterTemplateSet} and each of the parameters within the set is assigned its default value.
+ * 
  * @author Jan-Philipp Kappmeier
  */
-public class ParameterAssignmentMap {
+public class ParameterAssignmentMap implements Iterable<ParameterTemplate<?>> {
 
     private final Map<ParameterTemplate<?>, ParameterAssignment<?>> values = new HashMap<>();
 
+    public int size() {
+        return values.size();
+    }
+    
     public ParameterAssignmentMap(ParameterTemplateSet parameterTemplateSet) {
         for (ParameterTemplate<?> template : parameterTemplateSet) {
             ParameterAssignment<?> a = getAssignment(template);
@@ -20,32 +27,6 @@ public class ParameterAssignmentMap {
 
     private static <T> ParameterAssignment<T> getAssignment(ParameterTemplate<T> template) {
         return new ParameterAssignment<>(template);
-    }
-
-    /**
-     * Checks whether this parameter has a potential next value (which might not be valid).
-     *
-     * @param template
-     * @param <T>
-     * @return <code>true</code> if a candidate for a next value exists, <code>false</code> otherwise.
-     */
-    //@Override
-    public <T> boolean hasNextValue(ParameterTemplate<T> template) {
-        return values.get(template).hasNextValue();
-    }
-
-    /**
-     * Returns the number of values this parameter can take. Notice that this does only count the number of potential
-     * values it can take, not all of them might be valid with regard to the whole parameter set. If the values are not
-     * given by a <code>Collection</code> or <code>Sequence</code> all values are iterated to count the number of
-     * values.
-     *
-     * @param template
-     * @param <T>
-     * @return the number of values this parameter can take.
-     */
-    public <T> int numberOfValues(ParameterTemplate<T> template) {
-        return values.get(template).numberOfValues();
     }
 
     /**
@@ -83,8 +64,10 @@ public class ParameterAssignmentMap {
      * @return the current value of this parameter.
      */
     public <T> T getValue(ParameterTemplate<T> template) {
-        ParameterAssignment<T> a = (ParameterAssignment<T>) (values.get(template));
-        return a.getValue();
+        if (!contains(template)) {
+            throw new IllegalArgumentException(String.format("Element %s not in list", template));
+        }
+        return ((ParameterAssignment<T>) values.get(template)).getValue();
     }
 
     /**
@@ -103,7 +86,16 @@ public class ParameterAssignmentMap {
     }
 
     public <T> ValidationResult isChangeValid(ParameterTemplate<T> template, T value) {
-        return template.validate(value);
+        return template.isValid(value);
+    }
+
+    @Override
+    public Iterator<ParameterTemplate<?>> iterator() {
+        return values.keySet().iterator();
+    }
+
+    public <T> boolean contains(ParameterTemplate<T> template) {
+        return values.keySet().contains(template);
     }
 
 }

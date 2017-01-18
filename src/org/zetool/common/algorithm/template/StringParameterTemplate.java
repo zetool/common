@@ -43,7 +43,7 @@ public class StringParameterTemplate extends DefaultParameterTemplate<String> {
      * are being performed.
      */
     public StringParameterTemplate(String name, String description, String value, String regularExpression) {
-        super(name, description, value);
+        super(name, description, String.class, value);
         this.regularExpression = regularExpression;
     }
 
@@ -75,7 +75,7 @@ public class StringParameterTemplate extends DefaultParameterTemplate<String> {
      * @return the result of the validation.
      */
     @Override
-    public ValidationResult validate(String value) {
+    public ValidationResult isValid(String value) {
         if (regularExpression != null && !value.matches(regularExpression)) {
             return new ValidationResult(false, "'" + value + "' does not match the RegEx '" + regularExpression + "'.");
         } else {

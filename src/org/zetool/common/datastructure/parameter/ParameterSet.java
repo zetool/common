@@ -3,23 +3,20 @@ package org.zetool.common.datastructure.parameter;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import org.zetool.common.algorithm.template.ParameterAssignmentMap;
 import org.zetool.common.algorithm.template.ParameterTemplate;
 import org.zetool.common.algorithm.template.ParameterTemplateSet;
 
 /**
  * A collection of parameters and corresponding values.
  */
-public class ParameterSet {
+public class ParameterSet implements Iterable<Parameter<?>> {
     private static final ParameterSet EMPTY_PARAMETER_SET = new ParameterSet();
 
-    /**
-     * Stores the listeners of this set.
-     */
+    /** Stores the listeners of this set. */
     private final Set<Parameter<?>> parameters = new LinkedHashSet<>();
 
-    /**
-     * Private constructor for the empty parameter set.
-     */
+    /** Private constructor for the empty parameter set. */
     private ParameterSet() {
         // Empty
     }
@@ -31,7 +28,7 @@ public class ParameterSet {
      * 
      * @param parameterTemplates a set of parameter templates with corresponding values
      */
-    public ParameterSet(ParameterTemplateSet parameterTemplates) {
+    public ParameterSet(ParameterAssignmentMap parameterTemplates) {
         for (ParameterTemplate t : parameterTemplates) {
             this.parameters.add(t.getParameter(parameterTemplates.getValue(t)));
         }
@@ -46,14 +43,24 @@ public class ParameterSet {
         return EMPTY_PARAMETER_SET;
     }
 
+    @Override
     public Iterator<Parameter<?>> iterator() {
         return parameters.iterator();
     }
 
+    /**
+     * Returns the size of the {@code Parameterset}. The size is the number of {@link Parameter}s contained in the set.
+     * @return the number of parameters in the set
+     */
     public int size() {
         return parameters.size();
     }
 
+    /**
+     * Returns whether the {@code ParameterSet} is empty. The set is empty when it does not contain any
+     * {@link Parameter}.
+     * @return whether the {@ParameterSet} is empty
+     */
     public boolean isEmpty() {
         return parameters.isEmpty();
     }

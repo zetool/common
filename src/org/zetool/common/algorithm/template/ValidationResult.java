@@ -7,9 +7,19 @@ package org.zetool.common.algorithm.template;
 public class ValidationResult {
 
     /** A constant representing a successful validation. */
-    public static final ValidationResult SUCCESS = new ValidationResult(true, "");
+    public static final ValidationResult SUCCESS = new ValidationResult(true, "") {
+        @Override
+        public String toString() {
+            return "SUCCESS";
+        }
+    };
     /** A constant representing a failed validation. */
-    public static final ValidationResult FAILURE = new ValidationResult(false, "");
+    public static final ValidationResult FAILURE = new ValidationResult(false, "") {
+        @Override
+        public String toString() {
+            return "FAILURE";
+        }
+    };
 
     /** The error message of the validation. */
     private final String message;

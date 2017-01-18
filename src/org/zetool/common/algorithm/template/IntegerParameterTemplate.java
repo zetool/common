@@ -1,7 +1,3 @@
-/*
- * IntegerParameterTemplate.java
- *
- */
 package org.zetool.common.algorithm.template;
 
 /**
@@ -23,10 +19,9 @@ public class IntegerParameterTemplate extends DefaultParameterTemplate<Integer> 
 
     /**
      * Creates a new IntegerParameter with the given name and description, that belongs to the specified parameter set
-     * and has the given default value. The interval of allowed values is initialized to <code>Integer.MIN_VALUE</code>
-     * and <code>Integer.MAX_VALUE</code>.
+     * and has the given default value. The interval of allowed values is initialized to {@code Integer.MIN_VALUE}
+     * and {@code Integer.MAX_VALUE}.
      *
-     * @param parent the parameter set this parameter belongs to.
      * @param name the name of this parameter.
      * @param description the description of this parameter.
      * @param value the default value for this parameter.
@@ -39,13 +34,14 @@ public class IntegerParameterTemplate extends DefaultParameterTemplate<Integer> 
      * Creates a new IntegerParameter with the given name and description, that belongs to the specified parameter set
      * and has the given default value. Furthermore, it specifies an interval, which new values are checked with.
      *
-     * @param parent the parameter set this parameter belongs to.
      * @param name the name of this parameter.
      * @param description the description of this parameter.
      * @param value the default value for this parameter.
+     * @param lowerBound
+     * @param upperBound
      */
     public IntegerParameterTemplate(String name, String description, Integer value, int lowerBound, int upperBound) {
-        super(name, description, value);
+        super(name, description, Integer.TYPE, value);
         this.lowerBound = lowerBound;
         this.upperBound = upperBound;
     }
@@ -93,7 +89,7 @@ public class IntegerParameterTemplate extends DefaultParameterTemplate<Integer> 
      * @return the result of the validation.
      */
     @Override
-    public ValidationResult validate(Integer value) {
+    public ValidationResult isValid(Integer value) {
         if (value < lowerBound) {
             return new ValidationResult(false, value + " is smaller than " + lowerBound + ".");
         }

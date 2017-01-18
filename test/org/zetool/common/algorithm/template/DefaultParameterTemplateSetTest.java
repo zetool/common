@@ -39,6 +39,6 @@ public class DefaultParameterTemplateSetTest {
         ParameterTemplate<Integer> intParameter = (ParameterTemplate<Integer>) set.iterator().next();
         assertThat(intParameter.getName(), is(equalTo("integer")));
         assertThat(intParameter.getDescription(), is(equalTo("integerTest")));
-        assertThat(intParameter.getValues(), contains(3));
+        assertThat(intParameter, contains(3));
     }
 }
