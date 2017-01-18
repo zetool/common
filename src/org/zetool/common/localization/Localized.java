@@ -22,11 +22,11 @@ package org.zetool.common.localization;
  * @author Jan-Philipp Kappmeier
  */
 public interface Localized {
-	/**
-	 * This method localizes the object that implements {@code Localized}. The
-	 * method must set the localization prefix for itself. Afte the class, the
-	 * localization prefix must be resetted. It is generally assumed, that the
-	 * prefix is empty, when localize() is called.
-	 */
-	public void localize();
+    /**
+     * This method localizes the object that implements {@code Localized}. The
+     * method must set the localization prefix for itself. Afte the class, the
+     * localization prefix must be resetted. It is generally assumed, that the
+     * prefix is empty, when localize() is called.
+     */
+    public void localize();
 }

@@ -70,7 +70,6 @@ public class Transformation<P, T, R, S> extends AbstractAlgorithm<P, S> implemen
     }
 
     protected S transformSolution(R transformedSolution) {
-            S sol = (S)transformedSolution;
-            return sol;
+            return (S)transformedSolution;
     }
 }

@@ -23,7 +23,6 @@ public class DefaultParameterTemplateSet implements ParameterTemplateSet {
     @Override
     public ValidationResult isValid(ParameterAssignmentMap map) {
         // Validates all parameters
-        //return template.isValid(value);
         for (ParameterTemplate<? extends Object> t : parameterTemplates ) {
             ValidationResult singleValidate = validate(t, map.getValue(t));
             if (singleValidate == ValidationResult.FAILURE) {
@@ -59,6 +58,7 @@ public class DefaultParameterTemplateSet implements ParameterTemplateSet {
          * A shortcut for adding new parameters to this set. Supports Strings, Integers,
          * Enumerations, Booleans, Doubles and Objects.
          *
+         * @param <T>
          * @param name the name of the new parameter.
          * @param description the description of the new parameter.
          * @param value the default value of this parameter.
@@ -69,26 +69,14 @@ public class DefaultParameterTemplateSet implements ParameterTemplateSet {
         public <T> Builder withParameter(String name, String description, T value, Object... params) {
             Class<?> type = value.getClass();
             DefaultParameterTemplate<T> parameter;
-            if (type.equals(String.class)) {
-                if (params.length == 0 || !(params[0] instanceof String)) {
-                    parameter = (DefaultParameterTemplate<T>) new StringParameterTemplate(name, description, (String) value);
-                } else {
-                    parameter = (DefaultParameterTemplate<T>) new StringParameterTemplate(name, description, (String) value, (String) params[0]);
-                }
-            } else if (type.equals(Integer.class)) {
-                if (params.length != 2 || !(params[0] instanceof Integer) || !(params[1] instanceof Integer)) {
-                    parameter = (DefaultParameterTemplate<T>) new IntegerParameterTemplate(name, description, (Integer) value);
-                } else {
-                    parameter = (DefaultParameterTemplate<T>) new IntegerParameterTemplate(name, description, (Integer) value, (Integer) params[0], (Integer) params[1]);
-                }
-            } else if (type.equals(Boolean.class)) {
+            if (type.equals(Boolean.class)) {
                 parameter = (DefaultParameterTemplate<T>) new BooleanParameterTemplate(name, description, (Boolean) value);
+            } else if (type.equals(Integer.class)) {
+                parameter = (DefaultParameterTemplate<T>) getIntegerParameter(name, description, (Integer)value, params);
             } else if (type.equals(Double.class)) {
-                if (params.length != 2 || !(params[0] instanceof Double) || !(params[1] instanceof Double)) {
-                    parameter = (DefaultParameterTemplate<T>) new DoubleParameterTemplate(name, description, (Double) value);
-                } else {
-                    parameter = (DefaultParameterTemplate<T>) new DoubleParameterTemplate(name, description, (Double) value, (Double) params[0], (Double) params[1]);
-                }
+                parameter = (DefaultParameterTemplate<T>) getDoubleParameter(name, description, (Double)value, params);
+            } else if (type.equals(String.class)) {
+                parameter = (DefaultParameterTemplate<T>) getStringParameter(name, description, (String)value, params);
             } else if (Enum.class.isAssignableFrom(type)) {
                 parameter = new EnumParameterTemplate(name, description, (Class<? extends Enum>) type, (Enum) value);
             } else {
@@ -96,6 +84,30 @@ public class DefaultParameterTemplateSet implements ParameterTemplateSet {
             }
             sets.add(parameter);
             return this;
+        }
+
+        private StringParameterTemplate getStringParameter(String name, String description, String value, Object... params) {
+                if (params.length == 0 || !(params[0] instanceof String)) {
+                    return new StringParameterTemplate(name, description, value);
+                } else {
+                    return new StringParameterTemplate(name, description, value, (String) params[0]);
+                }
+        }
+
+        private IntegerParameterTemplate getIntegerParameter(String name, String description, int value, Object... params) {
+                if (params.length != 2 || !(params[0] instanceof Integer) || !(params[1] instanceof Integer)) {
+                    return new IntegerParameterTemplate(name, description, value);
+                } else {
+                    return new IntegerParameterTemplate(name, description, value, (Integer) params[0], (Integer) params[1]);
+                }
+        }
+
+        private DoubleParameterTemplate getDoubleParameter(String name, String description, Double value, Object... params) {
+                if (params.length != 2 || !(params[0] instanceof Double) || !(params[1] instanceof Double)) {
+                    return new DoubleParameterTemplate(name, description, value);
+                } else {
+                    return new DoubleParameterTemplate(name, description, value, (Double)params[0], (Double)params[1]);
+                }
         }
 
         public ParameterTemplateSet build() {

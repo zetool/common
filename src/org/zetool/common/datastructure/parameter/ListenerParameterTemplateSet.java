@@ -19,15 +19,6 @@ public class ListenerParameterTemplateSet implements ParameterTemplateSet {
 
     private ParameterTemplateSet pts;
 
-//    public <T> ValidationResult update(ParameterTemplate<T> template, T value) {
-//        T oldValue = getValue(template);
-//        ValidationResult result = pts.update(template, value);
-//        if (result == ValidationResult.SUCCESS) {
-//            fireParameterChanged(template, oldValue, value);
-//        }
-//        return result;
-//    }
-
     /**
      * Informs all listeners that a parameter in this set has been changed by calling the method described in their
      * interface.

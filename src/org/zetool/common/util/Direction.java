@@ -20,6 +20,6 @@ package org.zetool.common.util;
  * @author Jan-Philipp Kappmeier
  */
 public interface Direction<T> {
-	T getClockwise();
-	T getCounterClockwise();
+    T getClockwise();
+    T getCounterClockwise();
 }

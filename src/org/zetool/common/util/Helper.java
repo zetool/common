@@ -24,8 +24,11 @@ import java.util.Iterator;
  */
 public final class Helper {
 
+    private static final String MESSAGE_OUT_OF_RANGE = "Value %s out of range [%s,%s].";
+
     /** Private utility class constructor. */
     private Helper() {
+        // No code.
     }
 
     /**
@@ -56,21 +59,21 @@ public final class Helper {
     
     public static int requireInRange(int min, int max, int value) {
         if (value < min || value > max) {
-            throw new IllegalArgumentException("Value " + value + " out of range [" + min + "," + max + ".");
+            throw new IllegalArgumentException(String.format(MESSAGE_OUT_OF_RANGE, value, min, max));
         }
         return value;
     }
 
     public static long requireInRange(long min, long max, long value) {
         if (value < min || value > max) {
-            throw new IllegalArgumentException("Value " + value + " out of range [" + min + "," + max + ".");
+            throw new IllegalArgumentException(String.format(MESSAGE_OUT_OF_RANGE, value, min, max));
         }
         return value;
     }
     
     public static double requireInRange(double min, double max, double value) {
         if (value < min || value > max) {
-            throw new IllegalArgumentException("Value " + value + " out of range [" + min + "," + max + ".");
+            throw new IllegalArgumentException(String.format(MESSAGE_OUT_OF_RANGE, value, min, max));
         }
         return value;
     }

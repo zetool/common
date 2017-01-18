@@ -1,8 +1,6 @@
 
 package org.zetool.common.util.units;
 
-import org.zetool.common.util.Helper;
-
 /**
  * SI unit distances (based on meter) with the SI prefixes.
  *

@@ -16,8 +16,6 @@
 
 package org.zetool.common.util.units;
 
-import org.zetool.common.util.Helper;
-
 /**
  * IEC units for binary multiples of of bits and bytes. Units are as described in
  * http://physics.nist.gov/cuu/Units/binary.html with the addition of 'bits' as smalles unit.

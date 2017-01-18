@@ -11,6 +11,13 @@ import java.util.Iterator;
 public class Templates {
 
     /**
+     * Unused constructor.
+     */
+    private Templates() {
+        // No code.
+    }
+
+    /**
      * Returns an empty parameter set. It returns an empty iterator, contains no {@link ParameterTemplate}s and all
      * methods to change or access a {@link ParameterTemplate} throw an {@link IllegalArgumentException}.
      * 
@@ -49,7 +56,5 @@ public class Templates {
                 return ValidationResult.FAILURE;
             }
         }
-
-    };
-
+    }
 }

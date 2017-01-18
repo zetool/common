@@ -13,10 +13,6 @@ import java.util.Map;
 public class ParameterAssignmentMap implements Iterable<ParameterTemplate<?>> {
 
     private final Map<ParameterTemplate<?>, ParameterAssignment<?>> values = new HashMap<>();
-
-    public int size() {
-        return values.size();
-    }
     
     public ParameterAssignmentMap(ParameterTemplateSet parameterTemplateSet) {
         for (ParameterTemplate<?> template : parameterTemplateSet) {
@@ -87,6 +83,10 @@ public class ParameterAssignmentMap implements Iterable<ParameterTemplate<?>> {
 
     public <T> ValidationResult isChangeValid(ParameterTemplate<T> template, T value) {
         return template.isValid(value);
+    }
+
+    public int size() {
+        return values.size();
     }
 
     @Override

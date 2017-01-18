@@ -19,9 +19,9 @@ public class Debug {
     /**
      * The global logger used for debugging.
      */
-    public final static Logger globalLogger = Logger.getGlobal();
+    public static final Logger globalLogger = Logger.getGlobal();
     private static Level defaultLogLevel = Level.CONFIG;
-    private final static Handler handler = new SimpleSysoutHandler();
+    private static final Handler handler = new SimpleSysoutHandler();
 
     static {
         setUpLogging();

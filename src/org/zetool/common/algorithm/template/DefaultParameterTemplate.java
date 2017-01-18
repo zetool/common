@@ -149,26 +149,6 @@ public class DefaultParameterTemplate<T> implements ParameterTemplate<T> {
         return ValidationResult.SUCCESS;
     }
 
-    /**
-     * Changes the values that this parameter can take to the specified <code>Iterable</code>. The current value is then
-     * set to the first valid value of this <code>Iterable</code>, provided that one exists. If it does not, nothing
-     * happens and a validation failure is returned.
-     *
-     * @param values an <code>Iterable</code> providing the values that this parameter can take.
-     * @return a <code>ValidationResult</code> specifying whether the operation was a success or a failure.
-     */
-//    private ValidationResult setValues(Iterable<T> values) {
-//        return null;
-//        Iterable<T> oldValues = values;
-//        this.values = values;
-//        //ValidationResult result = setToFirstValue();
-//        if (!result.isSuccessful()) {
-//            this.values = oldValues;
-//        } else {
-//        }
-//        return result;
-//    }
-
     @Override
     public Class<T> getType() {
         return type;

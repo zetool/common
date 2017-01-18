@@ -23,6 +23,38 @@ public class SimpleSysoutHandler extends StreamHandler {
     private Writer writer;
 
     /**
+     * Constructor forwarding.
+     *
+     * @param out the output stream
+     * @param formatter the formatter used for output
+     */
+    public SimpleSysoutHandler(PrintStream out, Formatter formatter) {
+        super(out, formatter);
+    }
+
+    /**
+     * Constructor forwarding
+     *
+     * @throws SecurityException
+     */
+    public SimpleSysoutHandler() {
+        super();
+        setOutputStream(System.err);
+        if (getEncoding() == null) {
+            writer = new OutputStreamWriter(System.out);
+        } else {
+            try {
+                writer = new OutputStreamWriter(System.out, getEncoding());
+            } catch (UnsupportedEncodingException ex) {
+                // This shouldn't happen.  The setEncoding method
+                // should have validated that the encoding is OK.
+                throw new Error("Unexpected exception " + ex);
+            }
+        }
+        setLevel(minLevel);
+    }
+
+    /**
      * The only method we really change to check whether the message is smaller than maxlevel. We also flush here to
      * make sure that the message is shown immediately.
      */
@@ -91,37 +123,5 @@ public class SimpleSysoutHandler extends StreamHandler {
     public void setMinLevel(Level minlevel) {
         this.minLevel = minlevel;
         setLevel(minlevel);
-    }
-
-    /**
-     * Constructor forwarding.
-     *
-     * @param out the output stream
-     * @param formatter the formatter used for output
-     */
-    public SimpleSysoutHandler(PrintStream out, Formatter formatter) {
-        super(out, formatter);
-    }
-
-    /**
-     * Constructor forwarding
-     *
-     * @throws SecurityException
-     */
-    public SimpleSysoutHandler() throws SecurityException {
-        super();
-        setOutputStream(System.err);
-        if (getEncoding() == null) {
-            writer = new OutputStreamWriter(System.out);
-        } else {
-            try {
-                writer = new OutputStreamWriter(System.out, getEncoding());
-            } catch (UnsupportedEncodingException ex) {
-                // This shouldn't happen.  The setEncoding method
-                // should have validated that the encoding is OK.
-                throw new Error("Unexpected exception " + ex);
-            }
-        }
-        setLevel(minLevel);
     }
 }

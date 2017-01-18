@@ -14,7 +14,7 @@ import java.util.List;
  * @author Martin Groß
  */
 public class BooleanParameterTemplate extends DefaultParameterTemplate<Boolean> {
-    private final static List<Boolean> ALL_VALUES = Arrays.asList(Boolean.TRUE, Boolean.FALSE);
+    private static final List<Boolean> ALL_VALUES = Arrays.asList(Boolean.TRUE, Boolean.FALSE);
 
     /**
      * Creates a new boolean parameter with the given name and description. The default value of the boolean parameter
