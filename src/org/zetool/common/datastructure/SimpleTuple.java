@@ -81,4 +81,8 @@ public class SimpleTuple<U, V> implements Tuple<U,V> {
     public String toString() {
         return  String.format( "(%s,%s,)", u.toString(), v.toString() );
     }
+    public static <U, V> Tuple<U,V> asTuple(U u, V v) {
+        return new SimpleTuple<>(u, v);
+    }
+    
 }
