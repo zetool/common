@@ -22,6 +22,8 @@ import org.zetool.common.util.units.TimeUnits;
  * The abstract base class for algorithm events. It records the algorithm the event occurred in and the time at which
  * the event occurred. The time should be given in milliseconds elapsed since midnight, January 1, 1970 UTC.
  *
+ * @param <P>
+ * @param <S>
  * @author Martin Groß
  */
 public abstract class AbstractAlgorithmEvent<P, S> {

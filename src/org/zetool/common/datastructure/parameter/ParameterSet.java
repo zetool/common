@@ -3,6 +3,7 @@ package org.zetool.common.datastructure.parameter;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 import org.zetool.common.algorithm.template.ParameterAssignmentMap;
 import org.zetool.common.algorithm.template.ParameterTemplate;
 import org.zetool.common.algorithm.template.ParameterTemplateSet;
@@ -63,5 +64,14 @@ public class ParameterSet implements Iterable<Parameter<?>> {
      */
     public boolean isEmpty() {
         return parameters.isEmpty();
+    }
+
+    /**
+     * Returns the {@link Stream} over all parameters.
+     * 
+     * @return a sequential stream over the parameters in the set
+     */
+    public Stream<Parameter<?>> stream() {
+        return parameters.stream();
     }
 }
