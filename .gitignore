@@ -1,7 +1,9 @@
-nbproject/private/
+nb-configuration.xml
+nbproject/
 build/
 dist/
 lib/test
 lib/dist
 .sonar/
 cobertura.ser
+/target/
