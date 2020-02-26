@@ -20,7 +20,7 @@ before_deploy:
   - git config --global user.email "travis@travis-ci.org"
   - git config --global user.name "Travis CI"
   - git tag -f latest
-  - git push --tags
+  #- git push --tags
   
 deploy:
   skip_cleanup: true
