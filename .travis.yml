@@ -17,10 +17,10 @@ before_script:
 
 # Auto tag commit with latest
 before_deploy:
-  - git config --global user.email "travis@travis-ci.org"
-  - git config --global user.name "Travis CI"
+  - git config --local user.name "$USER_NAME"
+  - git config --local user.email "$USER_EMAIL"
   - git tag -f latest
-  #- git push --tags
+  - git push --tags
   
 deploy:
   provider: releases
