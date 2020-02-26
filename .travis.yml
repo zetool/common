@@ -22,3 +22,5 @@ before_deploy:
   - git tag -f latest
   - git push --tags
   
+deploy:
+  skip_cleanup: true
