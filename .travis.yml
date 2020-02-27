@@ -20,7 +20,7 @@ before_deploy:
   - git config --global user.email "travis@travis-ci.org"
   - git config --global user.name "Travis CI"
   - git tag -f latest
-  - git push --tags
+  #- git push --tags
   
 deploy:
   provider: releases
@@ -29,7 +29,7 @@ deploy:
   file: target/common-0.1.0-SNAPSHOT.jar
   skip_cleanup: true
   on:
-    branches:
-      only:
-        - latest
-        
+    all_branches: true
+    #branches:
+    #  only:
+    #    - latest
