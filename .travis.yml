@@ -23,7 +23,9 @@ before_deploy:
   - git config --global user.email "travis@travis-ci.org"
   - git config --global user.name "Travis CI"
   - git tag -f latest
-  #- git push --tags
+  - git remote set-url --push origin "https://${GH_TOKEN}@github.com/zetool/common.git"
+  - git push --delete origin latest
+  - git push --tags
   
 deploy:
   provider: releases
