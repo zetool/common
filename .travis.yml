@@ -31,3 +31,9 @@ deploy:
     branches:
       only:
         - master
+deploy:
+  provider: script
+  script: "mvn deploy -Dregistry=https://maven.pkg.github.com/zetool -Dtoken=${GH_TOKEN}"
+  skip_cleanup: true
+  on:
+    tags: true
