@@ -20,6 +20,7 @@ before_deploy:
   - git push --delete origin latest
   - git push --tags
 
+#
 deploy:
   provider: releases
   api_key:
@@ -36,4 +37,6 @@ deploy:
   script: "mvn deploy -Dregistry=https://maven.pkg.github.com/zetool -Dtoken=${GH_TOKEN}"
   skip_cleanup: true
   on:
-    tags: true
+    branches:
+      only:
+        - master
