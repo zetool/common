@@ -1,7 +1,3 @@
-/*
- * DoubleParameterTemplate.java
- *
- */
 package org.zetool.common.algorithm.template;
 
 /**
@@ -26,7 +22,6 @@ public class DoubleParameterTemplate extends DefaultParameterTemplate<Double> {
      * parameter set and has the given default value. The interval of allowed values is initialized to
      * <code>Double.NEGATIVE_INFINITY</code> and <code>Double.POSITIVE_INFINITY</code>.
      *
-     * @param parent the parameter set this parameter belongs to.
      * @param name the name of this parameter.
      * @param description the description of this parameter.
      * @param value the default value for this parameter.
@@ -37,12 +32,13 @@ public class DoubleParameterTemplate extends DefaultParameterTemplate<Double> {
 
     /**
      * Creates a new DoublerParameter with the given name and description, that belongs to the specified parameter set
-     * and has the given default value. Furthermore, it specifies an interval, which new values are checked with.
+     * and has the given default value.Furthermore, it specifies an interval, which new values are checked with.
      *
-     * @param parent the parameter set this parameter belongs to.
      * @param name the name of this parameter.
      * @param description the description of this parameter.
      * @param value the default value for this parameter.
+     * @param lowerBound the lower bound (inclusive)
+     * @param upperBound the upper bound (inclusive)
      */
     public DoubleParameterTemplate(String name, String description, Double value, double lowerBound, double upperBound) {
         super(name, description, Double.TYPE, value);

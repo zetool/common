@@ -60,7 +60,7 @@ public class ParameterSet implements Iterable<Parameter<?>> {
     /**
      * Returns whether the {@code ParameterSet} is empty. The set is empty when it does not contain any
      * {@link Parameter}.
-     * @return whether the {@ParameterSet} is empty
+     * @return whether the {@code ParameterSet} is empty
      */
     public boolean isEmpty() {
         return parameters.isEmpty();

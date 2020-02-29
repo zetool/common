@@ -7,13 +7,13 @@ import java.util.Map;
 /**
  * A parameter assignment map is a mapping of values to parameters. The parameters are initially specified by a
  * {@link ParameterTemplateSet} and each of the parameters within the set is assigned its default value.
- * 
+ *
  * @author Jan-Philipp Kappmeier
  */
 public class ParameterAssignmentMap implements Iterable<ParameterTemplate<?>> {
 
     private final Map<ParameterTemplate<?>, ParameterAssignment<?>> values = new HashMap<>();
-    
+
     public ParameterAssignmentMap(ParameterTemplateSet parameterTemplateSet) {
         for (ParameterTemplate<?> template : parameterTemplateSet) {
             ParameterAssignment<?> a = getAssignment(template);
@@ -67,9 +67,9 @@ public class ParameterAssignmentMap implements Iterable<ParameterTemplate<?>> {
     }
 
     /**
-     * Changes the value of this parameter to the specified one. Before the value is changed, it is first checked by {@link #validate(Object)
-     * } and then by the parameter set, if this parameter belongs to one. If both checks are passed, the value is
-     * changed and the parent parameter set is notified.
+     * Changes the value of this parameter to the specified one. Before the value is changed, it is first
+     * {@link ParameterTemplate#isValid(java.lang.Object) checked} and then by the parameter set, if this parameter
+     * belongs to one. If both checks are passed, the value is changed and the parent parameter set is notified.
      *
      * @param <T>
      * @param template
