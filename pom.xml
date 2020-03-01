@@ -50,6 +50,15 @@
         </dependency>
     </dependencies>
 
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <layout>default</layout>
+            <name>GitHub zetool Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/zetool/common</url>
+        </repository>
+    </distributionManagement>
+
     <scm>
         <connection>scm:git:https://github.com/zetool/common.git</connection>
         <url>https://github.com/zetool/common.git</url>
