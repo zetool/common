@@ -11,16 +11,22 @@ import java.util.Iterator;
  */
 public class ParameterAssignment<T> {
 
-    /** The template for the parameter. */
+    /**
+     * The template for the parameter.
+     */
     final ParameterTemplate<T> parameterTemplate;
-    /** The current value assigned to the parameter. */
+    /**
+     * The current value assigned to the parameter.
+     */
     T value;
-    /** An iterator to the possible values of this parameter. */
+    /**
+     * An iterator to the possible values of this parameter.
+     */
     private Iterator<T> iterator;
 
     /**
      * Initiates the assignment for a {@code ParameterTemplate} by setting its value to the default value.
-     * 
+     *
      * @param parameterTemplate the parameter template
      */
     public ParameterAssignment(ParameterTemplate<T> parameterTemplate) {
@@ -38,9 +44,10 @@ public class ParameterAssignment<T> {
     }
 
     /**
-     * Changes the value of this parameter to the specified one. Before the value is changed, it is first checked by {@link #validate(Object)
-     * } and then by the parameter set, if this parameter belongs to one. If both checks are passed, the value is
-     * changed and the parent parameter set is notified.
+     * Changes the value of this parameter to the specified one. Before the value is changed, it is first checked by
+     * {@link ParameterTemplate#isValid(java.lang.Object) the parameter template} and then by the parameter set, if this
+     * parameter belongs to one. If both checks are passed, the value is changed and the parent parameter set is
+     * notified.
      *
      * @param value the new value of this parameter.
      * @return a {@link ValidationResult} specifying whether the operation was a success or a failure.
@@ -111,10 +118,9 @@ public class ParameterAssignment<T> {
     }
 
     /**
-     * Returns the number of values this parameter can take. Notice that this does only count the number of potential
-     * values it can take, not all of them might be valid with regard to the whole parameter set. If the values are not
-     * given by a {@link Collection} or {Sequence} all values are iterated to count the number of values.
-     *
+     * Returns the number of values this parameter can take. 
+     * 
+     * @see ParameterTemplate#numberOfValues() 
      * @return the number of values this parameter can take.
      */
     public int numberOfValues() {

@@ -21,7 +21,6 @@ public class StringParameterTemplate extends DefaultParameterTemplate<String> {
      * Creates a new StringParameter with the given name and description, that belongs to the specified parameter set
      * and has the given default value. No regular expression checks are done during value changes.
      *
-     * @param parent the parameter set this parameter belongs to.
      * @param name the name of this parameter.
      * @param description the description of this parameter.
      * @param value the default value for this parameter.
@@ -35,7 +34,6 @@ public class StringParameterTemplate extends DefaultParameterTemplate<String> {
      * and has the given default value. Furthermore, it sets a regular expression, which new values are checked with. If
      * <code>null</code> is the regular expression, checks are omitted.
      *
-     * @param parent the parameter set this parameter belongs to.
      * @param name the name of this parameter.
      * @param description the description of this parameter.
      * @param value the default value for this parameter.
