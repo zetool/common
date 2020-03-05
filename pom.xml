@@ -3,7 +3,7 @@
 
     <groupId>org.zetool</groupId>
     <artifactId>common</artifactId>
-    <version>0.1.1-SNAPSHOT</version>
+    <version>0.1.2-SNAPSHOT</version>
     <name>zetool-common</name>
     <url>https://zetool.org</url>
     <packaging>jar</packaging>
@@ -50,15 +50,16 @@
         </dependency>
     </dependencies>
 
-    <distributionManagement>
+    <!--   <distributionManagement>
         <repository>
             <id>github</id>
             <layout>default</layout>
             <name>GitHub zetool Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/zetool/common</url>
         </repository>
+	<snapshotRepository></snapshotRepository>
     </distributionManagement>
-
+    -->
     <scm>
         <connection>scm:git:https://github.com/zetool/common.git</connection>
         <url>https://github.com/zetool/common.git</url>
