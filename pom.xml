@@ -56,6 +56,9 @@
             <layout>default</layout>
             <name>GitHub zetool Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/zetool/common</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
 	<snapshotRepository></snapshotRepository>
     </distributionManagement>
@@ -63,6 +66,6 @@
     <scm>
         <connection>scm:git:https://github.com/zetool/common.git</connection>
         <url>https://github.com/zetool/common.git</url>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 </project>
