@@ -6,6 +6,20 @@
     <version>0.1.2-SNAPSHOT</version>
     <name>zetool-common</name>
     <url>https://zetool.org</url>
+
+    <inceptionYear>2007</inceptionYear>
+    <organization>
+        <name>zetool</name>
+        <url>https://zetool.org</url>
+    </organization>
+    <licenses>
+        <license>
+            <name>GNU General Public License v2.0 or later</name>
+            <url>https://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
     <packaging>jar</packaging>
 
     <properties>
@@ -21,7 +35,7 @@
                 <version>3.1.0</version>
             </plugin>
         </plugins>
-    </build>    
+    </build>
 
     <dependencies>
         <dependency>
@@ -60,7 +74,7 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
-	<snapshotRepository></snapshotRepository>
+    <snapshotRepository></snapshotRepository>
     </distributionManagement>
     -->
     <scm>
