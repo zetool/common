@@ -7,16 +7,12 @@ on:
 
 jobs:
   release:
-
-  env:
-    GITHUB_TOKEN: ${{ secrets.GITHUB_RELEASE_TOKEN }}
-
-jobs:
-  build:
-
     name: Maven Release
 
     runs-on: ubuntu-latest
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_RELEASE_TOKEN }}
 
     steps:
     - name: Checkout source code
