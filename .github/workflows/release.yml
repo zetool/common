@@ -4,10 +4,12 @@ on:
   pull_request:
     branches:
     - master
+    types: [closed]
 
 jobs:
   release:
     name: Maven Release
+    if: github.event.pull_request.merged == true
 
     runs-on: ubuntu-latest
 
