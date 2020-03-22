@@ -1,3 +1,7 @@
+# This workflow will release and publish the project with Maven
+# It uses Maven release to release the process including deploy.
+# Deployment is done to GitHub Package registry.
+
 name: Maven Release
 
 on:
