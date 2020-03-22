@@ -35,7 +35,7 @@ jobs:
       run: mvn -B package --file pom.xml -DskipTests
     - name: Prepare settings for release
       run: cp ~/.m2/settings.xml .
-    - name: Release
+    - name: Release and publish to GitHub Packages
       uses: kappmeier/github-actions-maven-release@master
       with:
         release-branch-name: "master"
