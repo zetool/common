@@ -27,20 +27,20 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+    - name: maven-settings-xml-action
+      uses: whelk-io/maven-settings-xml-action@v4
+      with:
+        servers: '[{ "id": "github", "username": "zetool-bot", "password": "${GITHUB_TOKEN}" }]'
     - name: Build with Maven
       run: mvn -B package --file pom.xml -DskipTests
-    - name: Prepare settings
-      run: |
-        mkdir -p ~/.m2
-        echo "<settings><servers><server><id>github</id><username>zetool-bot</username><password>${GITHUB_TOKEN}</password></server></servers></settings>" > ~/.m2/settings.xml
+    - name: Prepare settings for release
+      run: cp ~/.m2/settings.xml .
     - name: Release
-      uses: qcastel/github-actions-maven-release@master
+      uses: kappmeier/github-actions-maven-release@master
       with:
         release-branch-name: "master"
 
-        maven-repo-server-id: github
-        maven-repo-server-username: zetool-bot
-        maven-repo-server-password: ${{ secrets.GITHUB_RELEASE_TOKEN }}
+        settings-file: "./settings.xml"
 
         maven-args: "-X -Dmaven.javadoc.skip=true -DskipTests"
 
@@ -48,4 +48,3 @@ jobs:
         git-release-bot-email: "github@zetool.org"
 
         access-token: ${{ secrets.GITHUB_RELEASE_TOKEN }}
-
